@@ -28,7 +28,7 @@ LocalTransport::LocalTransport(LocalTransport& other, QObject* parent) :
 
 QWidget* LocalTransport::getConfigWidget()
 {
-	QWidget* configWidget = new LocalTransportConfigWidget((QWidget*)this);
+	QWidget* configWidget = new LocalTransportConfigWidget(dynamic_cast<QWidget*>(this));
 	return configWidget;
 }
 
