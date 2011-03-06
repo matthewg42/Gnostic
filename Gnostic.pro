@@ -27,4 +27,5 @@ HEADERS  += GnosticMainWindow.hpp \
 FORMS    += GnosticMainWindow.ui \
     LocalTransportConfigWidget.ui
 
-OTHER_FILES +=
+OTHER_FILES += \
+    README

@@ -1,10 +1,78 @@
 Gnostic
 -------
 
-Gates' Nearly Omnipotent Software That Is Cromulent.
 Gosh, Network Operation Seems Terrifically Interesting. Champion!
-Get New Operating System. The Is Crap (choose whichever platform you don't like)
+Gates' Nearly Omnipotent Software That Is Cromulent.
+Get New Operating System. The Is Crap" (choose your target platform)
+Gnostic's not overly stupid, technically it's complicated
+Graphic Notifying Omni-Platform Software Tool Inspecting Clusters
+Gnostic Notifies On Servers Taking Inconvenient Craps
+Great, No One Saw That It Crashed
+Gnostiq: Graphing, Notification, Omni-Platform Surveillance Tool In Qt4
 
-* * *
+--
 
-Coming soon.
+It's a remote process montoring visualization tool.
+
+--
+
+When we see a host for the first time, we will have to add it to
+the known hosts somehow.
+- option1 : get user to start a putty session and accept host id
+- option2 : start plink in not-batch mode
+We can have a "test connection" option for this...
+
+Creation of a Transport:
+- host
+- username
+- choose public key or passsword auth
+- public key is done using putty's pageant (recommended)
+- if public key/agent, select pr. key file
+- send public key button:
+  - prompt for password
+  - use plink w/ pw auth to add public key to authorized hosts
+  - do this in interactive mode do the user is prompted for
+    known host oking if necessary
+- test connection button
+  - calls plink to do something testable
+  - if public_key auth is used, call pageant with the prv key file first
+    (it will only prompt for th priv key password if the key isn't already
+    loaded into memory).
+  - if password auth is used, prompts for password
+- provides configWidget member
+
+Creation of a new monitor
+- select authenticator (embed Authenticator
+- choose monitor command / args
+- graph params:
+  - history (s)
+  - plot refresh rate
+  - y scale auto / bounds
+  - graph theme (bg col, grid type etc)
+  - edit line styles (add label/style/scale multiplier)
+
+
+MonitorLayouts:
+- a MonitorLayouts contains a set of monitors
+- horizontal or vertical layout type
+- has
+
+
+Remote Monitor Protocol:
+
+GNOSTIC-DATA-PROTOCOL-VERSION=1.0
+HOST=the.fq.hostname
+MONITOR_NAME=Some monitor
+UPDATE-DELAY=1.0
+DELIMITER=:
+GNOSTIC-DATA
+timstamp:value:label
+timstamp:value:label
+timstamp:value:label
+GNOSTIC-WARNING=System going down in 3 mins
+timstamp:value:label
+timstamp:value:label
+timstamp:value:label
+GNOSTIC-ERROR=Monitor sent TERM signal, BYE
+
+timestamps are in number of milli-seconds since epoch.
