@@ -2,6 +2,7 @@
 #define LOCALTRANSPORTCONFIGWIDGET_HPP
 
 #include <QWidget>
+#include "TransportConfigWidget.hpp"
 
 namespace Ui
 {
@@ -11,7 +12,7 @@ namespace Ui
 class LocalTransport;
 class QWidget;
 
-class LocalTransportConfigWidget : public QWidget
+class LocalTransportConfigWidget : public TransportConfigWidget
 {
 	Q_OBJECT
 

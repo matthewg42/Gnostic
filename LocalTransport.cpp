@@ -1,5 +1,6 @@
 #include "LocalTransport.hpp"
 #include "LocalTransportConfigWidget.hpp"
+#include "GnosticApp.hpp"
 #include <QProcess>
 #include <QVariant>
 #include <QDateTime>
@@ -7,6 +8,7 @@
 #include <QByteArray>
 #include <QString>
 #include <QFile>
+#include <QSettings>
 
 LocalTransport::LocalTransport(QObject* parent) :
 		Transport(parent)
@@ -27,9 +29,9 @@ LocalTransport::LocalTransport(LocalTransport& other, QObject* parent) :
 	proc = new QProcess(this);
 }
 
-QWidget* LocalTransport::getConfigWidget(QWidget* parent)
+TransportConfigWidget* LocalTransport::getConfigWidget(QWidget* parent)
 {
-	QWidget* configWidget = new LocalTransportConfigWidget(this, parent);
+	TransportConfigWidget* configWidget = new LocalTransportConfigWidget(this, parent);
 	return configWidget;
 }
 
@@ -79,7 +81,11 @@ void LocalTransport::stopMonitor()
 
 void LocalTransport::saveTransport()
 {
-	qDebug() << "LocalTransport::saveTransport TODO";
+	qDebug() << "LocalTransport::saveTransport" << id;
+	QSettings* settings = GnosticApp::getInstance().settings();
+	settings->setValue(QString("%1/type").arg(id), "LocalTransport");
+	settings->setValue(QString("%1/description").arg(id), description);
+	settings->setValue(QString("%1/shell_path").arg(id), shellPath);
 }
 
 void LocalTransport::setShellPath(QString p)

@@ -3,13 +3,17 @@
 #include "ui_LocalTransportConfigWidget.h"
 
 LocalTransportConfigWidget::LocalTransportConfigWidget(LocalTransport* lt, QWidget* parent) :
-		QWidget(parent),
+		TransportConfigWidget(parent),
 		ui(new Ui::LocalTransportConfigWidget)
 {
 	ui->setupUi(this);
-	connect(ui->shellPathEdit, SIGNAL(textEdited(QString)), lt, SLOT(setShellPath(QString)));
-
+	ui->idEdit->setText(lt->getId());
+	ui->descriptionEdit->setText(lt->getDescription());
 	ui->shellPathEdit->setText(lt->shellPath);
+	connect(ui->shellPathEdit, SIGNAL(textEdited(QString)), lt, SLOT(setShellPath(QString)));
+	connect(ui->shellPathEdit, SIGNAL(textEdited(QString)), this, SLOT(emitChanged()));
+	connect(ui->descriptionEdit, SIGNAL(textEdited(QString)), lt, SLOT(setDescription(QString)));
+	connect(ui->descriptionEdit, SIGNAL(textEdited(QString)), this, SLOT(emitChanged()));
 }
 
 LocalTransportConfigWidget::~LocalTransportConfigWidget()

@@ -4,7 +4,11 @@
 #include <QObject>
 #include <QStringList>
 
-class QWidget;
+//! \def GETNEWMODULE(m)
+//! Return a pointer on a StelModule from its QMetaObject name @a m
+#define GETSTELMODULE( m ) (( m *)StelApp::getInstance().getModuleMgr().getModule( #m ))
+
+class TransportConfigWidget;
 
 //! \class Transport
 //! models an authenitcation route to a remote host
@@ -22,6 +26,8 @@ class Transport : public QObject
 {
 	Q_OBJECT
 
+	friend class GnosticApp;
+
 public:
 	enum TransportStatus
 	{
@@ -37,12 +43,15 @@ public:
 
 	virtual ~Transport() = 0;
 
+	//! Returns a string description of the type, e.g. "Transport"
+	virtual const QString getType() = 0;
+
 	//! get the current connection status of a transport
 	Transport::TransportStatus getConnectionStatus();
 
 	//! get a widget for configuring the transport.  should have
 	//! save and cancel buttons and so on
-	virtual QWidget* getConfigWidget(QWidget* parent=0) = 0;
+	virtual TransportConfigWidget* getConfigWidget(QWidget* parent=0) = 0;
 
 	//! test that the transport works with the current settings
 	//! e.g. that it can connect and authenticate with a remote host,
@@ -69,6 +78,11 @@ public slots:
 	//! Set the description of the monitor
 	void setDescription(QString newDescription);
 
+	//! Set the tested flag for this transport
+	void setTested(bool t);
+	//! Find out if this transport has been tested
+	bool getTested();
+
 	//! Save transport settings
 	virtual void saveTransport() = 0;
 
@@ -85,10 +99,11 @@ protected:
 	//! re-implement this function and do it there
 	virtual void setConnectionStatus(Transport::TransportStatus);
 
-private:
+protected:
 	QString id;
 	QString description;
 	TransportStatus connectionStatus;
+	bool tested;
 
 };
 

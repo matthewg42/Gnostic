@@ -19,9 +19,12 @@ public:
 
 	~LocalTransport();
 
+	virtual const QString getType() {return "LocalTransport";}
+
+
 	//! get a widget for configuring the transport.  should have
 	//! save and cancel buttons and so on
-	virtual QWidget* getConfigWidget(QWidget* parent=0);
+	virtual TransportConfigWidget* getConfigWidget(QWidget* parent=0);
 
 	//! Test that the transport can use the shell to echo "hello world"
 	virtual bool testTransport();

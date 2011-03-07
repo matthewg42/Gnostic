@@ -52,6 +52,10 @@ Creation of a new monitor
   - edit line styles (add label/style/scale multiplier)
 
 
+We must derive LocalTransportConfigWindow and others like it from a base
+TransportConfig window, which offers generic signals when a transport is updated
+
+
 MonitorLayouts:
 - a MonitorLayouts contains a set of monitors
 - horizontal or vertical layout type
