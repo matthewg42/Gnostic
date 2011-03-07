@@ -42,7 +42,13 @@ public:
 
 	//! get a widget for configuring the transport.  should have
 	//! save and cancel buttons and so on
-	virtual QWidget* getConfigWidget() = 0;
+	virtual QWidget* getConfigWidget(QWidget* parent=0) = 0;
+
+	//! test that the transport works with the current settings
+	//! e.g. that it can connect and authenticate with a remote host,
+	//! issue a command and read back the output.
+	//! \returns true on a successful test, false otherwise.
+	virtual bool testTransport() = 0;
 
 public slots:
 	//! Use this transport object to run a command

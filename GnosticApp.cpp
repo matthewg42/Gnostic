@@ -12,9 +12,9 @@ GnosticApp::GnosticApp(const QString& confDir, QObject *parent) :
 		configDir(confDir),
 		confSettings(NULL)
 {
-	setObjectName("GnosticApp");
 	Q_ASSERT(!singleton);
 	singleton = this;
+	setObjectName("GnosticApp");
 }
 
 GnosticApp::~GnosticApp()

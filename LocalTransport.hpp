@@ -9,6 +9,8 @@ class LocalTransport : public Transport
 {
 	Q_OBJECT
 
+	friend class LocalTransportConfigWidget;
+
 public:
 	//! Create an empty LocalTransport object
 	LocalTransport(QObject* parent=0);
@@ -19,7 +21,10 @@ public:
 
 	//! get a widget for configuring the transport.  should have
 	//! save and cancel buttons and so on
-	virtual QWidget* getConfigWidget();
+	virtual QWidget* getConfigWidget(QWidget* parent=0);
+
+	//! Test that the transport can use the shell to echo "hello world"
+	virtual bool testTransport();
 
 public slots:
 	//! Use this transport object to run a command
@@ -35,6 +40,9 @@ public slots:
 	//! Save transport settings
 	virtual void saveTransport();
 
+	//! Set the shell path
+	void setShellPath(QString p);
+
 private slots:
 	void procStatusUpdate(QProcess::ProcessState);
 	void procReadIn();
@@ -44,6 +52,9 @@ private slots:
 
 private:
 	void makeProcess();
+
+	//! add -c and make primary args list into a quoted string for that...
+	const QStringList argsToCmd(const QStringList args);
 
 private:
 	QString shellPath;

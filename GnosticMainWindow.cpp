@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QWidget>
+#include <QMessageBox>
 
 #include "LocalTransport.hpp"
 
@@ -21,8 +22,6 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
         ui->transportSettingsLayout->addWidget(ltw);
         ltw->show();
 
-	connect(transport, SIGNAL(connectionStatusChanged(Transport::TransportStatus)), this, SLOT(transportStatusChanged(Transport::TransportStatus)));
-	connect(transport, SIGNAL(receivedData(QString,double,qint64)), this, SLOT(receiveData(QString,double,qint64)));
 	connect(ui->testButton, SIGNAL(clicked()), this, SLOT(doTest()));
 }
 
@@ -50,5 +49,11 @@ void GnosticMainWindow::transportStatusChanged(Transport::TransportStatus newSta
 void GnosticMainWindow::doTest()
 {
 	qDebug() << "GnosticMainWindow::doTest doTest...";
-	transport->startMonitor("date");
+	QMessageBox mb;
+	if (!transport->testTransport())
+		mb.setText("Transport test FAILED - check your settings!");
+	else
+		mb.setText("Transport test was SUCCESSFUL");
+
+	mb.exec();
 }

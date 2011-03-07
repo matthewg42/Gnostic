@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QByteArray>
 #include <QString>
+#include <QFile>
 
 LocalTransport::LocalTransport(QObject* parent) :
 		Transport(parent)
@@ -26,16 +27,47 @@ LocalTransport::LocalTransport(LocalTransport& other, QObject* parent) :
 	proc = new QProcess(this);
 }
 
-QWidget* LocalTransport::getConfigWidget()
+QWidget* LocalTransport::getConfigWidget(QWidget* parent)
 {
-        QWidget* configWidget = new LocalTransportConfigWidget(dynamic_cast<QWidget*>(this));
+	QWidget* configWidget = new LocalTransportConfigWidget(this, parent);
 	return configWidget;
+}
+
+bool LocalTransport::testTransport()
+{
+	qDebug() << "LocalTransport::testTransport testing with shell:" << shellPath;
+
+	QProcess testProc(this);
+
+	testProc.start(shellPath, argsToCmd(QStringList() << "echo" << "hello world"));
+
+	if (!testProc.waitForStarted())
+	{
+		qDebug() << "LocalTransport::testTransport  waitForStarted returned false";
+		return false;
+	}
+
+	if (!testProc.waitForFinished())
+	{
+		qDebug() << "LocalTransport::testTransport  waitForFinished returned false";
+		return false;
+	}
+
+	QByteArray output = testProc.readAll();
+	if (QString(output) != "hello world\n")
+	{
+		qWarning() << "LocalTransport::testTransport - output was not what was expected:" << output;
+		return false;
+	}
+
+	return true;
 }
 
 bool LocalTransport::startMonitor(const QString& exec, const QStringList& args)
 {
 	this->setConnectionStatus(Transport::EstablishingConnection);
-	proc->execute(exec, args);
+
+	proc->start(exec, argsToCmd(QStringList() << args));
 	return proc->waitForStarted(10000);
 }
 
@@ -48,6 +80,11 @@ void LocalTransport::stopMonitor()
 void LocalTransport::saveTransport()
 {
 	qDebug() << "LocalTransport::saveTransport TODO";
+}
+
+void LocalTransport::setShellPath(QString p)
+{
+	shellPath = p;
 }
 
 void LocalTransport::procStatusUpdate(QProcess::ProcessState newState)
@@ -68,6 +105,7 @@ void LocalTransport::procStatusUpdate(QProcess::ProcessState newState)
 
 void LocalTransport::procReadIn()
 {
+	qDebug() << "LocalTransport::procReadIn";
 	QByteArray line;
 	QRegExp lineRE("^(\\d+):(\\d+(\\.\\d+)?):(.*)$");
 	while (1)
@@ -133,3 +171,16 @@ void LocalTransport::makeProcess()
 	connect(proc, SIGNAL(stateChanged(QProcess::ProcessState)), this, SLOT(procStatusUpdate(QProcess::ProcessState)));
 	connect(proc, SIGNAL(finished(int)), this, SLOT(procDone(int)));
 }
+
+const QStringList LocalTransport::argsToCmd(const QStringList args)
+{
+	QStringList ret;
+	ret << "-c";
+	foreach (QString a, args)
+	{
+		a = QString("'%1'").arg(a);
+	}
+	ret << args.join(" ");
+	return ret;
+}
+

@@ -8,12 +8,15 @@ namespace Ui
 	class LocalTransportConfigWidget;
 }
 
+class LocalTransport;
+class QWidget;
+
 class LocalTransportConfigWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit LocalTransportConfigWidget(QWidget *parent = 0);
+	explicit LocalTransportConfigWidget(LocalTransport* lt, QWidget* parent=0);
 	~LocalTransportConfigWidget();
 
 private:
