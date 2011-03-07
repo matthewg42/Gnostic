@@ -27,7 +27,7 @@ public slots:
 	//! \args a list of arguments to pass to the program
 	//! \returns false if there is some bad problem with this transport
 	//! object, for example the configuration is not complete
-	virtual bool startMonitor(const QString& exec, const QStringList& args);
+	virtual bool startMonitor(const QString& exec, const QStringList& args=QStringList());
 
 	//! Kill the current monitor if it is running
 	virtual void stopMonitor();

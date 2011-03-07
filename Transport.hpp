@@ -2,6 +2,7 @@
 #define TRANSPORT_HPP
 
 #include <QObject>
+#include <QStringList>
 
 class QWidget;
 
@@ -49,7 +50,7 @@ public slots:
 	//! \args a list of arguments to pass to the program
 	//! \returns false if there is some bad problem with this transport
 	//! object, for example the configuration is not complete
-	virtual bool startMonitor(const QString& exec, const QStringList& args) = 0;
+	virtual bool startMonitor(const QString& exec, const QStringList& args=QStringList()) = 0;
 
 	//! Kill the current monitor if it is running
 	virtual void stopMonitor() = 0;
@@ -67,7 +68,7 @@ public slots:
 
 signals:
 	//! This transport is ready to pass data to a grapher
-	void receivedData(qint64 timeStamp, QString label, double value);
+	void receivedData(QString label, double value, qint64 timeStamp);
 
 	//! Changes when the transport's connection status changes
 	void connectionStatusChanged(Transport::TransportStatus newStatus);

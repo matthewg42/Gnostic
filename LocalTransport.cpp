@@ -28,7 +28,7 @@ LocalTransport::LocalTransport(LocalTransport& other, QObject* parent) :
 
 QWidget* LocalTransport::getConfigWidget()
 {
-	QWidget* configWidget = new LocalTransportConfigWidget((QWidget*)this);
+        QWidget* configWidget = new LocalTransportConfigWidget(dynamic_cast<QWidget*>(this));
 	return configWidget;
 }
 
@@ -104,7 +104,7 @@ void LocalTransport::procReadIn()
 					<< lineRE.capturedTexts().at(4)
 					<< dataValue;
 
-			emit receivedData(dataTime, lineRE.capturedTexts().at(4), dataValue);
+			emit receivedData(lineRE.capturedTexts().at(4), dataValue, dataTime);
 		}
 	}
 }

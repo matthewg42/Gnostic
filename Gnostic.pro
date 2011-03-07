@@ -31,4 +31,5 @@ FORMS    += GnosticMainWindow.ui \
     TransportConfig.ui
 
 OTHER_FILES += \
-    README
+    README \
+    gnostic.res
