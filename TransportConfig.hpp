@@ -26,8 +26,6 @@ public slots:
     void testCurrentTransport();
 
 private slots:
-    void doTest();
-
     //! the transportCombo value has changed so we need to update the
     //! type of TransportConfigWidget we embed.
     //! \param newType a string description of the new type
@@ -39,6 +37,7 @@ private slots:
     void transportSelectionChanged(QModelIndex i);
     void loadTransportWithId(const QString& id);
     void configUpdated();
+    void selectTransportWithId(const QString& id);
 
 private:
     Ui::TransportConfig *ui;

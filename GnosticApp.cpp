@@ -106,11 +106,11 @@ Transport* GnosticApp::getTransportWithId(const QString& id)
 		st->setDescription(confSettings->value("description", "").toString());
 		st->setHost(confSettings->value("host", "").toString());
 		st->setUser(confSettings->value("user", "").toString());
-		st->setKeyFilePath(confSettings->value("key_path", "").toString());
 		if (confSettings->value("auth_type", "password").toString()=="password")
 			st->setAuthType(SshTransport::Password);
 		else
 			st->setAuthType(SshTransport::PublicKey);
+		st->setKeyFilePath(confSettings->value("key_file_path", "").toString());
 
 		confSettings->endGroup();
 		return dynamic_cast<Transport*>(st);

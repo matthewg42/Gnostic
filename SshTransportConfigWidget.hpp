@@ -20,6 +20,7 @@ public:
 
 private slots:
     void authTypeChanged();
+    void chooseKeyPath();
 
 private:
     Ui::SshTransportConfigWidget *ui;

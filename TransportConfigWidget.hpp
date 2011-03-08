@@ -13,7 +13,7 @@ public:
 signals:
     void configChanged();
 
-private slots:
+protected slots:
     void emitChanged();
 
 };

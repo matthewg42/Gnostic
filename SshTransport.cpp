@@ -1,14 +1,17 @@
 #include "SshTransport.hpp"
 #include "SshTransportConfigWidget.hpp"
 #include "GnosticApp.hpp"
+#include "PasswordDialog.hpp"
 
 #include <QProcess>
 #include <QDebug>
 #include <QSettings>
+#include <QMessageBox>
 
 SshTransport::SshTransport(QObject *parent) :
 		Transport(parent)
 {
+
 	proc = new QProcess(this);
 }
 
@@ -34,42 +37,108 @@ TransportConfigWidget* SshTransport::getConfigWidget(QWidget* parent)
 
 bool SshTransport::testTransport()
 {
+	qDebug() << "SshTransport::testTransport";
 	QProcess testProc(this);
-	testProc.start("plink",
-		       QStringList() << "-pw" << "pewpy"
-		       << "-x" << "-a" << "-T"
-		       << "-l" << user
-		       << host
-		       << "echo hello world");
+	testProc.setProcessChannelMode(QProcess::MergedChannels);
+	QString exe = "plink"; // TODO: get this from global setting in GnosticApp
+	QStringList args;
+
+	if (authType == SshTransport::Password)
+	{
+		qDebug() << "SshTransport::testTransport prompting for password, authType" << authType;
+		QString pass;
+		PasswordDialog d(QString("password for %1@%2").arg(user).arg(host));
+		d.exec();
+		pass = d.getPassword();
+		args << "-pw" << pass;
+	}
+	else
+	{
+		QMessageBox mb;
+		mb.setText("public key authentication not yet implemented, please use password for now");
+		mb.setIcon(QMessageBox::Warning);
+		mb.exec();
+		return false;
+	}
+
+	args << "-x" << "-a" << "-T" << "-l" << user << host << "echo hello world";
+
+	testProc.start(exe, args);
 	if (!testProc.waitForStarted())
 	{
 		qDebug() << "SshTransport::testTransport waitForStarted returned false";
 		return false;
 	}
 
-	if (!testProc.waitForFinished())
+	bool done = false;
+	bool ok = false;
+
+	while(!done)
 	{
-		qDebug() << "SshTransport::testTransport  waitForFinished returned false";
-		return false;
+		if (!testProc.waitForReadyRead(10000))
+		{
+			qDebug() << "SshTransport::testTransport waitForReadyRead returned false";
+			testProc.kill();
+			return false;
+		}
+
+		QByteArray output = testProc.readAll();
+		qDebug() << "SshTransport::testTransport read:" << output;
+		if (QString(output).contains("hello world\n"))
+		{
+			qWarning() << "SshTransport::testTransport - got the hello world that we wanted";
+			done = true;
+			ok = true;
+		}
+		else if (QString(output).contains("Store key in cache?"))
+		{
+			QMessageBox mb;
+			mb.setText("This host has not been seen before.  Do you want to add it to the list of known hosts?");
+			mb.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+			mb.setDefaultButton(QMessageBox::Yes);
+			if (mb.exec() == QMessageBox::Yes)
+			{
+				testProc.write("y\n");
+			}
+			else
+			{
+				testProc.kill();
+				done = true;
+			}
+		}
+		else if (QString(output).contains("Access denied")) // e.g. wrong password
+		{
+			qWarning() << "SshTransport::testTransport - access denied";
+			done = true;
+			ok = false;
+		}
+		else if (QString(output).contains("password:"))
+		{
+			qWarning() << "SshTransport::testTransport - it wants a password";
+			done = true;
+			ok = false;
+		}
+		else
+		{
+			qWarning() << "SshTransport::testTransport - some unexpected stuff:" << output;
+			done = true;
+			ok = false;
+		}
 	}
 
-	QByteArray output = testProc.readAll();
-	if (QString(output) != "hello world\n")
-	{
-		qWarning() << "SshTransport::testTransport - output was not what was expected:" << output;
-		return false;
-	}
+	if (testProc.state()!=QProcess::NotRunning)
+		testProc.kill();
 
-	return true;
+	return ok;
 }
 
 bool SshTransport::startMonitor(const QString& exec, const QStringList& args)
 {
 	// TODO after password prompt
-//	this->setConnectionStatus(Transport::EstablishingConnection);
+	//	this->setConnectionStatus(Transport::EstablishingConnection);
 
-//	proc->start(exec, argsToCmd(QStringList() << args));
-//	return proc->waitForStarted(10000);
+	//	proc->start(exec, argsToCmd(QStringList() << args));
+	//	return proc->waitForStarted(10000);
 }
 
 void SshTransport::stopMonitor()
@@ -91,6 +160,7 @@ void SshTransport::saveTransport()
 		settings->setValue(QString("%1/auth_type").arg(id), "password");
 	else
 		settings->setValue(QString("%1/auth_type").arg(id), "public_key");
+	settings->setValue(QString("%1/key_file_path").arg(id), "");
 }
 
 const QString SshTransport::getUser()

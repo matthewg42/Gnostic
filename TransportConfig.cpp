@@ -22,8 +22,8 @@ TransportConfig::TransportConfig(QWidget *parent) :
 		configWidget(NULL)
 {
 	ui->setupUi(this);
-	ui->typeCombo->insertItem(0, "SshTransport");
 	ui->typeCombo->insertItem(0, "LocalTransport");
+	ui->typeCombo->insertItem(0, "SshTransport");
 	model = new QStandardItemModel(this);
 	populateTransportModel();
 	connect(ui->typeCombo, SIGNAL(activated(QString)), this, SLOT(changeTransportType(QString)));
@@ -31,23 +31,12 @@ TransportConfig::TransportConfig(QWidget *parent) :
 	connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(saveCurrentTransport()));
 	connect(ui->deleteButton, SIGNAL(clicked()), this, SLOT(deleteCurrentTransport()));
 	connect(ui->testButton, SIGNAL(clicked()), this, SLOT(testCurrentTransport()));
+	connect(ui->newButton, SIGNAL(clicked()), this, SLOT(createNewTransport()));
 }
 
 TransportConfig::~TransportConfig()
 {
 	delete ui;
-}
-
-void TransportConfig::doTest()
-{
-	qDebug() << "TransportConfig::doTest doTest...";
-	QMessageBox mb;
-	if (!transport->testTransport())
-		mb.setText("Transport test FAILED - check your settings!");
-	else
-		mb.setText("Transport test was SUCCESSFUL");
-
-	mb.exec();
 }
 
 void TransportConfig::changeTransportType(const QString newType, Transport* newTransport)
@@ -165,6 +154,11 @@ void TransportConfig::saveCurrentTransport()
 	transport->saveTransport();
 	QString id = transport->getId();
 	populateTransportModel();
+	selectTransportWithId(id);
+}
+
+void TransportConfig::selectTransportWithId(const QString& id)
+{
 	foreach (QStandardItem* i, model->findItems(id))
 	{
 		ui->transportView->selectRow(i->row());
@@ -176,19 +170,23 @@ void TransportConfig::saveCurrentTransport()
 void TransportConfig::createNewTransport()
 {
 	qDebug() << "TransportConfig::createNewTransport";
-//	model->appendRow(GnosticApp::getNewTransportId())
-//	QList<QStandardItem*> row;
-//	row << new QStandardItem(id) << new QStandardItem(desc);
-//	model->appendRow(row);
-	// TODO: work out how to make a new object with an ID which doesn't exist in config.ini file yet
-	// and which we can safely change the type of... first need to make an alternative type and
-	// check that doesn't cause problems.
-
+	SshTransport* newTransport = new SshTransport();
+	QString id = newTransport->getId();
+	newTransport->saveTransport();
+	newTransport->dumpDebug();
+	populateTransportModel();
+	selectTransportWithId(id);
+	ui->typeCombo->setCurrentIndex(ui->typeCombo->findText(newTransport->getType()));
+	changeTransportType(newTransport->getType());
 }
 
 void TransportConfig::deleteCurrentTransport()
 {
 	qDebug() << "TransportConfig::deleteCurrentTransport";
+	QString id = transport->getId();
+	GnosticApp::getInstance().settings()->remove(id);
+	populateTransportModel();
+	ui->saveButton->setEnabled(false);
 }
 
 void TransportConfig::testCurrentTransport()
