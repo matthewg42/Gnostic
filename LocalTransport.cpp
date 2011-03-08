@@ -31,8 +31,7 @@ LocalTransport::LocalTransport(LocalTransport& other, QObject* parent) :
 
 TransportConfigWidget* LocalTransport::getConfigWidget(QWidget* parent)
 {
-	TransportConfigWidget* configWidget = new LocalTransportConfigWidget(this, parent);
-	return configWidget;
+	return new LocalTransportConfigWidget(this, parent);
 }
 
 bool LocalTransport::testTransport()
@@ -45,7 +44,7 @@ bool LocalTransport::testTransport()
 
 	if (!testProc.waitForStarted())
 	{
-		qDebug() << "LocalTransport::testTransport  waitForStarted returned false";
+		qDebug() << "LocalTransport::testTransport waitForStarted returned false";
 		return false;
 	}
 
@@ -75,8 +74,9 @@ bool LocalTransport::startMonitor(const QString& exec, const QStringList& args)
 
 void LocalTransport::stopMonitor()
 {
-	if (proc->state() != QProcess::NotRunning)
-		proc->kill();
+	if (proc)
+		if (proc->state() != QProcess::NotRunning)
+			proc->kill();
 }
 
 void LocalTransport::saveTransport()
@@ -188,5 +188,13 @@ const QStringList LocalTransport::argsToCmd(const QStringList args)
 	}
 	ret << args.join(" ");
 	return ret;
+}
+
+void LocalTransport::dumpDebug()
+{
+	qDebug() << "LocalTransport::dumpDebug id=" << id;
+	qDebug() << "LocalTransport::dumpDebug description=" << description;
+	qDebug() << "LocalTransport::dumpDebug shellPath=" << shellPath;
+
 }
 

@@ -86,6 +86,9 @@ public slots:
 	//! Save transport settings
 	virtual void saveTransport() = 0;
 
+	//! Dump info about the transport onto debugging output
+	virtual void dumpDebug() = 0;
+
 signals:
 	//! This transport is ready to pass data to a grapher
 	void receivedData(QString label, double value, qint64 timeStamp);

@@ -43,6 +43,9 @@ public slots:
 	//! Save transport settings
 	virtual void saveTransport();
 
+	//! Dump debugging info
+	virtual void dumpDebug();
+
 	//! Set the shell path
 	void setShellPath(QString p);
 

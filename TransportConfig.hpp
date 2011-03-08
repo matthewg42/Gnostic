@@ -21,10 +21,19 @@ public:
 
 public slots:
     void createNewTransport();
+    void deleteCurrentTransport();
     void saveCurrentTransport();
+    void testCurrentTransport();
 
 private slots:
     void doTest();
+
+    //! the transportCombo value has changed so we need to update the
+    //! type of TransportConfigWidget we embed.
+    //! \param newType a string description of the new type
+    //! \param newTransport if NULL, a new transport object will be created of the
+    //!        required type, else the passed object will be used and attached to the
+    //!        new config dialog.
     void changeTransportType(const QString newType, Transport* newTransport=0);
     void populateTransportModel();
     void transportSelectionChanged(QModelIndex i);

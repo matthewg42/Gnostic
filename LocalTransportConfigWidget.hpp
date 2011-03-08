@@ -1,7 +1,6 @@
 #ifndef LOCALTRANSPORTCONFIGWIDGET_HPP
 #define LOCALTRANSPORTCONFIGWIDGET_HPP
 
-#include <QWidget>
 #include "TransportConfigWidget.hpp"
 
 namespace Ui
