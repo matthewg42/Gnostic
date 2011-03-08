@@ -52,6 +52,10 @@ Creation of a new monitor
   - edit line styles (add label/style/scale multiplier)
 
 
+We must derive LocalTransportConfigWindow and others like it from a base
+TransportConfig window, which offers generic signals when a transport is updated
+
+
 MonitorLayouts:
 - a MonitorLayouts contains a set of monitors
 - horizontal or vertical layout type
@@ -62,10 +66,10 @@ Remote Monitor Protocol:
 
 GNOSTIC-DATA-PROTOCOL-VERSION=1.0
 HOST=the.fq.hostname
-MONITOR_NAME=Some monitor
+MONITOR-NAME=Some monitor
 UPDATE-DELAY=1.0
 DELIMITER=:
-GNOSTIC-DATA
+END-HEADER
 timstamp:value:label
 timstamp:value:label
 timstamp:value:label

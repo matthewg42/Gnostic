@@ -1,19 +1,22 @@
 #ifndef LOCALTRANSPORTCONFIGWIDGET_HPP
 #define LOCALTRANSPORTCONFIGWIDGET_HPP
 
-#include <QWidget>
+#include "TransportConfigWidget.hpp"
 
 namespace Ui
 {
 	class LocalTransportConfigWidget;
 }
 
-class LocalTransportConfigWidget : public QWidget
+class LocalTransport;
+class QWidget;
+
+class LocalTransportConfigWidget : public TransportConfigWidget
 {
 	Q_OBJECT
 
 public:
-	explicit LocalTransportConfigWidget(QWidget *parent = 0);
+	explicit LocalTransportConfigWidget(LocalTransport* lt, QWidget* parent=0);
 	~LocalTransportConfigWidget();
 
 private:

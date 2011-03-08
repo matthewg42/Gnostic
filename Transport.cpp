@@ -6,7 +6,8 @@
 Transport::Transport(QObject* parent) :
 		QObject(parent),
 		description("new transport"),
-		connectionStatus(Disconnected)
+		connectionStatus(Disconnected),
+		tested(false)
 {
 	id = GnosticApp::getInstance().getNewTransportId();
 }
@@ -16,7 +17,8 @@ Transport::Transport(Transport& other, QObject* parent) :
 		connectionStatus(Disconnected)
 {
 	id = GnosticApp::getInstance().getNewTransportId();
-	description = other.getDescription();
+	description = other.description;
+	tested = other.tested;
 }
 
 Transport::TransportStatus Transport::getConnectionStatus()
@@ -42,6 +44,16 @@ const QString& Transport::getDescription()
 void Transport::setDescription(QString newDescription)
 {
 	description=newDescription;
+}
+
+void Transport::setTested(bool t)
+{
+	tested = t;
+}
+
+bool Transport::getTested()
+{
+	return tested;
 }
 
 void Transport::setConnectionStatus(TransportStatus newStatus)

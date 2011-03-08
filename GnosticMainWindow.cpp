@@ -1,7 +1,10 @@
 #include "GnosticMainWindow.hpp"
 #include "ui_GnosticMainWindow.h"
 #include <QDebug>
-#include <QTimer>
+//#include <QTimer>
+#include <QWidget>
+
+#include "TransportConfig.hpp"
 
 GnosticMainWindow* GnosticMainWindow::singleton = NULL;
 
@@ -9,9 +12,9 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
 		QMainWindow(parent),
 		ui(new Ui::GnosticMainWindow)
 {
-	ui->setupUi(this);
 	Q_ASSERT(!singleton);
 	singleton = this;
+        ui->setupUi(this);
 }
 
 GnosticMainWindow::~GnosticMainWindow()
@@ -24,3 +27,4 @@ GnosticMainWindow& GnosticMainWindow::getInstance()
 	Q_ASSERT(singleton);
 	return *singleton;
 }
+

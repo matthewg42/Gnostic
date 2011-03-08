@@ -1,11 +1,14 @@
 #include "LocalTransport.hpp"
 #include "LocalTransportConfigWidget.hpp"
+#include "GnosticApp.hpp"
 #include <QProcess>
 #include <QVariant>
 #include <QDateTime>
 #include <QDebug>
 #include <QByteArray>
 #include <QString>
+#include <QFile>
+#include <QSettings>
 
 LocalTransport::LocalTransport(QObject* parent) :
 		Transport(parent)
@@ -26,28 +29,68 @@ LocalTransport::LocalTransport(LocalTransport& other, QObject* parent) :
 	proc = new QProcess(this);
 }
 
-QWidget* LocalTransport::getConfigWidget()
+TransportConfigWidget* LocalTransport::getConfigWidget(QWidget* parent)
 {
-	QWidget* configWidget = new LocalTransportConfigWidget(dynamic_cast<QWidget*>(this));
-	return configWidget;
+	return new LocalTransportConfigWidget(this, parent);
+}
+
+bool LocalTransport::testTransport()
+{
+	qDebug() << "LocalTransport::testTransport testing with shell:" << shellPath;
+
+	QProcess testProc(this);
+
+	testProc.start(shellPath, argsToCmd(QStringList() << "echo" << "hello world"));
+
+	if (!testProc.waitForStarted())
+	{
+		qDebug() << "LocalTransport::testTransport waitForStarted returned false";
+		return false;
+	}
+
+	if (!testProc.waitForFinished())
+	{
+		qDebug() << "LocalTransport::testTransport  waitForFinished returned false";
+		return false;
+	}
+
+	QByteArray output = testProc.readAll();
+	if (QString(output) != "hello world\n")
+	{
+		qWarning() << "LocalTransport::testTransport - output was not what was expected:" << output;
+		return false;
+	}
+
+	return true;
 }
 
 bool LocalTransport::startMonitor(const QString& exec, const QStringList& args)
 {
 	this->setConnectionStatus(Transport::EstablishingConnection);
-	proc->execute(exec, args);
+
+	proc->start(exec, argsToCmd(QStringList() << args));
 	return proc->waitForStarted(10000);
 }
 
 void LocalTransport::stopMonitor()
 {
-	if (proc->state() != QProcess::NotRunning)
-		proc->kill();
+	if (proc)
+		if (proc->state() != QProcess::NotRunning)
+			proc->kill();
 }
 
 void LocalTransport::saveTransport()
 {
-	qDebug() << "LocalTransport::saveTransport TODO";
+	qDebug() << "LocalTransport::saveTransport" << id;
+	QSettings* settings = GnosticApp::getInstance().settings();
+	settings->setValue(QString("%1/type").arg(id), "LocalTransport");
+	settings->setValue(QString("%1/description").arg(id), description);
+	settings->setValue(QString("%1/shell_path").arg(id), shellPath);
+}
+
+void LocalTransport::setShellPath(QString p)
+{
+	shellPath = p;
 }
 
 void LocalTransport::procStatusUpdate(QProcess::ProcessState newState)
@@ -68,6 +111,7 @@ void LocalTransport::procStatusUpdate(QProcess::ProcessState newState)
 
 void LocalTransport::procReadIn()
 {
+	qDebug() << "LocalTransport::procReadIn";
 	QByteArray line;
 	QRegExp lineRE("^(\\d+):(\\d+(\\.\\d+)?):(.*)$");
 	while (1)
@@ -104,7 +148,7 @@ void LocalTransport::procReadIn()
 					<< lineRE.capturedTexts().at(4)
 					<< dataValue;
 
-			emit receivedData(dataTime, lineRE.capturedTexts().at(4), dataValue);
+			emit receivedData(lineRE.capturedTexts().at(4), dataValue, dataTime);
 		}
 	}
 }
@@ -133,3 +177,24 @@ void LocalTransport::makeProcess()
 	connect(proc, SIGNAL(stateChanged(QProcess::ProcessState)), this, SLOT(procStatusUpdate(QProcess::ProcessState)));
 	connect(proc, SIGNAL(finished(int)), this, SLOT(procDone(int)));
 }
+
+const QStringList LocalTransport::argsToCmd(const QStringList args)
+{
+	QStringList ret;
+	ret << "-c";
+	foreach (QString a, args)
+	{
+		a = QString("'%1'").arg(a);
+	}
+	ret << args.join(" ");
+	return ret;
+}
+
+void LocalTransport::dumpDebug()
+{
+	qDebug() << "LocalTransport::dumpDebug id=" << id;
+	qDebug() << "LocalTransport::dumpDebug description=" << description;
+	qDebug() << "LocalTransport::dumpDebug shellPath=" << shellPath;
+
+}
+

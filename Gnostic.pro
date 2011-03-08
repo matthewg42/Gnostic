@@ -15,17 +15,28 @@ SOURCES += main.cpp\
     Transport.cpp \
     GnosticApp.cpp \
     LocalTransport.cpp \
-    LocalTransportConfigWidget.cpp
+    LocalTransportConfigWidget.cpp \
+    TransportConfig.cpp \
+    TransportConfigWidget.cpp \
+    SshTransport.cpp \
+    SshTransportConfigWidget.cpp
 
 HEADERS  += GnosticMainWindow.hpp \
     Transport.hpp \
     GnosticApp.hpp \
     config.hpp \
     LocalTransport.hpp \
-    LocalTransportConfigWidget.hpp
+    LocalTransportConfigWidget.hpp \
+    TransportConfig.hpp \
+    TransportConfigWidget.hpp \
+    SshTransport.hpp \
+    SshTransportConfigWidget.hpp
 
 FORMS    += GnosticMainWindow.ui \
-    LocalTransportConfigWidget.ui
+    LocalTransportConfigWidget.ui \
+    TransportConfig.ui \
+    SshTransportConfigWidget.ui
 
 OTHER_FILES += \
-    README
+    README \
+    gnostic.res
