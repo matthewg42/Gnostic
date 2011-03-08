@@ -16,6 +16,9 @@ public:
 	~GnosticMainWindow();
 	static GnosticMainWindow& getInstance();
 
+private slots:
+	void gotLineOfInput(QString line);
+
 private:
 	static GnosticMainWindow* singleton;
 	Ui::GnosticMainWindow *ui;

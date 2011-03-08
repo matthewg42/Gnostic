@@ -9,6 +9,7 @@
 
 PlinkSshTransport::PlinkSshTransport(QObject *parent) :
 		Transport(parent),
+		authType(PlinkSshTransport::Password),
 		proc(this)
 {
 }
@@ -36,6 +37,9 @@ bool PlinkSshTransport::start(const QString& exec, const QStringList& args)
 	QString ret = establishConnection(proc, exec, args);
 	if (ret.isEmpty())
 		return false;
+
+	qDebug() << "PlinkSshTransport::start process state after establishing is:" << proc.state();
+
 	connect(&proc, SIGNAL(error(QProcess::ProcessError)), this, SLOT(procError(QProcess::ProcessError)));
 	connect(&proc, SIGNAL(readyReadStandardError()), this, SLOT(procReadErr()));
 	connect(&proc, SIGNAL(readyReadStandardOutput()), this, SLOT(procReadIn()));
@@ -43,6 +47,7 @@ bool PlinkSshTransport::start(const QString& exec, const QStringList& args)
 	connect(&proc, SIGNAL(finished(int)), this, SLOT(procDone(int)));
 	foreach (QString line, ret.split(QRegExp("[\\n\\r]+")))
 	{
+		line.remove(QRegExp("[\\r\\n]+"));
 		emit(receivedLine(line));
 	}
 	return true;
@@ -133,6 +138,18 @@ void PlinkSshTransport::procStatusUpdate(QProcess::ProcessState newState)
 void PlinkSshTransport::procReadIn()
 {
 	qDebug() << "PlinkSshTransport::procReadIn";
+	while(1)
+	{
+		QByteArray in = proc.readLine();
+		if (in.isEmpty())
+			break;
+		else
+		{
+			QString line(in);
+			line.remove(QRegExp("[\\n\\r]+$"));
+			emit(receivedLine(line));
+		}
+	}
 }
 
 void PlinkSshTransport::procReadErr()
