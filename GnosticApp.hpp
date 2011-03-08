@@ -32,18 +32,6 @@ public:
 	//! Get the configuration directory path.
 	const QString& getConfigDir();
 
-	//! Get a list of all known transport IDs
-	QStringList getTransportIds();
-
-	//! Create a Transport object with the settings from the specified section of
-	//! the config.ini file.
-	//! \param id the section of the ini file containing the settings for
-	//!        the transport.
-	//! \returns a pointer to a new Transport object from the settings in the
-	//!          config.ini file, or NULL if no section "id" exists (or for some
-	//!          reason doesn't look right).
-	Transport* getTransportWithId(const QString& id);
-
 	//! Sequence generator for making a new and unique transport ID.
 	//! \returns string something like this: "transport_1" where the part
 	//!          after the _ is the first integer >= 0 which makes an

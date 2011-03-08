@@ -79,9 +79,12 @@ int main(int argc, char *argv[])
 		    .arg(PROG_NAME).toLower();
 #endif
 
+
 	GnosticApp gapp(configDir);
 	if (!gapp.init())
 		return 1;
+
+	// TODO: make sure the install dir is in the PATH, because our test binaries will be there
 
 	GnosticMainWindow w;
 	w.show();

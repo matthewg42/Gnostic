@@ -1,10 +1,10 @@
-#ifndef SSHTRANSPORT_HPP
-#define SSHTRANSPORT_HPP
+#ifndef PLINKSSHTRANSPORT_HPP
+#define PLINKSSHTRANSPORT_HPP
 
 #include "Transport.hpp"
 #include <QProcess>
 
-class SshTransport : public Transport
+class PlinkSshTransport : public Transport
 {
     Q_OBJECT
 
@@ -15,19 +15,10 @@ public:
 		PublicKey
 	};
 
-	//! Create an empty SshTransport object
-	SshTransport(QObject* parent=0);
-	//! Copy contructor, assignment
-	SshTransport(SshTransport& other, QObject* parent=0);
-
-	~SshTransport();
-
-	virtual const QString getType() {return "SshTransport";}
-
-
-	//! get a widget for configuring the transport.  should have
-	//! save and cancel buttons and so on
-	virtual TransportConfigWidget* getConfigWidget(QWidget* parent=0);
+	//! Create an empty PlinkSshTransport object
+	PlinkSshTransport(QObject* parent=0);
+	~PlinkSshTransport();
+	virtual const QString getType() {return "PlinkSshTransport";}
 
 	//! Test that the transport can connect to the remote host and echo "hello world"
 	virtual bool testTransport();
@@ -38,13 +29,13 @@ public slots:
 	//! \args a list of arguments to pass to the program
 	//! \returns false if there is some bad problem with this transport
 	//! object, for example the configuration is not complete
-	virtual bool startMonitor(const QString& exec, const QStringList& args=QStringList());
+	virtual bool start(const QString& exec, const QStringList& args=QStringList());
 
 	//! Kill the current monitor if it is running
-	virtual void stopMonitor();
+	virtual void stop();
 
 	//! Save transport settings
-	virtual void saveTransport();
+	virtual const QString& saveTransport();
 
 	//! Dump debugging info
 	virtual void dumpDebug();
@@ -65,21 +56,25 @@ protected:
 	SshAuthType authType;
 	QString keyFilePath;
 
-private slots:
+protected slots:
 	void procStatusUpdate(QProcess::ProcessState);
 	void procReadIn();
 	void procReadErr();
 	void procError(QProcess::ProcessError);
 	void procDone(int);
 
-private:
-	void makeProcess();
-
-	//! put all the connection stuff into plink args...
-	const QStringList argsToCmd(const QStringList args);
+protected:
+	QProcess proc;
 
 private:
-	QProcess* proc;
+	//! accepts a reference to a process object and with that process
+	//! launches plink with current host and authentication credentials.
+	//! This function blocks until a connection has successfully been
+	//! established, which means that any known hosts questions have
+	//! been answered, password has been entered if required and so on.
+	//! \returns the first non-authentication/non-error output (which might
+	//!          be all of it).  Returns QString() on connection error.
+	QString establishConnection(QProcess& proc, const QString& exe, const QStringList& args);
 };
 
-#endif // SSHTRANSPORT_HPP
+#endif // PLINKSSHTRANSPORT_HPP

@@ -9,24 +9,13 @@ class LocalTransport : public Transport
 {
 	Q_OBJECT
 
-	friend class LocalTransportConfigWidget;
-
 public:
 	//! Create an empty LocalTransport object
 	LocalTransport(QObject* parent=0);
-	//! Copy contructor, assignment
-	LocalTransport(LocalTransport& other, QObject* parent=0);
-
 	~LocalTransport();
-
 	virtual const QString getType() {return "LocalTransport";}
 
-
-	//! get a widget for configuring the transport.  should have
-	//! save and cancel buttons and so on
-	virtual TransportConfigWidget* getConfigWidget(QWidget* parent=0);
-
-	//! Test that the transport can use the shell to echo "hello world"
+	//! Test that the transport invoke echo "hello world"
 	virtual bool testTransport();
 
 public slots:
@@ -35,36 +24,26 @@ public slots:
 	//! \args a list of arguments to pass to the program
 	//! \returns false if there is some bad problem with this transport
 	//! object, for example the configuration is not complete
-	virtual bool startMonitor(const QString& exec, const QStringList& args=QStringList());
+	virtual bool start(const QString& exec, const QStringList& args=QStringList());
 
 	//! Kill the current monitor if it is running
-	virtual void stopMonitor();
+	virtual void stop();
 
 	//! Save transport settings
-	virtual void saveTransport();
+	virtual const QString& saveTransport();
 
 	//! Dump debugging info
 	virtual void dumpDebug();
 
-	//! Set the shell path
-	void setShellPath(QString p);
-
-private slots:
+protected slots:
 	void procStatusUpdate(QProcess::ProcessState);
 	void procReadIn();
 	void procReadErr();
 	void procError(QProcess::ProcessError);
 	void procDone(int);
 
-private:
-	void makeProcess();
-
-	//! add -c and make primary args list into a quoted string for that...
-	const QStringList argsToCmd(const QStringList args);
-
-private:
-	QString shellPath;
-	QProcess* proc;
+protected:
+	QProcess proc;
 };
 
 #endif // LOCALTRANSPORT_HPP

@@ -4,29 +4,16 @@
 #include <QObject>
 #include <QStringList>
 
-//! \def GETNEWMODULE(m)
-//! Return a pointer on a StelModule from its QMetaObject name @a m
-#define GETSTELMODULE( m ) (( m *)StelApp::getInstance().getModuleMgr().getModule( #m ))
-
-class TransportConfigWidget;
-
 //! \class Transport
-//! models an authenitcation route to a remote host
-//! keeps a host and other details necessary to establish a connection.
+//! Models a method of calling a program somewhere (probably a remote host)
+//! and transporting the stream of output from that program back to Gnostic.
 //! A Transaport may prompt the user for additional credentials at
 //! connection time (such as password) if they cannot be stored.
 //! A transport is used to "do" the remote execution of monitor command
 //! and pass the information to a graphing class.
-//!
-//! The base class is pure virtual - implementation of transport might
-//! include TcpSocket connection with no authentication, SSH, telnet,
-//! netcat and so on.  A very simple Transport might just be a local shell
-//! where there isn't any remote connection at all.
 class Transport : public QObject
 {
 	Q_OBJECT
-
-	friend class GnosticApp;
 
 public:
 	enum TransportStatus
@@ -36,24 +23,27 @@ public:
 		Connected
 	};
 
-	//! Create an empty transort object
 	Transport(QObject* parent=0);
-	//! Copy contructor, assignment
-	Transport(Transport& other, QObject* parent=0);
-
 	virtual ~Transport() = 0;
 
 	//! Returns a string description of the type, e.g. "Transport"
 	virtual const QString getType() = 0;
 
-	//! get the current connection status of a transport
+	//! Gets the id for this Transport.
+	//! \returns the config.ini section which defines this Transport
+	//!          or QString() if this Transport is not saved in the
+	//!          config.ini file.
+	const QString& getId();
+
+	//! Get a one-line description of the transport.  This will generally
+	//! be something like a device description, but may also include other
+	//! information.  A typical value might be "secondary DNS".
+	const QString& getDescription();
+
+	//! Get the current connection status of a transport
 	Transport::TransportStatus getConnectionStatus();
 
-	//! get a widget for configuring the transport.  should have
-	//! save and cancel buttons and so on
-	virtual TransportConfigWidget* getConfigWidget(QWidget* parent=0) = 0;
-
-	//! test that the transport works with the current settings
+	//! Test that the transport works with the current settings
 	//! e.g. that it can connect and authenticate with a remote host,
 	//! issue a command and read back the output.
 	//! \returns true on a successful test, false otherwise.
@@ -65,33 +55,29 @@ public slots:
 	//! \args a list of arguments to pass to the program
 	//! \returns false if there is some bad problem with this transport
 	//! object, for example the configuration is not complete
-	virtual bool startMonitor(const QString& exec, const QStringList& args=QStringList()) = 0;
+	virtual bool start(const QString& exec, const QStringList& args=QStringList()) = 0;
 
 	//! Kill the current monitor if it is running
-	virtual void stopMonitor() = 0;
-
-	const QString& getId();
-
-	//! Get a one line description of the monitor
-	const QString& getDescription();
+	virtual void stop() = 0;
 
 	//! Set the description of the monitor
 	void setDescription(QString newDescription);
 
-	//! Set the tested flag for this transport
-	void setTested(bool t);
-	//! Find out if this transport has been tested
-	bool getTested();
-
-	//! Save transport settings
-	virtual void saveTransport() = 0;
+	//! Save transport settings to the config.ini file.
+	//! The current ID of the Transport will be used if it is not
+	//! empty, otherwise a new, unique ID will be generated, and set
+	//! as the current ID.
+	//! In either case the ID after the save is returned.
+	virtual const QString& saveTransport() = 0;
 
 	//! Dump info about the transport onto debugging output
 	virtual void dumpDebug() = 0;
 
 signals:
-	//! This transport is ready to pass data to a grapher
-	void receivedData(QString label, double value, qint64 timeStamp);
+	//! This transport is ready to pass data to a monitor
+	//! Transports are concerned only with passing data around line by line,
+	//! not what is in it.
+	void receivedLine(QString line);
 
 	//! Changes when the transport's connection status changes
 	void connectionStatusChanged(Transport::TransportStatus newStatus);
@@ -101,12 +87,9 @@ protected:
 	//! sending a remote command once the status has changed to connected, you should
 	//! re-implement this function and do it there
 	virtual void setConnectionStatus(Transport::TransportStatus);
-
-protected:
 	QString id;
 	QString description;
 	TransportStatus connectionStatus;
-	bool tested;
 
 };
 

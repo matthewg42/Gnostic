@@ -2,33 +2,18 @@
 #include "GnosticApp.hpp"
 
 #include <QSettings>
+#include <QDebug>
 
 Transport::Transport(QObject* parent) :
 		QObject(parent),
-		description("new transport"),
-		connectionStatus(Disconnected),
-		tested(false)
+		id(),
+		description(),
+		connectionStatus(Transport::Disconnected)
 {
-	id = GnosticApp::getInstance().getNewTransportId();
-}
-
-Transport::Transport(Transport& other, QObject* parent) :
-		QObject(parent),
-		connectionStatus(Disconnected)
-{
-	id = GnosticApp::getInstance().getNewTransportId();
-	description = other.description;
-	tested = other.tested;
-}
-
-Transport::TransportStatus Transport::getConnectionStatus()
-{
-	return connectionStatus;
 }
 
 Transport::~Transport()
 {
-	// gndn.
 }
 
 const QString& Transport::getId()
@@ -41,19 +26,32 @@ const QString& Transport::getDescription()
 	return description;
 }
 
+Transport::TransportStatus Transport::getConnectionStatus()
+{
+	return connectionStatus;
+}
+
 void Transport::setDescription(QString newDescription)
 {
 	description=newDescription;
 }
 
-void Transport::setTested(bool t)
+const QString& Transport::saveTransport()
 {
-	tested = t;
+	if (id.isEmpty())
+		id = GnosticApp::getInstance().getNewTransportId();
+
+	GnosticApp::getInstance().settings()->setValue(QString("%1/type").arg(id), getType());
+	GnosticApp::getInstance().settings()->setValue(QString("%1/description").arg(id), description);
+
+	return id;
 }
 
-bool Transport::getTested()
+void Transport::dumpDebug()
 {
-	return tested;
+	qDebug() << "Transport::dumpDebug @ "  << (void*)this;
+	qDebug() << "Transport::dumpDebug id" << id;
+	qDebug() << "Transport::dumpDebug description" << description;
 }
 
 void Transport::setConnectionStatus(TransportStatus newStatus)
@@ -61,5 +59,4 @@ void Transport::setConnectionStatus(TransportStatus newStatus)
 	connectionStatus = newStatus;
 	emit(connectionStatusChanged(connectionStatus));
 }
-
 

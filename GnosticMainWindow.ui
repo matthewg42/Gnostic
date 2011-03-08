@@ -6,26 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>570</width>
-    <height>467</height>
+    <width>389</width>
+    <height>337</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>GnosticMainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="TransportConfig" name="transportConfigWidget" native="true"/>
-    </item>
-   </layout>
+   <layout class="QHBoxLayout" name="horizontalLayout"/>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>570</width>
+     <width>389</width>
      <height>21</height>
     </rect>
    </property>
@@ -33,10 +29,6 @@
     <property name="title">
      <string>Gnostic</string>
     </property>
-    <addaction name="separator"/>
-    <addaction name="actionFullscreen"/>
-    <addaction name="actionConfigure"/>
-    <addaction name="actionAbout"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -82,14 +74,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>TransportConfig</class>
-   <extends>QWidget</extends>
-   <header>TransportConfig.hpp</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>
@@ -97,22 +81,6 @@
    <signal>activated()</signal>
    <receiver>GnosticMainWindow</receiver>
    <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>284</x>
-     <y>233</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionFullscreen</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>GnosticMainWindow</receiver>
-   <slot>showFullScreen()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

@@ -8,7 +8,7 @@
 #include <QVariant>
 #include "GnosticApp.hpp"
 #include "LocalTransport.hpp"
-#include "SshTransport.hpp"
+#include "PlinkSshTransport.hpp"
 
 GnosticApp* GnosticApp::singleton = NULL;
 
@@ -63,63 +63,6 @@ QSettings* GnosticApp::settings()
 const QString& GnosticApp::getConfigDir()
 {
 	return configDir;
-}
-
-QStringList GnosticApp::getTransportIds()
-{
-	QStringList ids;
-	qDebug() << "GnosticApp::getTransportIds";
-	QRegExp rx("^transport_(\\d+)$");
-	foreach (QString g, confSettings->childGroups())
-	{
-		qDebug() << "found a child group" << g;
-		if (rx.exactMatch(g))
-		{
-			ids << g;
-		}
-	}
-	return ids;
-}
-
-Transport* GnosticApp::getTransportWithId(const QString& id)
-{
-	if (!confSettings->childGroups().contains(id))
-	{
-		return NULL;
-	}
-
-	confSettings->beginGroup(id);
-	QString transportType = confSettings->value("type", "").toString();
-	if (transportType == "LocalTransport")
-	{
-		LocalTransport* lt = new LocalTransport();
-		lt->id = id;
-		lt->setDescription(confSettings->value("description", "").toString());
-		lt->setShellPath(confSettings->value("shell_path", "").toString());
-		confSettings->endGroup();
-		return dynamic_cast<Transport*>(lt);
-	}
-	else if (transportType == "SshTransport")
-	{
-		SshTransport* st = new SshTransport();
-		st->id = id;
-		st->setDescription(confSettings->value("description", "").toString());
-		st->setHost(confSettings->value("host", "").toString());
-		st->setUser(confSettings->value("user", "").toString());
-		if (confSettings->value("auth_type", "password").toString()=="password")
-			st->setAuthType(SshTransport::Password);
-		else
-			st->setAuthType(SshTransport::PublicKey);
-		st->setKeyFilePath(confSettings->value("key_file_path", "").toString());
-
-		confSettings->endGroup();
-		return dynamic_cast<Transport*>(st);
-	}
-	else {
-		qWarning() << "GnosticApp::getTransportWithId unknown type:" << transportType;
-		confSettings->endGroup();
-		return NULL;
-	}
 }
 
 const QString GnosticApp::getNewTransportId()

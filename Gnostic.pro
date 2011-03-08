@@ -15,29 +15,20 @@ SOURCES += main.cpp\
     Transport.cpp \
     GnosticApp.cpp \
     LocalTransport.cpp \
-    LocalTransportConfigWidget.cpp \
-    TransportConfig.cpp \
-    TransportConfigWidget.cpp \
-    SshTransport.cpp \
-    SshTransportConfigWidget.cpp \
-    PasswordDialog.cpp
+    # PlinkSshTransport.cpp \
+    PasswordDialog.cpp \
+    PlinkSshTransport.cpp
 
 HEADERS  += GnosticMainWindow.hpp \
     Transport.hpp \
     GnosticApp.hpp \
     config.hpp \
     LocalTransport.hpp \
-    LocalTransportConfigWidget.hpp \
-    TransportConfig.hpp \
-    TransportConfigWidget.hpp \
-    SshTransport.hpp \
-    SshTransportConfigWidget.hpp \
-    PasswordDialog.hpp
+    # PlinkSshTransport.hpp \
+    PasswordDialog.hpp \
+    PlinkSshTransport.hpp
 
 FORMS    += GnosticMainWindow.ui \
-    LocalTransportConfigWidget.ui \
-    TransportConfig.ui \
-    SshTransportConfigWidget.ui \
     PasswordDialog.ui
 
 OTHER_FILES += \
