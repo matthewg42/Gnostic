@@ -20,12 +20,15 @@ public:
 
 private:
 	void populateTable();
+	void clearCurrent();
 
 private slots:
 	void transportTableClicked(QModelIndex idx);
 	void selectTransport(const QString& section);
 	void markUpdated();
 	void saveCurrent();
+	void addNewTransport();
+	void deleteCurrent();
 
 private:
 	Ui::TransportEditorForm *ui;
