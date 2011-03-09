@@ -85,6 +85,14 @@ const QString& LocalTransport::saveTransport()
 	// the type set correctly in the config.ini file...
 }
 
+bool LocalTransport::loadSettings(const QString& section)
+{
+	qDebug() << "LocalTransport::loadSettings";
+	// LocalTransport doesn't have to do anything more than the base class already does...
+	return Transport::loadSettings(section);
+}
+
+
 void LocalTransport::dumpDebug()
 {
 	qDebug() << "LocalTransport::dumpDebug() calling Tranport::dumpDebug()";

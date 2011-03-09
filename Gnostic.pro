@@ -20,7 +20,8 @@ SOURCES += main.cpp                       \
 	   OpenSshTransport.cpp           \
 	   TransportConfigWidget.cpp      \
 	   LocalTransportConfigWidget.cpp \
-    SshTransportConfigWidget.cpp
+    SshTransportConfigWidget.cpp \
+    TransportEditorForm.cpp
 
 HEADERS += GnosticMainWindow.hpp          \
 	   Transport.hpp                  \
@@ -33,11 +34,16 @@ HEADERS += GnosticMainWindow.hpp          \
 	   OpenSshTransport.hpp           \
 	   TransportConfigWidget.hpp      \
 	   LocalTransportConfigWidget.hpp \
-    SshTransportConfigWidget.hpp
+    SshTransportConfigWidget.hpp \
+    TransportEditorForm.hpp
 
 FORMS   += GnosticMainWindow.ui           \
 	   PasswordDialog.ui              \
 	   LocalTransportConfigWidget.ui \
-    SshTransportConfigWidget.ui
+    SshTransportConfigWidget.ui \
+    TransportEditorForm.ui
 
-OTHER_FILES += README gnostic.res
+OTHER_FILES += README
+
+RESOURCES += \
+    resources.qrc

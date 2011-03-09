@@ -35,13 +35,33 @@ const QString& AbstractSshTransport::saveTransport()
 	QSettings* settings = GnosticApp::getInstance().settings();
 	settings->setValue(QString("%1/host").arg(id), host);
 	settings->setValue(QString("%1/user").arg(id), user);
+	settings->setValue(QString("%1/key_file_path").arg(id), "");
 	if (authType==AbstractSshTransport::Password)
 		settings->setValue(QString("%1/auth_type").arg(id), "password");
 	else
 		settings->setValue(QString("%1/auth_type").arg(id), "public_key");
-	settings->setValue(QString("%1/key_file_path").arg(id), "");
 	return id;
 }
+
+bool AbstractSshTransport::loadSettings(const QString& section)
+{
+	qDebug() << "AbstractSshTransport::loadSettings";
+	if (!Transport::loadSettings(section))
+		return false;
+
+	QSettings* settings = GnosticApp::getInstance().settings();
+	host = settings->value(QString("%1/host").arg(section)).toString();
+	user = settings->value(QString("%1/user").arg(section)).toString();
+	keyFilePath = GnosticApp::getInstance().settings()->value(QString("%1/key_file_path").arg(section)).toString();
+	if (settings->value(QString("%1/auth_type").arg(section), "password").toString() == "password")
+		authType=AbstractSshTransport::Password;
+	else
+		authType=AbstractSshTransport::PublicKey;
+
+	return true;
+}
+
+
 
 const QString AbstractSshTransport::getUser()
 {

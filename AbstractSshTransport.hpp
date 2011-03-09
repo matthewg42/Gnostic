@@ -29,14 +29,13 @@ public:
 	AbstractSshTransport(QObject* parent=0);
 	~AbstractSshTransport() = 0;
 
-	//! Get a config widget
 	virtual TransportConfigWidget* getConfigWidget(QWidget* parent);
 
 public slots:
-	//! Save transport settings
 	virtual const QString& saveTransport();
 
-	//! Dump debugging info
+	virtual bool loadSettings(const QString& section);
+
 	virtual void dumpDebug();
 
 	// accessors

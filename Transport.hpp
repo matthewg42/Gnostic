@@ -55,6 +55,24 @@ public:
 	//! Get a widget containing controls necessary to configure this Transport.
 	virtual TransportConfigWidget* getConfigWidget(QWidget* parent=0) = 0;
 
+	//! Get a list of transport types which are known
+	//! \return e.g. ("LocalTransport", "PlinkSshTransport", "OpenSshTransport")
+	static QStringList getAvailableTypes();
+
+	//! Make a new transport object of the type "transportType"
+	//! \param transportType a string Transport type, e.g. "LocalTransport".
+	//! \param parent a QObject which is to be the parent of the new Transport.
+	//! \returns NULL if there is a problem (e.g. unknown transportType), else
+	//!          a pointer to a new Trasport object of the desired type.
+	static Transport* makeTransport(const QString& transportType, QObject* parent=0);
+
+	//! Create a new Transport object from a definition in the config file.
+	//! \param id the section of the config.ini file which describes the transport.
+	//! \param parent a pointer to a QObject which is the parent of the new transport.
+	//! \returns NULL if there is a problem (e.g. no such id), else
+	//!          a pointer to a new Trasport object of the desired type.
+	static Transport* loadTransport(const QString& id, QObject* parent=0);
+
 public slots:
 	//! Use this transport object to run a command
 	//! \param exec the program path to be executed
@@ -75,6 +93,11 @@ public slots:
 	//! as the current ID.
 	//! In either case the ID after the save is returned.
 	virtual const QString& saveTransport() = 0;
+
+	//! Load the settings for this transport from the specified section of the config.ini
+	//! \param section the section in the config.ini file which describes the Transport
+	//! \returns true on successful loading, false otherwise.
+	virtual bool loadSettings(const QString& section) = 0;
 
 	//! Dump info about the transport onto debugging output
 	virtual void dumpDebug() = 0;

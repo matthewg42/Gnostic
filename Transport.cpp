@@ -1,5 +1,8 @@
 #include "Transport.hpp"
 #include "GnosticApp.hpp"
+#include "LocalTransport.hpp"
+#include "PlinkSshTransport.hpp"
+#include "OpenSshTransport.hpp"
 
 #include <QSettings>
 #include <QDebug>
@@ -31,6 +34,56 @@ Transport::TransportStatus Transport::getConnectionStatus()
 	return connectionStatus;
 }
 
+QStringList Transport::getAvailableTypes()
+{
+	return QStringList() << "LocalTransport" << "PlinkSshTransport" << "OpenSshTransport";
+}
+
+Transport* Transport::makeTransport(const QString& transportType, QObject* parent)
+{
+	if (transportType == "LocalTransport")
+		return new LocalTransport(parent);
+	else if (transportType == "PlinkSshTransport")
+		return new PlinkSshTransport(parent);
+	else if (transportType == "OpenSshTransport")
+		return new OpenSshTransport(parent);
+	else
+		return NULL;
+
+}
+
+Transport* Transport::loadTransport(const QString& section, QObject* parent)
+{
+	if (!GnosticApp::getInstance().settings()->childGroups().contains(section))
+		return NULL;
+
+	QString transportType = GnosticApp::getInstance().settings()->value(QString("%1/type").arg(section)).toString();
+	Transport* transport;
+	if (transportType == "LocalTransport")
+	{
+		LocalTransport* t = new LocalTransport(parent);
+		t->loadSettings(section);
+		transport = dynamic_cast<Transport*>(t);
+	}
+	else if (transportType == "PlinkSshTransport")
+	{
+		PlinkSshTransport* t = new PlinkSshTransport(parent);
+		t->loadSettings(section);
+		transport = dynamic_cast<Transport*>(t);
+	}
+	else if (transportType == "OpenSshTransport")
+	{
+		OpenSshTransport* t = new OpenSshTransport(parent);
+		t->loadSettings(section);
+		transport = dynamic_cast<Transport*>(t);
+	}
+	else
+		return NULL;
+
+	return transport;
+
+}
+
 void Transport::setDescription(QString newDescription)
 {
 	description=newDescription;
@@ -46,6 +99,25 @@ const QString& Transport::saveTransport()
 
 	return id;
 }
+
+bool Transport::loadSettings(const QString& section)
+{
+	if (!GnosticApp::getInstance().settings()->childGroups().contains(section))
+	{
+		qWarning() << "Transport::loadSettings no such section in config" << section;
+		return false;
+	}
+
+	if (GnosticApp::getInstance().settings()->value(QString("%1/type").arg(section)).toString() != getType())
+	{
+		qWarning() << "Transport::loadSettings section" << section << "doesn't refer to a" << getType();
+		return false;
+	}
+	description = GnosticApp::getInstance().settings()->value(QString("%1/description").arg(section)).toString();
+
+	return true;
+}
+
 
 void Transport::dumpDebug()
 {
