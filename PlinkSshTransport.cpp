@@ -16,6 +16,7 @@ PlinkSshTransport::PlinkSshTransport(QObject *parent) :
 
 PlinkSshTransport::~PlinkSshTransport()
 {
+	qDebug() << "PlinkSshTransport::~PlinkSshTransport";
 	proc.kill();
 }
 
@@ -169,13 +170,12 @@ void PlinkSshTransport::procDone(int err)
 
 void PlinkSshTransport::dumpDebug()
 {
-	qDebug() << "PlinkSshTransport::dumpDebug id=" << id;
-	qDebug() << "PlinkSshTransport::dumpDebug description=" << description;
+	qDebug() << "PlinkSshTransport::dumpDebug, calling Transport::dumpDebug...";
+	Transport::dumpDebug();
 	qDebug() << "PlinkSshTransport::dumpDebug host=" << host;
 	qDebug() << "PlinkSshTransport::dumpDebug user=" << user;
 	qDebug() << "PlinkSshTransport::dumpDebug authType=" << authType;
 	qDebug() << "PlinkSshTransport::dumpDebug keyFilePath=" << keyFilePath;
-
 }
 
 QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& exe, const QStringList& args)
@@ -260,7 +260,9 @@ QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& ex
 		}
 		else
 		{
-			return QString(output);
+			QString ret(output);
+			ret.remove(QRegExp("[\\n\\r]+$"));
+			return ret;
 		}
 	}
 	return QString();
