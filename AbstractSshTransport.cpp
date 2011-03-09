@@ -1,6 +1,7 @@
 #include "AbstractSshTransport.hpp"
 #include "GnosticApp.hpp"
 #include "PasswordDialog.hpp"
+#include "SshTransportConfigWidget.hpp"
 
 #include <QProcess>
 #include <QDebug>
@@ -19,6 +20,11 @@ AbstractSshTransport::~AbstractSshTransport()
 	qDebug() << "AbstractSshTransport::~AbstractSshTransport";
 	if (proc.state() != QProcess::NotRunning)
 		proc.kill();
+}
+
+TransportConfigWidget* AbstractSshTransport::getConfigWidget(QWidget* parent)
+{
+	return new SshTransportConfigWidget(this, parent);
 }
 
 const QString& AbstractSshTransport::saveTransport()

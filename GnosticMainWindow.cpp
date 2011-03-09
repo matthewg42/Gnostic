@@ -5,6 +5,7 @@
 
 #include "LocalTransport.hpp"
 #include "OpenSshTransport.hpp"
+#include "TransportConfigWidget.hpp"
 
 GnosticMainWindow* GnosticMainWindow::singleton = NULL;
 
@@ -20,9 +21,7 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
 	t->setDescription("a test Open SSH transport object");
 	t->setHost("localhost");
 	t->setUser("work");
-
-	connect(t, SIGNAL(receivedLine(QString)), this, SLOT(gotLineOfInput(QString)));
-	t->start("./mon.sh");
+	ui->vLayout->addWidget(dynamic_cast<QWidget*>(t->getConfigWidget(this)));
 }
 
 GnosticMainWindow::~GnosticMainWindow()
@@ -34,11 +33,5 @@ GnosticMainWindow& GnosticMainWindow::getInstance()
 {
 	Q_ASSERT(singleton);
 	return *singleton;
-}
-
-void GnosticMainWindow::gotLineOfInput(QString line)
-{
-	qDebug() << "GnosticMainWindow::gotLineOfInput" << line;
-	ui->textBrowser->append(line);
 }
 

@@ -5,6 +5,9 @@
 #include "Transport.hpp"
 #include <QProcess>
 
+class TransportConfigWidget;
+class QWidget;
+
 class LocalTransport : public Transport
 {
 	Q_OBJECT
@@ -17,6 +20,9 @@ public:
 
 	//! Test that the transport invoke echo "hello world"
 	virtual bool testTransport();
+
+	//! Get a config widget
+	virtual TransportConfigWidget* getConfigWidget(QWidget* parent);
 
 public slots:
 	//! Use this transport object to run a command

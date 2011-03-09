@@ -9,27 +9,35 @@ QT       += core gui network
 TARGET   = Gnostic
 TEMPLATE = app
 
-SOURCES += main.cpp                   \
-	   GnosticMainWindow.cpp      \
-	   Transport.cpp              \
-	   GnosticApp.cpp             \
-	   LocalTransport.cpp         \
-	   PasswordDialog.cpp         \
-	   PlinkSshTransport.cpp      \
-	   AbstractSshTransport.cpp   \
-	   OpenSshTransport.cpp
+SOURCES += main.cpp                       \
+	   GnosticMainWindow.cpp          \
+	   Transport.cpp                  \
+	   GnosticApp.cpp                 \
+	   LocalTransport.cpp             \
+	   PasswordDialog.cpp             \
+	   PlinkSshTransport.cpp          \
+	   AbstractSshTransport.cpp       \
+	   OpenSshTransport.cpp           \
+	   TransportConfigWidget.cpp      \
+	   LocalTransportConfigWidget.cpp \
+    SshTransportConfigWidget.cpp
 
-HEADERS += GnosticMainWindow.hpp      \
-	   Transport.hpp              \
-	   GnosticApp.hpp             \
-	   config.hpp                 \
-	   LocalTransport.hpp         \
-	   PasswordDialog.hpp         \
-	   PlinkSshTransport.hpp      \
-	   AbstractSshTransport.hpp   \
-	   OpenSshTransport.hpp
+HEADERS += GnosticMainWindow.hpp          \
+	   Transport.hpp                  \
+	   GnosticApp.hpp                 \
+	   config.hpp                     \
+	   LocalTransport.hpp             \
+	   PasswordDialog.hpp             \
+	   PlinkSshTransport.hpp          \
+	   AbstractSshTransport.hpp       \
+	   OpenSshTransport.hpp           \
+	   TransportConfigWidget.hpp      \
+	   LocalTransportConfigWidget.hpp \
+    SshTransportConfigWidget.hpp
 
-FORMS   += GnosticMainWindow.ui       \
-	   PasswordDialog.ui
+FORMS   += GnosticMainWindow.ui           \
+	   PasswordDialog.ui              \
+	   LocalTransportConfigWidget.ui \
+    SshTransportConfigWidget.ui
 
 OTHER_FILES += README gnostic.res

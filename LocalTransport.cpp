@@ -1,5 +1,6 @@
 #include "LocalTransport.hpp"
 #include "GnosticApp.hpp"
+#include "LocalTransportConfigWidget.hpp"
 #include <QProcess>
 #include <QVariant>
 #include <QDateTime>
@@ -88,6 +89,11 @@ void LocalTransport::dumpDebug()
 {
 	qDebug() << "LocalTransport::dumpDebug() calling Tranport::dumpDebug()";
 	Transport::dumpDebug();
+}
+
+TransportConfigWidget* LocalTransport::getConfigWidget(QWidget* parent)
+{
+	return new LocalTransportConfigWidget(this, parent);
 }
 
 void LocalTransport::procStatusUpdate(QProcess::ProcessState newState)

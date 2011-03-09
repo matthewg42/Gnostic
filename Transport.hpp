@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QStringList>
 
+class TransportConfigWidget;
+class QWidget;
+
 //! \class Transport
 //! Models a method of calling a program somewhere (probably a remote host)
 //! and transporting the stream of output from that program back to Gnostic.
@@ -48,6 +51,9 @@ public:
 	//! issue a command and read back the output.
 	//! \returns true on a successful test, false otherwise.
 	virtual bool testTransport() = 0;
+
+	//! Get a widget containing controls necessary to configure this Transport.
+	virtual TransportConfigWidget* getConfigWidget(QWidget* parent=0) = 0;
 
 public slots:
 	//! Use this transport object to run a command

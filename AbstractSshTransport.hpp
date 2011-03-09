@@ -12,6 +12,9 @@
 //! the specifics to derived classes.
 //! See also: PlinkSshTransport and OpenSshTransport
 
+class QWidget;
+class TransportConfigWidget;
+
 class AbstractSshTransport : public Transport
 {
     Q_OBJECT
@@ -25,6 +28,9 @@ public:
 
 	AbstractSshTransport(QObject* parent=0);
 	~AbstractSshTransport() = 0;
+
+	//! Get a config widget
+	virtual TransportConfigWidget* getConfigWidget(QWidget* parent);
 
 public slots:
 	//! Save transport settings
