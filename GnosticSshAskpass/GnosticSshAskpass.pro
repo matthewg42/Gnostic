@@ -7,9 +7,16 @@ TARGET = ssh-askpass
 DEPENDPATH += .
 INCLUDEPATH += .
 INCLUDEPATH += ..
+INCLUDEPATH += ../gui
 
 # Input
-HEADERS += ../PasswordDialog.hpp
-FORMS += ../PasswordDialog.ui
-SOURCES += ../PasswordDialog.cpp GnosticSshAskpass.cpp
+HEADERS += \
+    ../gui/PasswordDialog.hpp
+
+FORMS += \
+    ../gui/PasswordDialog.ui
+
+SOURCES += \
+    ../gui/PasswordDialog.cpp \
+    GnosticSshAskpass.cpp
 

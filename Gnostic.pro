@@ -9,41 +9,49 @@ QT       += core gui network
 TARGET   = Gnostic
 TEMPLATE = app
 
-SOURCES += main.cpp                       \
-	   GnosticMainWindow.cpp          \
-	   Transport.cpp                  \
-	   GnosticApp.cpp                 \
-	   LocalTransport.cpp             \
-	   PasswordDialog.cpp             \
-	   PlinkSshTransport.cpp          \
-	   AbstractSshTransport.cpp       \
-	   OpenSshTransport.cpp           \
-	   TransportConfigWidget.cpp      \
-	   LocalTransportConfigWidget.cpp \
-    SshTransportConfigWidget.cpp \
-    TransportEditorForm.cpp
+INCLUDEPATH += gui
+INCLUDEPATH += transports
 
-HEADERS += GnosticMainWindow.hpp          \
-	   Transport.hpp                  \
-	   GnosticApp.hpp                 \
-	   config.hpp                     \
-	   LocalTransport.hpp             \
-	   PasswordDialog.hpp             \
-	   PlinkSshTransport.hpp          \
-	   AbstractSshTransport.hpp       \
-	   OpenSshTransport.hpp           \
-	   TransportConfigWidget.hpp      \
-	   LocalTransportConfigWidget.hpp \
-    SshTransportConfigWidget.hpp \
-    TransportEditorForm.hpp
+SOURCES += \
+    main.cpp \
+    GnosticApp.cpp \
+    transports/Transport.cpp \
+    transports/LocalTransport.cpp \
+    transports/PlinkSshTransport.cpp \
+    transports/AbstractSshTransport.cpp \
+    transports/OpenSshTransport.cpp \
+    gui/GnosticMainWindow.cpp \
+    gui/PasswordDialog.cpp \
+    gui/TransportConfigWidget.cpp \
+    gui/LocalTransportConfigWidget.cpp \
+    gui/SshTransportConfigWidget.cpp \
+    gui/TransportEditorForm.cpp
 
-FORMS   += GnosticMainWindow.ui           \
-	   PasswordDialog.ui              \
-	   LocalTransportConfigWidget.ui \
-    SshTransportConfigWidget.ui \
-    TransportEditorForm.ui
+HEADERS += \
+    config.hpp \
+    GnosticApp.hpp \
+    transports/Transport.hpp \
+    transports/LocalTransport.hpp \
+    transports/PlinkSshTransport.hpp \
+    transports/AbstractSshTransport.hpp\
+    transports/OpenSshTransport.hpp \
+    gui/GnosticMainWindow.hpp \
+    gui/PasswordDialog.hpp \
+    gui/TransportConfigWidget.hpp \
+    gui/LocalTransportConfigWidget.hpp \
+    gui/SshTransportConfigWidget.hpp \
+    gui/TransportEditorForm.hpp
 
-OTHER_FILES += README
+FORMS += \
+    gui/GnosticMainWindow.ui \
+    gui/PasswordDialog.ui \
+    gui/LocalTransportConfigWidget.ui \
+    gui/SshTransportConfigWidget.ui \
+    gui/TransportEditorForm.ui
+
+OTHER_FILES += \
+    README
 
 RESOURCES += \
     resources.qrc
+
