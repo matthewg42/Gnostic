@@ -116,7 +116,7 @@ signals:
 	//! This transport is ready to pass data to a monitor
 	//! Transports are concerned only with passing data around line by line,
 	//! not what is in it.
-	void receivedLine(QString line);
+	void spewLine(QString line);
 
 	//! Changes when the transport's connection status changes
 	void connectionStatusChanged(Transport::TransportStatus newStatus);

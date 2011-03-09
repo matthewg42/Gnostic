@@ -133,7 +133,7 @@ void AbstractSshTransport::procReadIn()
 		{
 			QString line(in);
 			line.remove(QRegExp("[\\n\\r]+$"));
-			emit(receivedLine(line));
+			emit(spewLine(line));
 		}
 	}
 }

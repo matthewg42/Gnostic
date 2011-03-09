@@ -133,7 +133,7 @@ void LocalTransport::procReadIn()
 		if (line.isEmpty())
 			break;
 
-		emit receivedLine(line);
+		emit spewLine(line);
 	}
 }
 

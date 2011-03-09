@@ -45,7 +45,7 @@ bool OpenSshTransport::start(const QString& exec, const QStringList& args)
 	foreach (QString line, ret.split(QRegExp("[\\n\\r]+")))
 	{
 		line.remove(QRegExp("[\\r\\n]+"));
-		emit(receivedLine(line));
+		emit(spewLine(line));
 	}
 	return true;
 }

@@ -72,35 +72,43 @@ Need to have a think on that.
 Thinking out loud
 -----------------
 
-When we see a host for the first time, we will have to add it to
-the known hosts somehow.
-- option1 : get user to start a putty session and accept host id
-- option2 : start plink in not-batch mode
-We can have a "test connection" option for this...
+Transport::start(exe, args)
+Transport::spewLine() --> Protocol::takeLine()
+			  {
+			      // process headers & set up internal state
+			      // wait for end of headers and then...
+			      emit(spewLine(raw line));
+			      filter & split
+			      emit(spewDataItem(timestamp, value, label));
+			  }
+
+Now we might have a simple tailer object hooked up like this:
+
+Protocol::spewLine() --> TailerDisplay::takeLine()
+			 {
+			     // colorize based on REs
+			     // filter
+			     // display
+			 }
+
+Or even simpler:
+
+Protocol::spewLine() --> CounterDisplay::takeLine()
+			 {
+			     // increment counter widget
+			 }
 
 
-Creation of a new monitor
-- select authenticator (embed Authenticator
-- choose monitor command / args
-- graph params:
-  - history (s)
-  - plot refresh rate
-  - y scale auto / bounds
-  - graph theme (bg col, grid type etc)
-  - edit line styles (add label/style/scale multiplier)
+But the real goal is this:
+Protocol::spewDataItem() --> Grapher::plotDataItem()
+			     {
+				 // do that graphing goodness.
+			     }
 
 
-We must derive LocalTransportConfigWindow and others like it from a base
-TransportConfig window, which offers generic signals when a transport is updated
 
-
-MonitorLayouts:
-- a MonitorLayouts contains a set of monitors
-- horizontal or vertical layout type
-- has
-
-
-Remote Monitor Protocol:
+Remote monitor protocol
+-----------------------
 
 GNOSTIC-DATA-PROTOCOL-VERSION=1.0
 HOST=the.fq.hostname
