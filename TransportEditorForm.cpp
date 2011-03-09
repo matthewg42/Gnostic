@@ -5,13 +5,13 @@
 #include "TransportConfigWidget.hpp"
 #include "GnosticApp.hpp"
 
-
 #include <QStandardItem>
 #include <QList>
 #include <QSettings>
 #include <QDebug>
 #include <QModelIndex>
 #include <QInputDialog>
+#include <QMessageBox>
 
 TransportEditorForm::TransportEditorForm(QWidget *parent) :
 		QWidget(parent),
@@ -20,17 +20,23 @@ TransportEditorForm::TransportEditorForm(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-	model.setHorizontalHeaderLabels(QStringList() << "Section" << "Transport Description");
-	ui->transportTable->setModel(&model);
-	ui->transportTable->hideColumn(0);
-	ui->transportTable->setColumnWidth(1, 200);
 
 	connect(ui->transportTable, SIGNAL(clicked(QModelIndex)), this, SLOT(transportTableClicked(QModelIndex)));
 	connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(saveCurrent()));
 	connect(ui->addButton, SIGNAL(clicked()), this, SLOT(addNewTransport()));
 	connect(ui->removeButton, SIGNAL(clicked()), this, SLOT(deleteCurrent()));
+	connect(ui->testButton, SIGNAL(clicked()), this, SLOT(testCurrent()));
 
+	model.setHorizontalHeaderLabels(QStringList() << "Section" << "Transport Description");
+	ui->transportTable->setModel(&model);
 	populateTable();
+
+	if (model.rowCount()>0)
+	{
+		ui->transportTable->selectRow(0);
+		transportTableClicked(ui->transportTable->currentIndex());
+	}
+
 	ui->saveButton->setEnabled(false);
 }
 
@@ -56,6 +62,9 @@ void TransportEditorForm::populateTable()
 		qDebug() << row;
 		model.appendRow(row);
 	}
+	ui->transportTable->hideColumn(0);
+	ui->transportTable->setColumnWidth(1, 300);
+
 }
 
 void TransportEditorForm::clearCurrent()
@@ -135,5 +144,38 @@ void TransportEditorForm::deleteCurrent()
 		delete current;
 		current = NULL;
 		populateTable();
+
+		if (model.rowCount()>0)
+		{
+			ui->transportTable->selectRow(0);
+			transportTableClicked(ui->transportTable->currentIndex());
+		}
+
 	}
+}
+
+void TransportEditorForm::testCurrent()
+{
+	QMessageBox mb(this);
+
+	if (!current)
+	{
+		mb.setText("No transport selected");
+		mb.setIcon(QMessageBox::Warning);
+	}
+	else
+	{
+		if (current->testTransport())
+		{
+			mb.setText("Transport configuration looks good");
+			mb.setIcon(QMessageBox::Information);
+		}
+		else
+		{
+			mb.setText("Transport test failed.  How non-cromulent");
+			mb.setIcon(QMessageBox::Warning);
+		}
+	}
+
+	mb.exec();
 }

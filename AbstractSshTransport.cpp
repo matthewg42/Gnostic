@@ -71,7 +71,6 @@ const QString AbstractSshTransport::getUser()
 
 void AbstractSshTransport::setUser(const QString& u)
 {
-	qDebug() << "AbstractSshTransport::setUser" << u;
 	user = u;
 }
 
@@ -82,7 +81,6 @@ const QString AbstractSshTransport::getHost()
 
 void AbstractSshTransport::setHost(const QString& h)
 {
-	qDebug() << "AbstractSshTransport::sethost" << h;
 	host = h;
 }
 
@@ -93,7 +91,6 @@ const QString AbstractSshTransport::getKeyFilePath()
 
 void AbstractSshTransport::setKeyFilePath(const QString& k)
 {
-	qDebug() << "AbstractSshTransport::setKeyFilePath" << k;
 	keyFilePath= k;
 }
 

@@ -29,6 +29,7 @@ private slots:
 	void saveCurrent();
 	void addNewTransport();
 	void deleteCurrent();
+	void testCurrent();
 
 private:
 	Ui::TransportEditorForm *ui;
