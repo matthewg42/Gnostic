@@ -7,7 +7,9 @@ LocalTransportConfigWidget::LocalTransportConfigWidget(Transport* t, QWidget *pa
     ui(new Ui::LocalTransportConfigWidget)
 {
     ui->setupUi(this);
+    ui->descriptionEdit->setText(t->getDescription());
     connect(ui->descriptionEdit, SIGNAL(textEdited(QString)), transport, SLOT(setDescription(QString)));
+    connect(ui->descriptionEdit, SIGNAL(textEdited(QString)), this, SLOT(madeUpdate()));
 }
 
 LocalTransportConfigWidget::~LocalTransportConfigWidget()

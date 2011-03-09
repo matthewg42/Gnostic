@@ -3,6 +3,7 @@
 #include "LocalTransport.hpp"
 #include "PlinkSshTransport.hpp"
 #include "OpenSshTransport.hpp"
+#include "TransportConfigWidget.hpp"
 
 #include <QSettings>
 #include <QDebug>
@@ -13,10 +14,13 @@ Transport::Transport(QObject* parent) :
 		description(),
 		connectionStatus(Transport::Disconnected)
 {
+	configWidget = NULL;
 }
 
 Transport::~Transport()
 {
+	if (configWidget)
+		delete configWidget;
 }
 
 const QString& Transport::getId()
@@ -140,6 +144,7 @@ bool Transport::loadSettings(const QString& section)
 		qWarning() << "Transport::loadSettings section" << section << "doesn't refer to a" << getType();
 		return false;
 	}
+	id = section;
 	description = GnosticApp::getInstance().settings()->value(QString("%1/description").arg(section)).toString();
 
 	return true;

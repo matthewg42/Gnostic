@@ -19,6 +19,11 @@ bool TransportConfigWidget::testTransport()
 		return transport->testTransport();
 }
 
+void TransportConfigWidget::madeUpdate()
+{
+	emit(wasUpdated());
+}
+
 Transport* TransportConfigWidget::getTransport()
 {
 	return transport;

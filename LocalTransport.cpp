@@ -101,7 +101,10 @@ void LocalTransport::dumpDebug()
 
 TransportConfigWidget* LocalTransport::getConfigWidget(QWidget* parent)
 {
-	return new LocalTransportConfigWidget(this, parent);
+	if (!configWidget)
+		configWidget = new LocalTransportConfigWidget(this, parent);
+
+	return configWidget;
 }
 
 void LocalTransport::procStatusUpdate(QProcess::ProcessState newState)

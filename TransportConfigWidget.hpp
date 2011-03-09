@@ -10,18 +10,24 @@ class Transport;
 //! Transport.
 class TransportConfigWidget : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit TransportConfigWidget(Transport* t, QWidget *parent = 0);
-    ~TransportConfigWidget() = 0;
+	explicit TransportConfigWidget(Transport* t, QWidget *parent = 0);
+	~TransportConfigWidget() = 0;
+
+signals:
+	void wasUpdated();
 
 public slots:
-    bool testTransport();
-    Transport* getTransport();
+	bool testTransport();
+	Transport* getTransport();
+
+protected slots:
+	void madeUpdate();
 
 protected:
-    Transport* transport;
+	Transport* transport;
 };
 
 #endif // TRANSPORTCONFIGWIDGET_HPP

@@ -17,11 +17,6 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
 	singleton = this;
         ui->setupUi(this);
 
-	OpenSshTransport* t = new OpenSshTransport(this);
-	t->setDescription("a test Open SSH transport object");
-	t->setHost("localhost");
-	t->setUser("work");
-	ui->vLayout->addWidget(dynamic_cast<QWidget*>(t->getConfigWidget(this)));
 }
 
 GnosticMainWindow::~GnosticMainWindow()

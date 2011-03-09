@@ -6,17 +6,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>389</width>
-    <height>337</height>
+    <width>608</width>
+    <height>427</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>GnosticMainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <layout class="QVBoxLayout" name="vLayout"/>
+     <widget class="TransportEditorForm" name="widget" native="true"/>
     </item>
    </layout>
   </widget>
@@ -25,7 +25,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>389</width>
+     <width>608</width>
      <height>21</height>
     </rect>
    </property>
@@ -78,6 +78,14 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TransportEditorForm</class>
+   <extends>QWidget</extends>
+   <header>TransportEditorForm.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

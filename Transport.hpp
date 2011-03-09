@@ -129,6 +129,7 @@ protected:
 	QString id;
 	QString description;
 	TransportStatus connectionStatus;
+	TransportConfigWidget* configWidget;
 
 };
 

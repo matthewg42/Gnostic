@@ -24,7 +24,10 @@ AbstractSshTransport::~AbstractSshTransport()
 
 TransportConfigWidget* AbstractSshTransport::getConfigWidget(QWidget* parent)
 {
-	return new SshTransportConfigWidget(this, parent);
+	if (!configWidget)
+		configWidget = new SshTransportConfigWidget(this, parent);
+
+	return configWidget;
 }
 
 const QString& AbstractSshTransport::saveTransport()
@@ -45,7 +48,7 @@ const QString& AbstractSshTransport::saveTransport()
 
 bool AbstractSshTransport::loadSettings(const QString& section)
 {
-	qDebug() << "AbstractSshTransport::loadSettings";
+	qDebug() << "AbstractSshTransport::loadSettings" << section;
 	if (!Transport::loadSettings(section))
 		return false;
 

@@ -10,10 +10,15 @@ SshTransportConfigWidget::SshTransportConfigWidget(Transport* t, QWidget *parent
 {
 	ui->setupUi(this);
 	AbstractSshTransport* sshTransport = static_cast<AbstractSshTransport*>(transport);
+	ui->descriptionEdit->setText(sshTransport->getDescription());
+	ui->hostEdit->setText(sshTransport->getHost());
+	ui->userEdit->setText(sshTransport->getUser());
 	connect(ui->descriptionEdit, SIGNAL(textEdited(QString)), sshTransport, SLOT(setDescription(QString)));
+	connect(ui->descriptionEdit, SIGNAL(textEdited(QString)), this, SLOT(madeUpdate()));
 	connect(ui->userEdit, SIGNAL(textEdited(QString)), sshTransport, SLOT(setUser(QString)));
+	connect(ui->userEdit, SIGNAL(textEdited(QString)), this, SLOT(madeUpdate()));
 	connect(ui->hostEdit, SIGNAL(textEdited(QString)), sshTransport, SLOT(setHost(QString)));
-
+	connect(ui->hostEdit, SIGNAL(textEdited(QString)), this, SLOT(madeUpdate()));
 
 	QString subType = transport->getType();
 	subType.remove("Transport");
