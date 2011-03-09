@@ -84,6 +84,33 @@ Transport* Transport::loadTransport(const QString& section, QObject* parent)
 
 }
 
+const QString Transport::getNewTransportId()
+{
+	QSet<int> existing;
+	QRegExp rx("^transport_(\\d+)$");
+	foreach (QString g, GnosticApp::getInstance().settings()->childGroups())
+	{
+		if (rx.exactMatch(g))
+		{
+			existing.insert(QVariant(rx.capturedTexts().at(1)).toInt());
+		}
+	}
+	int i=0;
+	while(existing.contains(i)) { i++; }
+	return QString("transport_%1").arg(i);
+}
+
+QStringList Transport::getTransportSections()
+{
+	QStringList result;
+	foreach (QString s, GnosticApp::getInstance().settings()->childGroups())
+	{
+		if (s.startsWith("transport"))
+			result << s;
+	}
+	return result;
+}
+
 void Transport::setDescription(QString newDescription)
 {
 	description=newDescription;
@@ -92,7 +119,7 @@ void Transport::setDescription(QString newDescription)
 const QString& Transport::saveTransport()
 {
 	if (id.isEmpty())
-		id = GnosticApp::getInstance().getNewTransportId();
+		id = getNewTransportId();
 
 	GnosticApp::getInstance().settings()->setValue(QString("%1/type").arg(id), getType());
 	GnosticApp::getInstance().settings()->setValue(QString("%1/description").arg(id), description);

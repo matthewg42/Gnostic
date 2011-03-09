@@ -61,8 +61,6 @@ bool AbstractSshTransport::loadSettings(const QString& section)
 	return true;
 }
 
-
-
 const QString AbstractSshTransport::getUser()
 {
 	return user;

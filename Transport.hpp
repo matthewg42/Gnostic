@@ -73,6 +73,16 @@ public:
 	//!          a pointer to a new Trasport object of the desired type.
 	static Transport* loadTransport(const QString& id, QObject* parent=0);
 
+	//! Sequence generator for making a new and unique transport ID.
+	//! \returns string something like this: "transport_1" where the part
+	//!          after the _ is the first integer >= 0 which makes an
+	//!          ID which is not an exisiting section in the config.ini file.
+	static const QString getNewTransportId();
+
+	//! Get a list of all sections in the config.ini file which describe
+	//! Transport objects.
+	static QStringList getTransportSections();
+
 public slots:
 	//! Use this transport object to run a command
 	//! \param exec the program path to be executed

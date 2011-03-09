@@ -65,22 +65,6 @@ const QString& GnosticApp::getConfigDir()
 	return configDir;
 }
 
-const QString GnosticApp::getNewTransportId()
-{
-	QSet<int> existing;
-	QRegExp rx("^transport_(\\d+)$");
-	foreach (QString g, confSettings->childGroups())
-	{
-		if (rx.exactMatch(g))
-		{
-			existing.insert(QVariant(rx.capturedTexts().at(1)).toInt());
-		}
-	}
-	int i=0;
-	while(existing.contains(i)) { i++; }
-	return QString("transport_%1").arg(i);
-}
-
 const QString GnosticApp::getIniPath()
 {
 	return QString("%1/%2").arg(configDir).arg("config.ini");

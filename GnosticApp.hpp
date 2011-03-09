@@ -32,12 +32,6 @@ public:
 	//! Get the configuration directory path.
 	const QString& getConfigDir();
 
-	//! Sequence generator for making a new and unique transport ID.
-	//! \returns string something like this: "transport_1" where the part
-	//!          after the _ is the first integer >= 0 which makes an
-	//!          ID which is not an exisiting section in the config.ini file.
-	const QString getNewTransportId();
-
 private:
 	const QString getIniPath();
 
