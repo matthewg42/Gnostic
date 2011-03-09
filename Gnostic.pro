@@ -25,7 +25,8 @@ SOURCES += \
     gui/TransportConfigWidget.cpp \
     gui/LocalTransportConfigWidget.cpp \
     gui/SshTransportConfigWidget.cpp \
-    gui/TransportEditorForm.cpp
+    gui/TransportEditorForm.cpp \
+    GnosticParser.cpp
 
 HEADERS += \
     config.hpp \
@@ -40,7 +41,8 @@ HEADERS += \
     gui/TransportConfigWidget.hpp \
     gui/LocalTransportConfigWidget.hpp \
     gui/SshTransportConfigWidget.hpp \
-    gui/TransportEditorForm.hpp
+    gui/TransportEditorForm.hpp \
+    GnosticParser.hpp
 
 FORMS += \
     gui/GnosticMainWindow.ui \
@@ -54,4 +56,3 @@ OTHER_FILES += \
 
 RESOURCES += \
     resources.qrc
-

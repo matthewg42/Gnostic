@@ -73,7 +73,7 @@ Thinking out loud
 -----------------
 
 Transport::start(exe, args)
-Transport::spewLine() --> Protocol::takeLine()
+Transport::spewLine() --> GnosticParser::takeLine()
 			  {
 			      // process headers & set up internal state
 			      // wait for end of headers and then...
@@ -84,7 +84,7 @@ Transport::spewLine() --> Protocol::takeLine()
 
 Now we might have a simple tailer object hooked up like this:
 
-Protocol::spewLine() --> TailerDisplay::takeLine()
+GnosticParser::spewLine() --> TailerDisplay::takeLine()
 			 {
 			     // colorize based on REs
 			     // filter
@@ -93,14 +93,14 @@ Protocol::spewLine() --> TailerDisplay::takeLine()
 
 Or even simpler:
 
-Protocol::spewLine() --> CounterDisplay::takeLine()
+GnosticParser::spewLine() --> CounterDisplay::takeLine()
 			 {
 			     // increment counter widget
 			 }
 
 
 But the real goal is this:
-Protocol::spewDataItem() --> Grapher::plotDataItem()
+GnosticParser::spewDataItem() --> Grapher::plotDataItem()
 			     {
 				 // do that graphing goodness.
 			     }
