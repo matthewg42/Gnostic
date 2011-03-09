@@ -4,5 +4,8 @@
         <file>images/remove-icon.png</file>
         <file>images/save-icon.png</file>
         <file>images/test-icon.png</file>
+        <file>images/ouroboros64x64.png</file>
+        <file>images/ouroboros512x512.png</file>
+        <file>images/ouroboros.svg</file>
     </qresource>
 </RCC>
