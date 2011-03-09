@@ -84,7 +84,7 @@ Transport::spewLine() --> GnosticParser::takeLine()
 
 Now we might have a simple tailer object hooked up like this:
 
-GnosticParser::spewLine() --> TailerDisplay::takeLine()
+GnosticParser::spewLine() --> TailerDataDisplay::takeLine()
 			 {
 			     // colorize based on REs
 			     // filter
@@ -93,7 +93,7 @@ GnosticParser::spewLine() --> TailerDisplay::takeLine()
 
 Or even simpler:
 
-GnosticParser::spewLine() --> CounterDisplay::takeLine()
+GnosticParser::spewLine() --> CounterDataDisplay::takeLine()
 			 {
 			     // increment counter widget
 			 }
@@ -120,20 +120,20 @@ generalised methods for:
 - connecting to a GnosticParser object
 
 Implementation strategy:
-1. Make a single CounterDisplay class
+1. Make a single CounterDataDisplay class
    - hook it up to a transport & GnosticParser
    - hook GnosticParser up to a real transport
    - watch it work
 
 2. Abstract out base class
-3. Implement TailerDisplay class as sibling of CounterDisplay
-4. make CounterDisplayConfigWidget & TailerDisplayConfigWidget
+3. Implement TailerDataDisplay class as sibling of CounterDataDisplay
+4. make CounterDataDisplayConfigWidget & TailerDataDisplayConfigWidget
 5. Hone the base class some
-6. Implement GraphDisplay as sibling of TailerDisplay & co.
-   - also GraphDisplayConfigWidget
+6. Implement GraphDataDisplay as sibling of TailerDataDisplay & co.
+   - also GraphDataDisplayConfigWidget
 
 After that all we have to do is make a nice GUI for pairing
-Transports and Displays, and a way to launch these pairs and
+Transports and DataDisplays, and a way to launch these pairs and
 we're more or less done!
 
 

@@ -109,7 +109,7 @@ QStringList Transport::getTransportSections()
 	QStringList result;
 	foreach (QString s, GnosticApp::getInstance().settings()->childGroups())
 	{
-		if (s.startsWith("transport"))
+		if (s.startsWith("transport_"))
 			result << s;
 	}
 	return result;
