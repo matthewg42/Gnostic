@@ -106,6 +106,36 @@ GnosticParser::spewDataItem() --> Grapher::plotDataItem()
 			     }
 
 
+Monitors
+--------
+
+For monitors to be configured in the same way as the Transports (one window,
+config dependent on type which provides a function to get a widget to configure
+a Monitor...)... we need to derive them all from one abstract type, and have
+generalised methods for:
+- getting config widget
+- loading (static)
+- saving
+- updating
+- connecting to a GnosticParser object
+
+Implementation strategy:
+1. Make a single CounterDisplay class
+   - hook it up to a transport & GnosticParser
+   - hook GnosticParser up to a real transport
+   - watch it work
+
+2. Abstract out base class
+3. Implement TailerDisplay class as sibling of CounterDisplay
+4. make CounterDisplayConfigWidget & TailerDisplayConfigWidget
+5. Hone the base class some
+6. Implement GraphDisplay as sibling of TailerDisplay & co.
+   - also GraphDisplayConfigWidget
+
+After that all we have to do is make a nice GUI for pairing
+Transports and Displays, and a way to launch these pairs and
+we're more or less done!
+
 
 Remote monitor protocol
 -----------------------
