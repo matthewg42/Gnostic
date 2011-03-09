@@ -10,11 +10,67 @@ Gnostic Notifies On Servers Taking Inconvenient Craps
 Great, No One Saw That It Crashed
 Gnostiq: Graphing, Notification, Omni-Platform Surveillance Tool In Qt4
 
---
+What it is
+----------
 
 It's a remote process montoring visualization tool.
 
---
+Gnostic connects to remote servers, executes a command there, and plots
+pretty graphs from the output of those remote programs.
+
+These programs are called Monitors, and are simply programs which
+spit out data in a format which Gnostic understands. They can be
+implemented any which way you like, but are typically something like
+a Perl script.  Their output should adhere to the Gnosic Data Protocol
+(see below).  The short version is: three delimited fields per line:
+a timestamp, a label and a numeric value.
+
+Gnostic makes time / value charts from this.  The definition of a
+Monitor also includes stuff like:
+- path to program to execute on remote host
+- arguments to remote program
+- value (Y) axis: fixed scale or auto scale?
+- how much history should there be?
+- refresh rate
+- scrolling or wrapping?
+
+Anyway, Monitor definitions are separate from Transports, which are the
+way in which the connection to the remote host is done.  That method -
+the "Transport", contains information about the conenction...
+authentication credentials, actual mechanism and so on.
+
+So the user sets up one or more Transports, and one or more Monitors
+and then calls a Monitor with a Transport - a so-called
+RemoteTransport.
+
+
+Dependencies
+------------
+
+for OpenSshTransport: ssh-askpass or compatibile, openssh
+for PlinkTransport: plink
+
+Windows remote exec.  Hmm.
+-------------------------
+
+Well here's a thing, remotely executing a command on a windows server and
+getting a bunch of text back is a pain in the ass.  Looks like the only
+native method is rexec, presumably from their POSIX layer, which makes me
+shudder.
+
+So the options are:  install ssh servers on remote hosts, or maybe a light
+weight custom process launcher, and make a transport class for that...
+
+The problem is authentication.  Don't want to send passwords in the clear
+but would like to use windows authentication if possible... which means
+having a public key system to exchange a session key for a stream cipher,
+which is essentially re-implementing a part of the SSH protocol.  Ho hum.
+
+Need to have a think on that.
+
+
+Thinking out loud
+-----------------
 
 When we see a host for the first time, we will have to add it to
 the known hosts somehow.
@@ -22,24 +78,6 @@ the known hosts somehow.
 - option2 : start plink in not-batch mode
 We can have a "test connection" option for this...
 
-Creation of a Transport:
-- host
-- username
-- choose public key or passsword auth
-- public key is done using putty's pageant (recommended)
-- if public key/agent, select pr. key file
-- send public key button:
-  - prompt for password
-  - use plink w/ pw auth to add public key to authorized hosts
-  - do this in interactive mode do the user is prompted for
-    known host oking if necessary
-- test connection button
-  - calls plink to do something testable
-  - if public_key auth is used, call pageant with the prv key file first
-    (it will only prompt for th priv key password if the key isn't already
-    loaded into memory).
-  - if password auth is used, prompts for password
-- provides configWidget member
 
 Creation of a new monitor
 - select authenticator (embed Authenticator

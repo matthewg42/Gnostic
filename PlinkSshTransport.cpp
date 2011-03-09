@@ -8,16 +8,13 @@
 #include <QMessageBox>
 
 PlinkSshTransport::PlinkSshTransport(QObject *parent) :
-		Transport(parent),
-		authType(PlinkSshTransport::Password),
-		proc(this)
+		AbstractSshTransport(parent)
 {
 }
 
 PlinkSshTransport::~PlinkSshTransport()
 {
 	qDebug() << "PlinkSshTransport::~PlinkSshTransport";
-	proc.kill();
 }
 
 bool PlinkSshTransport::testTransport()
@@ -29,7 +26,6 @@ bool PlinkSshTransport::testTransport()
 	if (!testProc.waitForFinished(5000))
 		return false;
 	return (testProc.exitStatus() == 0);
-
 }
 
 bool PlinkSshTransport::start(const QString& exec, const QStringList& args)
@@ -63,119 +59,15 @@ void PlinkSshTransport::stop()
 const QString& PlinkSshTransport::saveTransport()
 {
 	qDebug() << "PlinkSshTransport::saveTransport";
-	Transport::saveTransport();
-
-	QSettings* settings = GnosticApp::getInstance().settings();
-	settings->setValue(QString("%1/host").arg(id), host);
-	settings->setValue(QString("%1/user").arg(id), user);
-	if (authType==PlinkSshTransport::Password)
-		settings->setValue(QString("%1/auth_type").arg(id), "password");
-	else
-		settings->setValue(QString("%1/auth_type").arg(id), "public_key");
-	settings->setValue(QString("%1/key_file_path").arg(id), "");
+	AbstractSshTransport::saveTransport();
 	return id;
-}
-
-const QString PlinkSshTransport::getUser()
-{
-	return user;
-}
-
-void PlinkSshTransport::setUser(const QString& u)
-{
-	qDebug() << "PlinkSshTransport::setUser" << u;
-	user = u;
-}
-
-const QString PlinkSshTransport::getHost()
-{
-	return host;
-}
-
-void PlinkSshTransport::setHost(const QString& h)
-{
-	qDebug() << "PlinkSshTransport::sethost" << h;
-	host = h;
-}
-
-const QString PlinkSshTransport::getKeyFilePath()
-{
-	return keyFilePath;
-}
-
-void PlinkSshTransport::setKeyFilePath(const QString& k)
-{
-	qDebug() << "PlinkSshTransport::setKeyFilePath" << k;
-	keyFilePath= k;
-}
-
-PlinkSshTransport::SshAuthType PlinkSshTransport::getAuthType()
-{
-	return authType;
-}
-
-void PlinkSshTransport::setAuthType(SshAuthType t)
-{
-	qDebug() << "PlinkSshTransport::setAuthType" << t;
-	authType = t;
-}
-
-void PlinkSshTransport::procStatusUpdate(QProcess::ProcessState newState)
-{
-	switch (newState)
-	{
-	case QProcess::NotRunning:
-		setConnectionStatus(Transport::Disconnected);
-		break;
-	case QProcess::Starting:
-		setConnectionStatus(Transport::EstablishingConnection);
-		break;
-	case QProcess::Running:
-		setConnectionStatus(Transport::Connected);
-		break;
-	}
-}
-
-void PlinkSshTransport::procReadIn()
-{
-	qDebug() << "PlinkSshTransport::procReadIn";
-	while(1)
-	{
-		QByteArray in = proc.readLine();
-		if (in.isEmpty())
-			break;
-		else
-		{
-			QString line(in);
-			line.remove(QRegExp("[\\n\\r]+$"));
-			emit(receivedLine(line));
-		}
-	}
-}
-
-void PlinkSshTransport::procReadErr()
-{
-	qWarning() << "PlinkSshTransport::procReadErr:" << proc.readAllStandardError();
-}
-
-void PlinkSshTransport::procError(QProcess::ProcessError err)
-{
-	qWarning() << "PlinkSshTransport::procError detected error:" << err;
-}
-
-void PlinkSshTransport::procDone(int err)
-{
-	qWarning() << "PlinkSshTransport::procError detected error:" << err;
 }
 
 void PlinkSshTransport::dumpDebug()
 {
-	qDebug() << "PlinkSshTransport::dumpDebug, calling Transport::dumpDebug...";
-	Transport::dumpDebug();
-	qDebug() << "PlinkSshTransport::dumpDebug host=" << host;
-	qDebug() << "PlinkSshTransport::dumpDebug user=" << user;
-	qDebug() << "PlinkSshTransport::dumpDebug authType=" << authType;
-	qDebug() << "PlinkSshTransport::dumpDebug keyFilePath=" << keyFilePath;
+	qDebug() << "PlinkSshTransport::dumpDebug, calling AbstractSshTransport::dumpDebug...";
+	AbstractSshTransport::dumpDebug();
+	qDebug() << "PlinkSshTransport::dumpDebug plink exe path is" << getPlinkExePath();
 }
 
 QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& exe, const QStringList& args)
@@ -183,7 +75,6 @@ QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& ex
 	qDebug() << "PlinkSshTransport::establishConnection" << exe << args;
 	dumpDebug();
 	proc.setProcessChannelMode(QProcess::MergedChannels);
-	QString plinkExe = GnosticApp::getInstance().settings()->value("Programs/plink_path", "plink").toString();
 	QStringList plinkArgs;
 
 	if (authType == PlinkSshTransport::Password)
@@ -206,8 +97,8 @@ QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& ex
 
 	plinkArgs << "-x" << "-a" << "-T" << "-l" << user << host << exe << args;
 
-	qDebug() << "PlinkSshTransport::establishConnection start(" << plinkExe << plinkArgs << ")";
-	proc.start(plinkExe, plinkArgs);
+	qDebug() << "PlinkSshTransport::establishConnection start(" << getPlinkExePath() << plinkArgs << ")";
+	proc.start(getPlinkExePath(), plinkArgs);
 	if (!proc.waitForStarted())
 	{
 		qDebug() << "PlinkSshTransport::establishConnection waitForStarted returned false";
@@ -266,4 +157,9 @@ QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& ex
 		}
 	}
 	return QString();
+}
+
+QString PlinkSshTransport::getPlinkExePath()
+{
+	return GnosticApp::getInstance().settings()->value("programs/plink_path", "plink").toString();
 }

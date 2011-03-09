@@ -1,19 +1,19 @@
-#ifndef PLINKSSHTRANSPORT_HPP
-#define PLINKSSHTRANSPORT_HPP
+#ifndef OPENSSHTRANSPORT_HPP
+#define OPENSSHTRANSPORT_HPP
 
 #include "Transport.hpp"
 #include "AbstractSshTransport.hpp"
 #include <QProcess>
 
-class PlinkSshTransport : public AbstractSshTransport
+class OpenSshTransport : public AbstractSshTransport
 {
     Q_OBJECT
 
 public:
-	//! Create an empty PlinkSshTransport object
-	PlinkSshTransport(QObject* parent=0);
-	~PlinkSshTransport();
-	virtual const QString getType() {return "PlinkSshTransport";}
+	//! Create an empty OpenSshTransport object
+	OpenSshTransport(QObject* parent=0);
+	~OpenSshTransport();
+	virtual const QString getType() {return "OpenSshTransport";}
 
 	//! Test that the transport can connect to the remote host and echo "hello world"
 	virtual bool testTransport();
@@ -46,7 +46,7 @@ private:
 	QString establishConnection(QProcess& proc, const QString& exe, const QStringList& args);
 
 	//! get the path to the plink executable
-	QString getPlinkExePath();
+	QString getOpenExePath();
 };
 
-#endif // PLINKSSHTRANSPORT_HPP
+#endif // OPENSSHTRANSPORT_HPP

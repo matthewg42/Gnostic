@@ -6,31 +6,30 @@
 
 QT       += core gui network
 
-TARGET = Gnostic
+TARGET   = Gnostic
 TEMPLATE = app
 
+SOURCES += main.cpp                   \
+	   GnosticMainWindow.cpp      \
+	   Transport.cpp              \
+	   GnosticApp.cpp             \
+	   LocalTransport.cpp         \
+	   PasswordDialog.cpp         \
+	   PlinkSshTransport.cpp      \
+	   AbstractSshTransport.cpp   \
+	   OpenSshTransport.cpp
 
-SOURCES += main.cpp\
-        GnosticMainWindow.cpp \
-    Transport.cpp \
-    GnosticApp.cpp \
-    LocalTransport.cpp \
-    # PlinkSshTransport.cpp \
-    PasswordDialog.cpp \
-    PlinkSshTransport.cpp
+HEADERS += GnosticMainWindow.hpp      \
+	   Transport.hpp              \
+	   GnosticApp.hpp             \
+	   config.hpp                 \
+	   LocalTransport.hpp         \
+	   PasswordDialog.hpp         \
+	   PlinkSshTransport.hpp      \
+	   AbstractSshTransport.hpp   \
+	   OpenSshTransport.hpp
 
-HEADERS  += GnosticMainWindow.hpp \
-    Transport.hpp \
-    GnosticApp.hpp \
-    config.hpp \
-    LocalTransport.hpp \
-    # PlinkSshTransport.hpp \
-    PasswordDialog.hpp \
-    PlinkSshTransport.hpp
+FORMS   += GnosticMainWindow.ui       \
+	   PasswordDialog.ui
 
-FORMS    += GnosticMainWindow.ui \
-    PasswordDialog.ui
-
-OTHER_FILES += \
-    README \
-    gnostic.res
+OTHER_FILES += README gnostic.res

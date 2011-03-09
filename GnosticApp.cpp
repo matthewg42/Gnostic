@@ -85,3 +85,4 @@ const QString GnosticApp::getIniPath()
 {
 	return QString("%1/%2").arg(configDir).arg("config.ini");
 }
+

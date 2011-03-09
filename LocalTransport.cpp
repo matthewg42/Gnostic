@@ -29,7 +29,7 @@ bool LocalTransport::testTransport()
 {
 	qDebug() << "LocalTransport::testTransport";
 
-	QString exe = GnosticApp::getInstance().settings()->value("Programs/echo_path", "echo").toString();
+	QString exe = GnosticApp::getInstance().settings()->value("programs/echo_path", "echo").toString();
 	QProcess testProc;
 	testProc.start(exe, QStringList() << "hello world");
 	if (!testProc.waitForStarted(1000))

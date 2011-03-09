@@ -4,7 +4,7 @@
 #include <QWidget>
 
 #include "LocalTransport.hpp"
-#include "PlinkSshTransport.hpp"
+#include "OpenSshTransport.hpp"
 
 GnosticMainWindow* GnosticMainWindow::singleton = NULL;
 
@@ -16,8 +16,8 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
 	singleton = this;
         ui->setupUi(this);
 
-	PlinkSshTransport* t = new PlinkSshTransport(this);
-	t->setDescription("a test SSH transport object");
+	OpenSshTransport* t = new OpenSshTransport(this);
+	t->setDescription("a test Open SSH transport object");
 	t->setHost("localhost");
 	t->setUser("work");
 
