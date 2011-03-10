@@ -30,7 +30,7 @@ private slots:
 	void saveCurrent();
 	void addNewDataDisplay();
 	void deleteCurrent();
-	void testCurrent(bool);
+	void testCurrent();
 
 private:
 	Ui::DataDisplayEditorForm *ui;

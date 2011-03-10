@@ -30,7 +30,7 @@ public slots:
 	virtual void stop();
 
 	//! Save transport settings
-	virtual const QString& saveTransport();
+	virtual const QString saveTransport();
 
 	//! Dump debugging info
 	virtual void dumpDebug();

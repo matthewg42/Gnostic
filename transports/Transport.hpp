@@ -102,7 +102,7 @@ public slots:
 	//! empty, otherwise a new, unique ID will be generated, and set
 	//! as the current ID.
 	//! In either case the ID after the save is returned.
-	virtual const QString& saveTransport() = 0;
+	virtual const QString saveTransport() = 0;
 
 	//! Load the settings for this transport from the specified section of the config.ini
 	//! \param section the section in the config.ini file which describes the Transport

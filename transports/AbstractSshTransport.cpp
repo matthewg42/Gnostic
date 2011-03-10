@@ -30,7 +30,7 @@ TransportConfigWidget* AbstractSshTransport::getConfigWidget(QWidget* parent)
 	return configWidget;
 }
 
-const QString& AbstractSshTransport::saveTransport()
+const QString AbstractSshTransport::saveTransport()
 {
 	qDebug() << "AbstractSshTransport::saveTransport";
 	Transport::saveTransport();

@@ -32,7 +32,7 @@ public:
 	virtual TransportConfigWidget* getConfigWidget(QWidget* parent);
 
 public slots:
-	virtual const QString& saveTransport();
+	virtual const QString saveTransport();
 
 	virtual bool loadSettings(const QString& section);
 

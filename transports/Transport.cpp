@@ -120,7 +120,7 @@ void Transport::setDescription(QString newDescription)
 	description=newDescription;
 }
 
-const QString& Transport::saveTransport()
+const QString Transport::saveTransport()
 {
 	if (id.isEmpty())
 		id = getNewTransportId();

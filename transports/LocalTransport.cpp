@@ -76,7 +76,7 @@ void LocalTransport::stop()
 		proc.kill();
 }
 
-const QString& LocalTransport::saveTransport()
+const QString LocalTransport::saveTransport()
 {
 	qDebug() << "LocalTransport::saveTransport, calling Transport::saveTransport first";
 	Transport::saveTransport();

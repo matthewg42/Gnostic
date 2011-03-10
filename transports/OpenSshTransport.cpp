@@ -56,7 +56,7 @@ void OpenSshTransport::stop()
 		proc.kill();
 }
 
-const QString& OpenSshTransport::saveTransport()
+const QString OpenSshTransport::saveTransport()
 {
 	qDebug() << "OpenSshTransport::saveTransport";
 	AbstractSshTransport::saveTransport();

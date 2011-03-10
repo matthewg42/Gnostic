@@ -1,7 +1,7 @@
 #include "DataDisplay.hpp"
 #include "GnosticApp.hpp"
 #include "DataDisplayConfigWidget.hpp"
-#include "CounterDisplay.hpp"
+#include "LineCounterDisplay.hpp"
 
 #include <QSettings>
 #include <QDebug>
@@ -32,13 +32,13 @@ const QString& DataDisplay::getDescription()
 
 QStringList DataDisplay::getAvailableTypes()
 {
-	return QStringList() << "CounterDisplay";
+	return QStringList() << "LineCounterDisplay";
 }
 
 DataDisplay* DataDisplay::makeDataDisplay(const QString& type, QWidget* parent)
 {
-	if (type == "CounterDisplay")
-		return new CounterDisplay(parent);
+	if (type == "LineCounterDisplay")
+		return new LineCounterDisplay(parent);
 //	else if (DataDisplayType == "PlinkSshDataDisplay")
 //		return new PlinkSshDataDisplay(parent);
 //	else if (DataDisplayType == "OpenSshDataDisplay")
@@ -56,9 +56,9 @@ DataDisplay* DataDisplay::loadDataDisplay(const QString& section, QWidget* paren
 	QString DataDisplayType = GnosticApp::getInstance().settings()->value(QString("%1/type").arg(section)).toString();
 	DataDisplay* display;
 
-	if (DataDisplayType == "CounterDisplay")
+	if (DataDisplayType == "LineCounterDisplay")
 	{
-		CounterDisplay* d = new CounterDisplay(parent);
+		LineCounterDisplay* d = new LineCounterDisplay(parent);
 		d->loadSettings(section);
 		display = dynamic_cast<DataDisplay*>(d);
 	}

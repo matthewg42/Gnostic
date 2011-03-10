@@ -5,19 +5,19 @@
 #include <QRegExp>
 
 namespace Ui {
-	class CounterDisplay;
+	class LineCounterDisplay;
 }
 
 class DataDisplayConfigWidget;
 
-class CounterDisplay : public DataDisplay
+class LineCounterDisplay : public DataDisplay
 {
 	Q_OBJECT
 
 public:
-	CounterDisplay(QWidget *parent = 0);
-	~CounterDisplay();
-	virtual const QString getType() { return "CounterDisplay"; }
+	LineCounterDisplay(QWidget *parent = 0);
+	~LineCounterDisplay();
+	virtual const QString getType() { return "LineCounterDisplay"; }
 	virtual DataDisplay::DataTypes wantDataTypes() { return DataDisplay::Lines; }
 
 	virtual DataDisplayConfigWidget* getConfigWidget(QWidget* parent);
@@ -33,7 +33,7 @@ public slots:
 	bool getDisplayLabel();
 
 private:
-	Ui::CounterDisplay *ui;
+	Ui::LineCounterDisplay *ui;
 	QRegExp filter;
 	bool showLabel;
 };

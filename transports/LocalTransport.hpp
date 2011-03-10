@@ -35,7 +35,7 @@ public slots:
 	//! Kill the current monitor if it is running
 	virtual void stop();
 
-	virtual const QString& saveTransport();
+	virtual const QString saveTransport();
 
 	virtual bool loadSettings(const QString& section);
 

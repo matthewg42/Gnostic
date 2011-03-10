@@ -29,9 +29,10 @@ SOURCES += \
     GnosticParser.cpp \
     DataDisplay.cpp \
     DataDisplayConfigWidget.cpp \
-    CounterDisplay.cpp \
-    CounterDisplayConfigWidget.cpp \
-    DataDisplayEditorForm.cpp
+    LineCounterDisplay.cpp \
+    LineCounterDisplayConfigWidget.cpp \
+    DataDisplayEditorForm.cpp \
+    transports/DummyTransport.cpp
 
 HEADERS += \
     config.hpp \
@@ -50,9 +51,10 @@ HEADERS += \
     GnosticParser.hpp \
     DataDisplay.hpp \
     DataDisplayConfigWidget.hpp \
-    CounterDisplay.hpp \
-    CounterDisplayConfigWidget.hpp \
-    DataDisplayEditorForm.hpp
+    LineCounterDisplay.hpp \
+    LineCounterDisplayConfigWidget.hpp \
+    DataDisplayEditorForm.hpp \
+    transports/DummyTransport.hpp
 
 FORMS += \
     gui/GnosticMainWindow.ui \
@@ -60,8 +62,8 @@ FORMS += \
     gui/LocalTransportConfigWidget.ui \
     gui/SshTransportConfigWidget.ui \
     gui/TransportEditorForm.ui \
-    CounterDisplay.ui \
-    CounterDisplayConfigWidget.ui \
+    LineCounterDisplay.ui \
+    LineCounterDisplayConfigWidget.ui \
     DataDisplayEditorForm.ui
 
 OTHER_FILES += \

@@ -4,6 +4,7 @@
 #include "DataDisplay.hpp"
 #include "DataDisplayConfigWidget.hpp"
 #include "GnosticApp.hpp"
+#include "GnosticParser.hpp"
 
 #include <QStandardItem>
 #include <QList>
@@ -25,7 +26,7 @@ DataDisplayEditorForm::DataDisplayEditorForm(QWidget *parent) :
 	connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(saveCurrent()));
 	connect(ui->addButton, SIGNAL(clicked()), this, SLOT(addNewDataDisplay()));
 	connect(ui->removeButton, SIGNAL(clicked()), this, SLOT(deleteCurrent()));
-	connect(ui->testButton, SIGNAL(toggled(bool)), this, SLOT(testCurrent(bool)));
+	connect(ui->testButton, SIGNAL(clicked()), this, SLOT(testCurrent()));
 
 	model.setHorizontalHeaderLabels(QStringList() << "Section" << "Display Description");
 	ui->displayTable->setModel(&model);
@@ -99,10 +100,11 @@ void DataDisplayEditorForm::selectDataDisplay(const QString& section)
 
 void DataDisplayEditorForm::selectRowWithId(const QString& id)
 {
-	QList<QStandardItem*> search = model.findItems(current->getId());
+	qDebug() << "DataDisplayEditorForm::selectRowWithId" << id;
+	QList<QStandardItem*> search = model.findItems(id);
 	if (search.count() > 0)
 	{
-		ui->displayTable->selectRow(model.findItems(current->getId()).at(0)->row());
+		ui->displayTable->selectRow(search.at(0)->row());
 		displayTableClicked(ui->displayTable->currentIndex());
 	}
 }
@@ -163,7 +165,12 @@ void DataDisplayEditorForm::deleteCurrent()
 	}
 }
 
-void DataDisplayEditorForm::testCurrent(bool b)
+void DataDisplayEditorForm::testCurrent()
 {
-	qDebug() << "DataDisplayEditorForm::testCurrent TODO: make visible and such";
+	qDebug() << "DataDisplayEditorForm::testCurrent";
+	// Create a parser and a dummy data source, and hook it up...
+
+	GnosticParser *parser = new GnosticParser(current);
+
+	current->show();
 }

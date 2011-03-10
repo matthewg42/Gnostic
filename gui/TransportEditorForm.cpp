@@ -99,10 +99,10 @@ void TransportEditorForm::selectTransport(const QString& section)
 
 void TransportEditorForm::selectRowWithId(const QString& id)
 {
-	QList<QStandardItem*> search = model.findItems(current->getId());
+	QList<QStandardItem*> search = model.findItems(id);
 	if (search.count() > 0)
 	{
-		ui->transportTable->selectRow(model.findItems(current->getId()).at(0)->row());
+		ui->transportTable->selectRow(search.at(0)->row());
 		transportTableClicked(ui->transportTable->currentIndex());
 	}
 }

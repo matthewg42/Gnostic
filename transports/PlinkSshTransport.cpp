@@ -56,7 +56,7 @@ void PlinkSshTransport::stop()
 		proc.kill();
 }
 
-const QString& PlinkSshTransport::saveTransport()
+const QString PlinkSshTransport::saveTransport()
 {
 	qDebug() << "PlinkSshTransport::saveTransport";
 	AbstractSshTransport::saveTransport();

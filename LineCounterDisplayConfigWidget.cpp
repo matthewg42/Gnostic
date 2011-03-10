@@ -1,13 +1,13 @@
-#include "CounterDisplayConfigWidget.hpp"
-#include "ui_CounterDisplayConfigWidget.h"
-#include "CounterDisplay.hpp"
+#include "LineCounterDisplayConfigWidget.hpp"
+#include "ui_LineCounterDisplayConfigWidget.h"
+#include "LineCounterDisplay.hpp"
 
-CounterDisplayConfigWidget::CounterDisplayConfigWidget(DataDisplay* d, QWidget *parent) :
+LineCounterDisplayConfigWidget::LineCounterDisplayConfigWidget(DataDisplay* d, QWidget *parent) :
 		DataDisplayConfigWidget(d, parent),
-		ui(new Ui::CounterDisplayConfigWidget)
+		ui(new Ui::LineCounterDisplayConfigWidget)
 {
 	ui->setupUi(this);
-	CounterDisplay* cd = static_cast<CounterDisplay*>(d);
+	LineCounterDisplay* cd = static_cast<LineCounterDisplay*>(d);
 	ui->descriptionEdit->setText(cd->getDescription());
 	ui->filterEdit->setText(cd->getFilter());
 	ui->displayLabelCheck->setChecked(cd->getDisplayLabel());
@@ -20,7 +20,7 @@ CounterDisplayConfigWidget::CounterDisplayConfigWidget(DataDisplay* d, QWidget *
 	connect(ui->displayLabelCheck, SIGNAL(toggled(bool)), this, SLOT(madeUpdate()));
 }
 
-CounterDisplayConfigWidget::~CounterDisplayConfigWidget()
+LineCounterDisplayConfigWidget::~LineCounterDisplayConfigWidget()
 {
 	delete ui;
 }
