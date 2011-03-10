@@ -6,6 +6,7 @@
 
 #include <QSettings>
 #include <QDebug>
+#include <QCloseEvent>
 
 DataDisplay::DataDisplay(QWidget* parent) :
 		QWidget(parent),
@@ -43,7 +44,10 @@ DataDisplay* DataDisplay::makeDataDisplay(const QString& type, QWidget* parent)
 	else if (type == "TailerDisplay")
 		return new TailerDisplay(parent);
 	else
+	{
+		qWarning() << "DataDisplay::makeDataDisplay UNKNOWN type" << type;
 		return NULL;
+	}
 
 }
 
@@ -52,23 +56,25 @@ DataDisplay* DataDisplay::loadDataDisplay(const QString& section, QWidget* paren
 	if (!GnosticApp::getInstance().settings()->childGroups().contains(section))
 		return NULL;
 
-	QString DataDisplayType = GnosticApp::getInstance().settings()->value(QString("%1/type").arg(section)).toString();
+	QString type = GnosticApp::getInstance().settings()->value(QString("%1/type").arg(section)).toString();
 	DataDisplay* display;
-
-	if (DataDisplayType == "LineCounterDisplay")
+	if (type == "LineCounterDisplay")
 	{
 		LineCounterDisplay* d = new LineCounterDisplay(parent);
 		d->loadSettings(section);
 		display = dynamic_cast<DataDisplay*>(d);
 	}
-	if (DataDisplayType == "TailerDisplay")
+	else if (type == "TailerDisplay")
 	{
 		TailerDisplay* d = new TailerDisplay(parent);
 		d->loadSettings(section);
 		display = dynamic_cast<DataDisplay*>(d);
 	}
 	else
+	{
+		qWarning() << "DataDisplay::loadDataDisplay section" << section << "is for a type" << type << "I don't recognize, returning NULL";
 		return NULL;
+	}
 
 	return display;
 
@@ -154,6 +160,12 @@ void DataDisplay::dumpDebug()
 	qDebug() << "DataDisplay::dumpDebug @ "  << (void*)this;
 	qDebug() << "DataDisplay::dumpDebug id" << id;
 	qDebug() << "DataDisplay::dumpDebug description" << description;
+}
+
+void DataDisplay::closeEvent(QCloseEvent *event)
+{
+	event->accept();
+	emit(wasClosed());
 }
 
 

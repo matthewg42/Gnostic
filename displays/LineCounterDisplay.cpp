@@ -8,18 +8,19 @@
 #include <QSettings>
 
 LineCounterDisplay::LineCounterDisplay(QWidget *parent) :
-    DataDisplay(parent),
-    ui(new Ui::LineCounterDisplay),
-    filter(),
-    showLabel(true)
+		DataDisplay(parent),
+		ui(new Ui::LineCounterDisplay),
+		filter(),
+		showLabel(true)
 {
-    ui->setupUi(this);
-    setDisplayLabel(showLabel);
+	configWidget = NULL;
+	ui->setupUi(this);
+	setDisplayLabel(showLabel);
 }
 
 LineCounterDisplay::~LineCounterDisplay()
 {
-    delete ui;
+	delete ui;
 }
 
 DataDisplayConfigWidget* LineCounterDisplay::getConfigWidget(QWidget* parent)
@@ -73,7 +74,6 @@ QString LineCounterDisplay::getFilter()
 
 void LineCounterDisplay::setDisplayLabel(bool b)
 {
-	qDebug() << "LineCounterDisplay::setDisplayLabel with" << b;
 	showLabel = b;
 	ui->label->setVisible(showLabel);
 }

@@ -93,6 +93,12 @@ public slots:
 	//! Dump info about the DataDisplay onto debugging output
 	virtual void dumpDebug() = 0;
 
+signals:
+	void wasClosed();
+
+protected:
+	virtual void closeEvent(QCloseEvent *event);
+
 protected:
 	QString id;
 	QString description;

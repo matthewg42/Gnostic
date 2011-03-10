@@ -89,13 +89,16 @@ void DataDisplayEditorForm::displayTableClicked(QModelIndex idx)
 
 void DataDisplayEditorForm::selectDataDisplay(const QString& section)
 {
+	qDebug() << "DataDisplayEditorForm::selectDataDisplay called with" << section;
 	clearCurrent();
 
 	ui->saveButton->setEnabled(false);
 	current = DataDisplay::loadDataDisplay(section);
+	qDebug() << "DataDisplayEditorForm::selectDataDisplay after load, current is" << current;
 	if (current)
 	{
 		DataDisplayConfigWidget* dconf = current->getConfigWidget(this);
+		qDebug() << "DataDisplayEditorForm::selectDataDisplay" << section << dconf;
 		if (dconf)
 		{
 			connect(dconf, SIGNAL(wasUpdated()), this, SLOT(markUpdated()));
@@ -180,6 +183,7 @@ void DataDisplayEditorForm::testCurrent()
 	GnosticParser *parser = new GnosticParser(current);
 	Transport* dummy = new DummyTransport(current);
 	connect(dummy, SIGNAL(spewLine(QString)), parser, SLOT(takeLine(QString)));
+	connect(current, SIGNAL(wasClosed()), dummy, SLOT(stop()));
 	if (current->wantDataTypes() & DataDisplay::Lines)
 	{
 		qDebug() << "DataDisplayEditorForm::testCurrent it wants Lines... hooking up line feed...";
@@ -194,7 +198,7 @@ void DataDisplayEditorForm::testCurrent()
 	}
 	else qDebug() << "DataDisplayEditorForm::testCurrent it doesn't want DataItems...";
 
+
 	current->show();
 	dummy->start("ignore");
-
 }
