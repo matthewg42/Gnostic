@@ -15,66 +15,66 @@ INCLUDEPATH += displays
 INCLUDEPATH += utility
 
 SOURCES += \
-    main.cpp \
-    utility/GnosticApp.cpp \
-    utility/GnosticParser.cpp \
-    transports/Transport.cpp \
-    transports/PlinkSshTransport.cpp \
-    transports/OpenSshTransport.cpp \
-    transports/DummyTransport.cpp \
-    transports/LocalTransport.cpp \
-    transports/LocalTransportConfigWidget.cpp \
-    transports/AbstractSshTransport.cpp \
-    transports/SshTransportConfigWidget.cpp \
-    displays/DataDisplay.cpp \
-    displays/DataDisplayConfigWidget.cpp \
-    displays/LineCounterDisplay.cpp \
-    displays/LineCounterDisplayConfigWidget.cpp \
-    displays/TailerDisplay.cpp \
-    displays/TailerDisplayConfigWidget.cpp \
-    gui/TransportEditorForm.cpp \ 
-    gui/DataDisplayEditorForm.cpp \
-    gui/GnosticMainWindow.cpp \
-    gui/TransportConfigWidget.cpp \
-    gui/PasswordDialog.cpp \
-    utility/FileUtils.cpp
+    src/main.cpp \
+    src/utility/GnosticApp.cpp \
+    src/utility/GnosticParser.cpp \
+    src/transports/Transport.cpp \
+    src/transports/PlinkSshTransport.cpp \
+    src/transports/OpenSshTransport.cpp \
+    src/transports/DummyTransport.cpp \
+    src/transports/LocalTransport.cpp \
+    src/transports/LocalTransportConfigWidget.cpp \
+    src/transports/AbstractSshTransport.cpp \
+    src/transports/SshTransportConfigWidget.cpp \
+    src/displays/DataDisplay.cpp \
+    src/displays/DataDisplayConfigWidget.cpp \
+    src/displays/LineCounterDisplay.cpp \
+    src/displays/LineCounterDisplayConfigWidget.cpp \
+    src/displays/TailerDisplay.cpp \
+    src/displays/TailerDisplayConfigWidget.cpp \
+    src/gui/TransportEditorForm.cpp \ 
+    src/gui/DataDisplayEditorForm.cpp \
+    src/gui/GnosticMainWindow.cpp \
+    src/gui/TransportConfigWidget.cpp \
+    src/gui/PasswordDialog.cpp \
+    src/utility/FileUtils.cpp
 
 HEADERS += \
-    config.hpp \
-    utility/GnosticApp.hpp \
-    utility/GnosticParser.hpp \
-    transports/Transport.hpp \
-    transports/PlinkSshTransport.hpp \
-    transports/OpenSshTransport.hpp \
-    transports/DummyTransport.hpp \
-    transports/LocalTransport.hpp \
-    transports/LocalTransportConfigWidget.hpp \
-    transports/AbstractSshTransport.hpp\
-    transports/SshTransportConfigWidget.hpp \
-    displays/DataDisplay.hpp \
-    displays/DataDisplayConfigWidget.hpp \
-    displays/LineCounterDisplay.hpp \
-    displays/LineCounterDisplayConfigWidget.hpp \
-    displays/TailerDisplay.hpp \
-    displays/TailerDisplayConfigWidget.hpp \
-    gui/TransportEditorForm.hpp \
-    gui/DataDisplayEditorForm.hpp \
-    gui/GnosticMainWindow.hpp \
-    gui/TransportConfigWidget.hpp \
-    gui/PasswordDialog.hpp \
-    utility/FileUtils.hpp
+    src/config.hpp \
+    src/utility/GnosticApp.hpp \
+    src/utility/GnosticParser.hpp \
+    src/transports/Transport.hpp \
+    src/transports/PlinkSshTransport.hpp \
+    src/transports/OpenSshTransport.hpp \
+    src/transports/DummyTransport.hpp \
+    src/transports/LocalTransport.hpp \
+    src/transports/LocalTransportConfigWidget.hpp \
+    src/transports/AbstractSshTransport.hpp\
+    src/transports/SshTransportConfigWidget.hpp \
+    src/displays/DataDisplay.hpp \
+    src/displays/DataDisplayConfigWidget.hpp \
+    src/displays/LineCounterDisplay.hpp \
+    src/displays/LineCounterDisplayConfigWidget.hpp \
+    src/displays/TailerDisplay.hpp \
+    src/displays/TailerDisplayConfigWidget.hpp \
+    src/gui/TransportEditorForm.hpp \
+    src/gui/DataDisplayEditorForm.hpp \
+    src/gui/GnosticMainWindow.hpp \
+    src/gui/TransportConfigWidget.hpp \
+    src/gui/PasswordDialog.hpp \
+    src/utility/FileUtils.hpp
 
 FORMS += \
-    transports/LocalTransportConfigWidget.ui \
-    transports/SshTransportConfigWidget.ui \
-    displays/LineCounterDisplay.ui \ 
-    displays/LineCounterDisplayConfigWidget.ui \
-    displays/TailerDisplay.ui \
-    displays/TailerDisplayConfigWidget.ui \
-    gui/DataDisplayEditorForm.ui \
-    gui/GnosticMainWindow.ui \
-    gui/PasswordDialog.ui \
-    gui/TransportEditorForm.ui
+    src/transports/LocalTransportConfigWidget.ui \
+    src/transports/SshTransportConfigWidget.ui \
+    src/displays/LineCounterDisplay.ui \ 
+    src/displays/LineCounterDisplayConfigWidget.ui \
+    src/displays/TailerDisplay.ui \
+    src/displays/TailerDisplayConfigWidget.ui \
+    src/gui/DataDisplayEditorForm.ui \
+    src/gui/GnosticMainWindow.ui \
+    src/gui/PasswordDialog.ui \
+    src/gui/TransportEditorForm.ui
 
 OTHER_FILES += \
     README

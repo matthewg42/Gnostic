@@ -84,7 +84,7 @@
           <string>+</string>
          </property>
          <property name="icon">
-          <iconset resource="../resources.qrc">
+          <iconset resource="../../resources.qrc">
            <normaloff>:/icons/images/add-icon.png</normaloff>:/icons/images/add-icon.png</iconset>
          </property>
          <property name="iconSize">
@@ -104,7 +104,7 @@
           <string>-</string>
          </property>
          <property name="icon">
-          <iconset resource="../resources.qrc">
+          <iconset resource="../../resources.qrc">
            <normaloff>:/icons/images/remove-icon.png</normaloff>:/icons/images/remove-icon.png</iconset>
          </property>
          <property name="iconSize">
@@ -124,7 +124,7 @@
           <string>T</string>
          </property>
          <property name="icon">
-          <iconset resource="../resources.qrc">
+          <iconset resource="../../resources.qrc">
            <normaloff>:/icons/images/test-icon.png</normaloff>:/icons/images/test-icon.png</iconset>
          </property>
          <property name="iconSize">
@@ -144,7 +144,7 @@
           <string>S</string>
          </property>
          <property name="icon">
-          <iconset resource="../resources.qrc">
+          <iconset resource="../../resources.qrc">
            <normaloff>:/icons/images/save-icon.png</normaloff>:/icons/images/save-icon.png</iconset>
          </property>
          <property name="iconSize">
@@ -162,7 +162,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections/>
 </ui>
