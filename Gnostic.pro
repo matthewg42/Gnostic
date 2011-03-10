@@ -28,7 +28,9 @@ SOURCES += \
     gui/TransportEditorForm.cpp \
     GnosticParser.cpp \
     DataDisplay.cpp \
-    DataDisplayConfigWidget.cpp
+    DataDisplayConfigWidget.cpp \
+    CounterDisplay.cpp \
+    CounterDisplayConfigWidget.cpp
 
 HEADERS += \
     config.hpp \
@@ -46,14 +48,18 @@ HEADERS += \
     gui/TransportEditorForm.hpp \
     GnosticParser.hpp \
     DataDisplay.hpp \
-    DataDisplayConfigWidget.hpp
+    DataDisplayConfigWidget.hpp \
+    CounterDisplay.hpp \
+    CounterDisplayConfigWidget.hpp
 
 FORMS += \
     gui/GnosticMainWindow.ui \
     gui/PasswordDialog.ui \
     gui/LocalTransportConfigWidget.ui \
     gui/SshTransportConfigWidget.ui \
-    gui/TransportEditorForm.ui
+    gui/TransportEditorForm.ui \
+    CounterDisplay.ui \
+    CounterDisplayConfigWidget.ui
 
 OTHER_FILES += \
     README

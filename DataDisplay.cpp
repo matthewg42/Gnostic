@@ -1,17 +1,15 @@
 #include "DataDisplay.hpp"
 #include "GnosticApp.hpp"
-#include "GnosticParser.hpp"
 #include "DataDisplayConfigWidget.hpp"
 
 #include <QSettings>
 #include <QDebug>
 
-DataDisplay::DataDisplay(GnosticParser* p, QWidget* parent) :
+DataDisplay::DataDisplay(QWidget* parent) :
 		QWidget(parent),
 		id(),
 		description()
 {
-	parser = p;
 	configWidget = NULL;
 }
 

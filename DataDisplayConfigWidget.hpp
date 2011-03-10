@@ -13,7 +13,7 @@ class DataDisplayConfigWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit DataDisplayConfigWidget(DataDisplay* t, QWidget *parent = 0);
+	explicit DataDisplayConfigWidget(DataDisplay* d, QWidget *parent = 0);
 	~DataDisplayConfigWidget() = 0;
 
 signals:

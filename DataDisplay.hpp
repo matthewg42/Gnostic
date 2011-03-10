@@ -4,7 +4,6 @@
 #include <QWidget>
 #include <QString>
 
-class GnosticParser;
 class DataDisplayConfigWidget;
 
 //! \class DataDisplay
@@ -16,7 +15,7 @@ class DataDisplay : public QWidget
     Q_OBJECT
 
 public:
-    DataDisplay(GnosticParser* p, QWidget *parent = 0);
+    DataDisplay(QWidget *parent = 0);
     virtual ~DataDisplay() = 0;
 
     //! Returns a string description of the type, e.g. "GraphDataDisplay"
@@ -91,7 +90,6 @@ protected:
     QString id;
     QString description;
     DataDisplayConfigWidget* configWidget;
-    GnosticParser* parser;
 
 };
 

@@ -16,13 +16,6 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
 	singleton = this;
         ui->setupUi(this);
 
-	Transport* t = Transport::loadTransport("transport_0", this);
-	if (t)
-	{
-		GnosticParser* p = new GnosticParser(this);
-		connect(t, SIGNAL(spewLine(QString)), p, SLOT(takeLine(QString)));
-		t->start("/home/mouse/mon.sh");
-	}
 }
 
 GnosticMainWindow::~GnosticMainWindow()

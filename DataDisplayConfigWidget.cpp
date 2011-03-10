@@ -1,10 +1,10 @@
 #include "DataDisplayConfigWidget.hpp"
 #include "DataDisplay.hpp"
 
-DataDisplayConfigWidget::DataDisplayConfigWidget(DataDisplay* t, QWidget *parent) :
-    QWidget(parent)
+DataDisplayConfigWidget::DataDisplayConfigWidget(DataDisplay* d, QWidget *parent) :
+		QWidget(parent)
 {
-	display = t;
+	display = d;
 }
 
 DataDisplayConfigWidget::~DataDisplayConfigWidget()
