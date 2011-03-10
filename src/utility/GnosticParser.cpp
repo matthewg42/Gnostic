@@ -19,7 +19,7 @@ GnosticParser::GnosticParser(QObject *parent) :
 
 void GnosticParser::setSplitRe()
 {
-	QString s = QString("^(\\d+(\\.\\d*)?)%1(\\d+(\\.\\d*)?)%2(.*)$").arg(delimiter).arg(delimiter);
+	QString s = QString("^(\\d+(\\.\\d*)?)%1(-?\\d+(\\.\\d*)?)%2(.*)$").arg(delimiter).arg(delimiter);
 	qDebug() << "GnosticParser::setSplitRe was set to" << s;
 	splitRe = QRegExp(s);
 }

@@ -8,6 +8,9 @@
 #include <QString>
 #include <QFile>
 #include <QSettings>
+#include <QMap>
+#include <QPair>
+#include <cmath>
 
 DummyTransport::DummyTransport(QObject* parent) :
 		Transport(parent)
@@ -78,11 +81,16 @@ void DummyTransport::spewHeader()
 
 void DummyTransport::spew()
 {
-	foreach(QString label, QStringList() << "Hurp" << "Durp")
+	QMap< QString, double > mid;
+	mid.insert("Hurp", 0);
+	mid.insert("Durp", 70);
+	foreach(QString label, QStringList() << mid.keys())
 	{
 		emit(spewLine(QString("%1;%2;%3")
 			      .arg(QDateTime::currentMSecsSinceEpoch())
-			      .arg(rand())
+			      .arg(fmod(rand(), 50) - 25 + mid[label])
 			      .arg(label)));
 	}
 }
+
+
