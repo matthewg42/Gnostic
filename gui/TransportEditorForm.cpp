@@ -71,7 +71,10 @@ void TransportEditorForm::clearCurrent()
 {
 	if (current)
 	{
-		ui->configLayout->removeWidget(current->getConfigWidget(this));
+		TransportConfigWidget* tconf = current->getConfigWidget(this);
+		if (tconf)
+			ui->configLayout->removeWidget(current->getConfigWidget(this));
+
 		delete current;
 		current = NULL;
 	}
@@ -91,8 +94,11 @@ void TransportEditorForm::selectTransport(const QString& section)
 	if (current)
 	{
 		TransportConfigWidget* tconf = current->getConfigWidget(this);
-		connect(tconf, SIGNAL(wasUpdated()), this, SLOT(markUpdated()));
-		ui->configLayout->addWidget(dynamic_cast<QWidget*>(tconf));
+		if(tconf)
+		{
+			connect(tconf, SIGNAL(wasUpdated()), this, SLOT(markUpdated()));
+			ui->configLayout->addWidget(dynamic_cast<QWidget*>(tconf));
+		}
 	}
 
 }

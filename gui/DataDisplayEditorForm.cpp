@@ -73,7 +73,10 @@ void DataDisplayEditorForm::clearCurrent()
 {
 	if (current)
 	{
-		ui->configLayout->removeWidget(current->getConfigWidget(this));
+		DataDisplayConfigWidget* dconf = current->getConfigWidget(this);
+		if (dconf)
+			ui->configLayout->removeWidget(current->getConfigWidget(this));
+
 		delete current;
 		current = NULL;
 	}
@@ -93,8 +96,11 @@ void DataDisplayEditorForm::selectDataDisplay(const QString& section)
 	if (current)
 	{
 		DataDisplayConfigWidget* dconf = current->getConfigWidget(this);
-		connect(dconf, SIGNAL(wasUpdated()), this, SLOT(markUpdated()));
-		ui->configLayout->addWidget(dynamic_cast<QWidget*>(dconf));
+		if (dconf)
+		{
+			connect(dconf, SIGNAL(wasUpdated()), this, SLOT(markUpdated()));
+			ui->configLayout->addWidget(dynamic_cast<QWidget*>(dconf));
+		}
 	}
 
 }

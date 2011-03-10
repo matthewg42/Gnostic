@@ -2,6 +2,7 @@
 #include "GnosticApp.hpp"
 #include "DataDisplayConfigWidget.hpp"
 #include "LineCounterDisplay.hpp"
+#include "TailerDisplay.hpp"
 
 #include <QSettings>
 #include <QDebug>
@@ -32,18 +33,16 @@ const QString& DataDisplay::getDescription()
 
 QStringList DataDisplay::getAvailableTypes()
 {
-	return QStringList() << "LineCounterDisplay";
+	return QStringList() << "LineCounterDisplay" << "TailerDisplay";
 }
 
 DataDisplay* DataDisplay::makeDataDisplay(const QString& type, QWidget* parent)
 {
 	if (type == "LineCounterDisplay")
 		return new LineCounterDisplay(parent);
-//	else if (DataDisplayType == "PlinkSshDataDisplay")
-//		return new PlinkSshDataDisplay(parent);
-//	else if (DataDisplayType == "OpenSshDataDisplay")
-//		return new OpenSshDataDisplay(parent);
-//	else
+	else if (type == "TailerDisplay")
+		return new TailerDisplay(parent);
+	else
 		return NULL;
 
 }
@@ -59,6 +58,12 @@ DataDisplay* DataDisplay::loadDataDisplay(const QString& section, QWidget* paren
 	if (DataDisplayType == "LineCounterDisplay")
 	{
 		LineCounterDisplay* d = new LineCounterDisplay(parent);
+		d->loadSettings(section);
+		display = dynamic_cast<DataDisplay*>(d);
+	}
+	if (DataDisplayType == "TailerDisplay")
+	{
+		TailerDisplay* d = new TailerDisplay(parent);
 		d->loadSettings(section);
 		display = dynamic_cast<DataDisplay*>(d);
 	}

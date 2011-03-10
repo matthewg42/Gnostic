@@ -1,5 +1,5 @@
-#ifndef COUNTERDISPLAY_HPP
-#define COUNTERDISPLAY_HPP
+#ifndef LINECOUNTERDISPLAY_HPP
+#define LINECOUNTERDISPLAY_HPP
 
 #include "DataDisplay.hpp"
 #include <QRegExp>
@@ -40,4 +40,4 @@ private:
 	bool showLabel;
 };
 
-#endif // COUNTERDISPLAY_HPP
+#endif // LINECOUNTERDISPLAY_HPP
