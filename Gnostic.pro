@@ -30,7 +30,8 @@ SOURCES += \
     DataDisplay.cpp \
     DataDisplayConfigWidget.cpp \
     CounterDisplay.cpp \
-    CounterDisplayConfigWidget.cpp
+    CounterDisplayConfigWidget.cpp \
+    DataDisplayEditorForm.cpp
 
 HEADERS += \
     config.hpp \
@@ -50,7 +51,8 @@ HEADERS += \
     DataDisplay.hpp \
     DataDisplayConfigWidget.hpp \
     CounterDisplay.hpp \
-    CounterDisplayConfigWidget.hpp
+    CounterDisplayConfigWidget.hpp \
+    DataDisplayEditorForm.hpp
 
 FORMS += \
     gui/GnosticMainWindow.ui \
@@ -59,7 +61,8 @@ FORMS += \
     gui/SshTransportConfigWidget.ui \
     gui/TransportEditorForm.ui \
     CounterDisplay.ui \
-    CounterDisplayConfigWidget.ui
+    CounterDisplayConfigWidget.ui \
+    DataDisplayEditorForm.ui
 
 OTHER_FILES += \
     README

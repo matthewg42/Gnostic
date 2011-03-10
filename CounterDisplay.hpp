@@ -15,12 +15,18 @@ class CounterDisplay : public DataDisplay
 	Q_OBJECT
 
 public:
-	explicit CounterDisplay(QWidget *parent = 0);
+	CounterDisplay(QWidget *parent = 0);
 	~CounterDisplay();
+	virtual const QString getType() { return "CounterDisplay"; }
+	virtual DataDisplay::DataTypes wantDataTypes() { return DataDisplay::Lines; }
 
-	DataDisplayConfigWidget* getConfigWidget(QWidget* parent);
+	virtual DataDisplayConfigWidget* getConfigWidget(QWidget* parent);
 
 public slots:
+	virtual const QString& saveDataDisplay();
+	virtual bool loadSettings(const QString& section);
+	virtual void dumpDebug();
+
 	void setFilter(const QString pattern);
 	QString getFilter();
 	void setDisplayLabel(bool b);
@@ -29,6 +35,7 @@ public slots:
 private:
 	Ui::CounterDisplay *ui;
 	QRegExp filter;
+	bool showLabel;
 };
 
 #endif // COUNTERDISPLAY_HPP

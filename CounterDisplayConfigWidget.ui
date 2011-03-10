@@ -51,6 +51,9 @@ p, li { white-space: pre-wrap; }
      </item>
      <item row="2" column="0" colspan="2">
       <widget class="QCheckBox" name="displayLabelCheck">
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
        <property name="text">
         <string>Display label</string>
        </property>

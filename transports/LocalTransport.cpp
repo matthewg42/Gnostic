@@ -95,7 +95,7 @@ bool LocalTransport::loadSettings(const QString& section)
 
 void LocalTransport::dumpDebug()
 {
-	qDebug() << "LocalTransport::dumpDebug() calling Tranport::dumpDebug()";
+	qDebug() << "LocalTransport::dumpDebug calling Tranport::dumpDebug()";
 	Transport::dumpDebug();
 }
 

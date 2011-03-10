@@ -6,22 +6,50 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>608</width>
-    <height>427</height>
+    <width>722</width>
+    <height>488</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>GnosticMainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout"/>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QTabWidget" name="tabs">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Transports</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="TransportEditorForm" name="transportEditor" native="true"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Displays</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="DataDisplayEditorForm" name="displayEditor" native="true"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>608</width>
+     <width>722</width>
      <height>21</height>
     </rect>
    </property>
@@ -74,6 +102,20 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TransportEditorForm</class>
+   <extends>QWidget</extends>
+   <header>TransportEditorForm.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DataDisplayEditorForm</class>
+   <extends>QWidget</extends>
+   <header>DataDisplayEditorForm.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

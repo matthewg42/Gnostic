@@ -25,6 +25,7 @@ private:
 private slots:
 	void transportTableClicked(QModelIndex idx);
 	void selectTransport(const QString& section);
+	void selectRowWithId(const QString& id);
 	void markUpdated();
 	void saveCurrent();
 	void addNewTransport();

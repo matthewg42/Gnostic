@@ -97,6 +97,16 @@ void TransportEditorForm::selectTransport(const QString& section)
 
 }
 
+void TransportEditorForm::selectRowWithId(const QString& id)
+{
+	QList<QStandardItem*> search = model.findItems(current->getId());
+	if (search.count() > 0)
+	{
+		ui->transportTable->selectRow(model.findItems(current->getId()).at(0)->row());
+		transportTableClicked(ui->transportTable->currentIndex());
+	}
+}
+
 void TransportEditorForm::markUpdated()
 {
 	ui->saveButton->setEnabled(true);

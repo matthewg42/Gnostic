@@ -16,6 +16,8 @@ CounterDisplayConfigWidget::CounterDisplayConfigWidget(DataDisplay* d, QWidget *
 	connect(ui->descriptionEdit, SIGNAL(textEdited(QString)), this, SLOT(madeUpdate()));
 	connect(ui->filterEdit, SIGNAL(textEdited(QString)), cd, SLOT(setFilter(QString)));
 	connect(ui->filterEdit, SIGNAL(textEdited(QString)), this, SLOT(madeUpdate()));
+	connect(ui->displayLabelCheck, SIGNAL(toggled(bool)), cd, SLOT(setDisplayLabel(bool)));
+	connect(ui->displayLabelCheck, SIGNAL(toggled(bool)), this, SLOT(madeUpdate()));
 }
 
 CounterDisplayConfigWidget::~CounterDisplayConfigWidget()

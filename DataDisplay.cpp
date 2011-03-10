@@ -1,6 +1,7 @@
 #include "DataDisplay.hpp"
 #include "GnosticApp.hpp"
 #include "DataDisplayConfigWidget.hpp"
+#include "CounterDisplay.hpp"
 
 #include <QSettings>
 #include <QDebug>
@@ -31,13 +32,13 @@ const QString& DataDisplay::getDescription()
 
 QStringList DataDisplay::getAvailableTypes()
 {
-	return QStringList(); // TODO when we have types... add them
+	return QStringList() << "CounterDisplay";
 }
 
-DataDisplay* DataDisplay::makeDataDisplay(const QString& type, QObject* parent)
+DataDisplay* DataDisplay::makeDataDisplay(const QString& type, QWidget* parent)
 {
-//	if (DataDisplayType == "LocalDataDisplay")
-//		return new LocalDataDisplay(parent);
+	if (type == "CounterDisplay")
+		return new CounterDisplay(parent);
 //	else if (DataDisplayType == "PlinkSshDataDisplay")
 //		return new PlinkSshDataDisplay(parent);
 //	else if (DataDisplayType == "OpenSshDataDisplay")
@@ -47,37 +48,24 @@ DataDisplay* DataDisplay::makeDataDisplay(const QString& type, QObject* parent)
 
 }
 
-DataDisplay* DataDisplay::loadDataDisplay(const QString& section, QObject* parent)
+DataDisplay* DataDisplay::loadDataDisplay(const QString& section, QWidget* parent)
 {
 	if (!GnosticApp::getInstance().settings()->childGroups().contains(section))
 		return NULL;
 
-	// TODO: this, when we have display types...
+	QString DataDisplayType = GnosticApp::getInstance().settings()->value(QString("%1/type").arg(section)).toString();
+	DataDisplay* display;
 
-//	QString DataDisplayType = GnosticApp::getInstance().settings()->value(QString("%1/type").arg(section)).toString();
-//	DataDisplay* DataDisplay;
-//	if (DataDisplayType == "LocalDataDisplay")
-//	{
-//		LocalDataDisplay* t = new LocalDataDisplay(parent);
-//		t->loadSettings(section);
-//		DataDisplay = dynamic_cast<DataDisplay*>(t);
-//	}
-//	else if (DataDisplayType == "PlinkSshDataDisplay")
-//	{
-//		PlinkSshDataDisplay* t = new PlinkSshDataDisplay(parent);
-//		t->loadSettings(section);
-//		DataDisplay = dynamic_cast<DataDisplay*>(t);
-//	}
-//	else if (DataDisplayType == "OpenSshDataDisplay")
-//	{
-//		OpenSshDataDisplay* t = new OpenSshDataDisplay(parent);
-//		t->loadSettings(section);
-//		DataDisplay = dynamic_cast<DataDisplay*>(t);
-//	}
-//	else
+	if (DataDisplayType == "CounterDisplay")
+	{
+		CounterDisplay* d = new CounterDisplay(parent);
+		d->loadSettings(section);
+		display = dynamic_cast<DataDisplay*>(d);
+	}
+	else
 		return NULL;
 
-//	return DataDisplay;
+	return display;
 
 }
 
