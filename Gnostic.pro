@@ -4,15 +4,30 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+# For Qwt... adjust according to where it is installed...
+unix:QWT_ROOT  = /opt/qwt
+win32:QWT_ROOT = C:/Qt/Qwt-6.0.0-rc5
+INCLUDEPATH   += $${QWT_ROOT}/include
+LIBS          +=  -L$${QWT_ROOT}/lib
 
+qtAddLibrary(qwt)
+
+win32 {
+    contains(QWT_CONFIG, QwtDll) {
+	DEFINES    += QT_DLL QWT_DLL
+    }
+}
+
+QT       += core gui network
+CONFIG   += qwt
 TARGET   = Gnostic
 TEMPLATE = app
 
-INCLUDEPATH += gui
-INCLUDEPATH += transports
-INCLUDEPATH += displays
-INCLUDEPATH += utility
+INCLUDEPATH += src
+INCLUDEPATH += src/gui
+INCLUDEPATH += src/transports
+INCLUDEPATH += src/displays
+INCLUDEPATH += src/utility
 
 SOURCES += \
     src/main.cpp \
@@ -37,7 +52,9 @@ SOURCES += \
     src/gui/GnosticMainWindow.cpp \
     src/gui/TransportConfigWidget.cpp \
     src/gui/PasswordDialog.cpp \
-    src/utility/FileUtils.cpp
+    src/utility/FileUtils.cpp \
+    src/displays/TimeGraphDisplayConfigWidget.cpp \
+    src/displays/TimeGraphDisplay.cpp
 
 HEADERS += \
     src/config.hpp \
@@ -62,7 +79,9 @@ HEADERS += \
     src/gui/GnosticMainWindow.hpp \
     src/gui/TransportConfigWidget.hpp \
     src/gui/PasswordDialog.hpp \
-    src/utility/FileUtils.hpp
+    src/utility/FileUtils.hpp \
+    src/displays/TimeGraphDisplayConfigWidget.hpp \
+    src/displays/TimeGraphDisplay.hpp
 
 FORMS += \
     src/transports/LocalTransportConfigWidget.ui \
@@ -74,7 +93,9 @@ FORMS += \
     src/gui/DataDisplayEditorForm.ui \
     src/gui/GnosticMainWindow.ui \
     src/gui/PasswordDialog.ui \
-    src/gui/TransportEditorForm.ui
+    src/gui/TransportEditorForm.ui \
+    src/displays/TimeGraphDisplayConfigWidget.ui \
+    src/displays/TimeGraphDisplay.ui
 
 OTHER_FILES += \
     README

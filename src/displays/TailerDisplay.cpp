@@ -9,16 +9,16 @@
 #include <QScrollBar>
 
 TailerDisplay::TailerDisplay(QWidget *parent) :
-    DataDisplay(parent),
-    ui(new Ui::TailerDisplay),
-    history(defaultHistoryLines)
+		DataDisplay(parent),
+		ui(new Ui::TailerDisplay),
+		history(defaultHistoryLines)
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 }
 
 TailerDisplay::~TailerDisplay()
 {
-    delete ui;
+	delete ui;
 }
 
 DataDisplayConfigWidget* TailerDisplay::getConfigWidget(QWidget* parent)

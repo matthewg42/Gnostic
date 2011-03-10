@@ -3,6 +3,7 @@
 #include "DataDisplayConfigWidget.hpp"
 #include "LineCounterDisplay.hpp"
 #include "TailerDisplay.hpp"
+#include "TimeGraphDisplay.hpp"
 
 #include <QSettings>
 #include <QDebug>
@@ -34,7 +35,7 @@ const QString& DataDisplay::getDescription()
 
 QStringList DataDisplay::getAvailableTypes()
 {
-	return QStringList() << "LineCounterDisplay" << "TailerDisplay";
+	return QStringList() << "LineCounterDisplay" << "TailerDisplay" << "TimeGraphDisplay";
 }
 
 DataDisplay* DataDisplay::makeDataDisplay(const QString& type, QWidget* parent)
@@ -43,6 +44,8 @@ DataDisplay* DataDisplay::makeDataDisplay(const QString& type, QWidget* parent)
 		return new LineCounterDisplay(parent);
 	else if (type == "TailerDisplay")
 		return new TailerDisplay(parent);
+	else if (type == "TimeGraphDisplay")
+		return new TimeGraphDisplay(parent);
 	else
 	{
 		qWarning() << "DataDisplay::makeDataDisplay UNKNOWN type" << type;
@@ -67,6 +70,12 @@ DataDisplay* DataDisplay::loadDataDisplay(const QString& section, QWidget* paren
 	else if (type == "TailerDisplay")
 	{
 		TailerDisplay* d = new TailerDisplay(parent);
+		d->loadSettings(section);
+		display = dynamic_cast<DataDisplay*>(d);
+	}
+	else if (type == "TimeGraphDisplay")
+	{
+		TimeGraphDisplay* d = new TimeGraphDisplay(parent);
 		d->loadSettings(section);
 		display = dynamic_cast<DataDisplay*>(d);
 	}
