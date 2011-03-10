@@ -12,11 +12,12 @@ TEMPLATE = app
 INCLUDEPATH += gui
 INCLUDEPATH += transports
 INCLUDEPATH += displays
+INCLUDEPATH += utility
 
 SOURCES += \
     main.cpp \
-    GnosticApp.cpp \
-    GnosticParser.cpp \
+    utility/GnosticApp.cpp \
+    utility/GnosticParser.cpp \
     transports/Transport.cpp \
     transports/PlinkSshTransport.cpp \
     transports/OpenSshTransport.cpp \
@@ -39,8 +40,8 @@ SOURCES += \
 
 HEADERS += \
     config.hpp \
-    GnosticApp.hpp \
-    GnosticParser.hpp \
+    utility/GnosticApp.hpp \
+    utility/GnosticParser.hpp \
     transports/Transport.hpp \
     transports/PlinkSshTransport.hpp \
     transports/OpenSshTransport.hpp \
