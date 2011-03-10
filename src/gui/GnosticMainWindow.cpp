@@ -5,6 +5,7 @@
 
 #include "LocalTransport.hpp"
 #include "GnosticParser.hpp"
+#include "PenStyleWidget.hpp"
 
 GnosticMainWindow* GnosticMainWindow::singleton = NULL;
 
@@ -15,7 +16,6 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
 	Q_ASSERT(!singleton);
 	singleton = this;
         ui->setupUi(this);
-
 }
 
 GnosticMainWindow::~GnosticMainWindow()
@@ -28,4 +28,5 @@ GnosticMainWindow& GnosticMainWindow::getInstance()
 	Q_ASSERT(singleton);
 	return *singleton;
 }
+
 

@@ -134,3 +134,57 @@ const QString GnosticApp::hashPenKey(const QString& key)
 	hash.addData(key.toUtf8());
 	return hash.result().toHex();
 }
+
+QVector<QColor> GnosticApp::getRecentColors(int max)
+{
+	QVector<QColor> standardColors;
+	standardColors << Qt::red << Qt::darkRed << Qt::green
+			<< Qt::darkGreen << Qt::blue << Qt::darkBlue
+			<< Qt::cyan << Qt::darkCyan << Qt::magenta
+			<< Qt::darkMagenta << Qt::yellow << Qt::darkYellow
+			<< Qt::gray << Qt::darkGray << Qt::lightGray
+			<< Qt::transparent;
+
+	QVector<QColor> result;
+	confSettings->beginGroup("recent_colors");
+	QRegExp splitter("(\\d+);(\\d+);(\\d+);(\\d+)");
+	QStringList keys = confSettings->childKeys();
+	keys.sort();
+	foreach(QString key, keys)
+	{
+		if (splitter.exactMatch(key))
+		{
+			QColor c(QVariant(splitter.capturedTexts().at(1)).toInt(),
+				 QVariant(splitter.capturedTexts().at(1)).toInt(),
+				 QVariant(splitter.capturedTexts().at(1)).toInt(),
+				 QVariant(splitter.capturedTexts().at(1)).toInt());
+			result.push_back(c);
+		}
+		if (result.size() >= max && max != -1)
+			break;
+	}
+	confSettings->endGroup();
+
+	// in case that wasn't enough, fill the array up with standard colors.
+	for(int i=0; result.size() < max; i++)
+	{
+		result.push_back(standardColors.at(i%standardColors.size()));
+	}
+	return result;
+
+}
+
+void GnosticApp::addRecentColor(QColor c)
+{
+	// add a recent color.  only keep up to 100 though.
+	QVector<QColor> recent = getRecentColors(-1);
+	recent.push_front(c);
+	confSettings->remove("recent_colors");
+	for(int i=0; i<recent.size() && i < 100; i++)
+	{
+		confSettings->setValue(QString("recent_colors/col_%1").arg(i, 2, 10, QChar('0')),
+				       QString("%1;%2;%3;%4").arg(c.red()).arg(c.green()).arg(c.blue()).arg(c.alpha()));
+	}
+}
+
+

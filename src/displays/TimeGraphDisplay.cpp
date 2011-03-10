@@ -3,12 +3,14 @@
 
 #include "TimeGraphDisplayConfigWidget.hpp"
 #include "GnosticApp.hpp"
+#include "PenStyleWidget.hpp"
 
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_legend.h>
 #include <qwt_legend_item.h>
 #include <qwt_plot_grid.h>
+#include <qwt_plot_item.h>
 #include <qwt_scale_draw.h>
 
 #include <QDebug>
@@ -64,6 +66,9 @@ TimeGraphDisplay::TimeGraphDisplay(QWidget *parent) :
 {
 	ui->setupUi(this);
 
+	penWidget = NULL;
+	selectedCurve = NULL;
+
 	graph = new QwtPlot(this);
 	ui->vLayout->addWidget(dynamic_cast<QWidget*>(graph));
 	QwtPlotGrid *grid = new QwtPlotGrid;
@@ -83,6 +88,8 @@ TimeGraphDisplay::TimeGraphDisplay(QWidget *parent) :
 
 	// Set up the y-scale
 	setYScale();
+
+	connect(graph, SIGNAL(legendClicked(QwtPlotItem*)), this, SLOT(setPlotItemStyle(QwtPlotItem*)));
 
 	// Make a timer to call redrawing of graph.
 	QTimer* redraw = new QTimer(this);
@@ -296,6 +303,33 @@ void TimeGraphDisplay::setYScale()
 	graph->setAxisScale(QwtPlot::yLeft, ymin, ymax);
 	if (autoYScale)
 		graph->setAxisAutoScale(QwtPlot::yLeft);
+}
+
+void TimeGraphDisplay::setPlotItemStyle(QwtPlotItem* item)
+{
+	if (!item)
+		return;
+
+	selectedCurve = static_cast<QwtPlotCurve*>(item);
+
+	if (!penWidget)
+		penWidget = new PenStyleWidget();
+
+	penWidget->disconnect(this);
+	connect(penWidget, SIGNAL(setPen(QPen)), this, SLOT(setNewPen(QPen)));
+	penWidget->setInitialPen(selectedCurve->pen());
+	penWidget->show();
+
+}
+
+
+void TimeGraphDisplay::setNewPen(QPen p)
+{
+	if (selectedCurve)
+	{
+		selectedCurve->setPen(p);
+		GnosticApp::getInstance().setRecentPen(getDescription() + "::" + selectedCurve->title().text(), p);
+	}
 }
 
 QPair< QwtPlotCurve*, QPair< QVector<double>*, QVector<double>* > > TimeGraphDisplay::mkEntry(

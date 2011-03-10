@@ -9,6 +9,7 @@
 #include <QVector>
 #include <QMap>
 #include <QProcess>
+#include <QPen>
 
 namespace Ui {
 	class TimeGraphDisplay;
@@ -16,10 +17,12 @@ namespace Ui {
 
 class QwtPlot;
 class QwtPlotCurve;
+class QwtPlotItem;
 class QCloseEvent;
 class QResizeEvent;
 class QSettings;
 class DataDisplayConfigWidget;
+class PenStyleWidget;
 
 class TimeGraphDisplay : public DataDisplay
 {
@@ -56,6 +59,8 @@ protected slots:
 
 	void setXScale();
 	void setYScale();
+	void setPlotItemStyle(QwtPlotItem*);
+	void setNewPen(QPen p);
 
 private:
 	Ui::TimeGraphDisplay *ui;
@@ -79,7 +84,8 @@ private:
 	static const bool defaultYAuto = true;
 	static const double defaultYMin = 0;
 	static const double defaultYMax = 100;
-
+	PenStyleWidget* penWidget;
+	QwtPlotCurve* selectedCurve;
 };
 
 #endif // TIMEGRAPHDISPLAY_HPP

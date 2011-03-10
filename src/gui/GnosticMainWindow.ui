@@ -16,31 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QTabWidget" name="tabs">
-      <property name="currentIndex">
-       <number>1</number>
-      </property>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>Transports</string>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="TransportEditorForm" name="transportEditor" native="true"/>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tab_2">
-       <attribute name="title">
-        <string>Displays</string>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="DataDisplayEditorForm" name="displayEditor" native="true"/>
-        </item>
-       </layout>
-      </widget>
-     </widget>
+     <widget class="DataDisplayEditorForm" name="widget" native="true"/>
     </item>
    </layout>
   </widget>
@@ -103,12 +79,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
-  <customwidget>
-   <class>TransportEditorForm</class>
-   <extends>QWidget</extends>
-   <header>TransportEditorForm.hpp</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>DataDisplayEditorForm</class>
    <extends>QWidget</extends>

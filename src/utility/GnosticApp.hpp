@@ -4,6 +4,8 @@
 #include <QObject>
 #include "Transport.hpp"
 #include <QPen>
+#include <QVector>
+#include <QColor>
 
 class QSettings;
 
@@ -44,6 +46,17 @@ public:
 
 	//! Saves the a pen for a given label.
 	void setRecentPen(const QString& key, QPen pen);
+
+	//! Gets a vector of most recently used display colors, up to max colors.
+	//! If there are less than max recently used colors, standard colors will be
+	//! inserted.
+	//! If max = -1, then there is no limit to the number of recent colors
+	//! retrieved, but no padding with standard system colors is done.
+	QVector<QColor> getRecentColors(int max=10);
+
+	//! saves a recently used color
+	void addRecentColor(QColor c);
+
 
 private:
 	const QString getIniPath();

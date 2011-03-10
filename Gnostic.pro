@@ -54,7 +54,8 @@ SOURCES += \
     src/gui/PasswordDialog.cpp \
     src/utility/FileUtils.cpp \
     src/displays/TimeGraphDisplayConfigWidget.cpp \
-    src/displays/TimeGraphDisplay.cpp
+    src/displays/TimeGraphDisplay.cpp \
+    src/gui/PenStyleWidget.cpp
 
 HEADERS += \
     src/config.hpp \
@@ -81,7 +82,8 @@ HEADERS += \
     src/gui/PasswordDialog.hpp \
     src/utility/FileUtils.hpp \
     src/displays/TimeGraphDisplayConfigWidget.hpp \
-    src/displays/TimeGraphDisplay.hpp
+    src/displays/TimeGraphDisplay.hpp \
+    src/gui/PenStyleWidget.hpp
 
 FORMS += \
     src/transports/LocalTransportConfigWidget.ui \
@@ -95,7 +97,8 @@ FORMS += \
     src/gui/PasswordDialog.ui \
     src/gui/TransportEditorForm.ui \
     src/displays/TimeGraphDisplayConfigWidget.ui \
-    src/displays/TimeGraphDisplay.ui
+    src/displays/TimeGraphDisplay.ui \
+    src/gui/PenStyleWidget.ui
 
 OTHER_FILES += \
     README
