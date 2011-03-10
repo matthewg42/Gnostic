@@ -83,3 +83,11 @@ bool LineCounterDisplay::getDisplayLabel()
 	return showLabel;
 }
 
+void LineCounterDisplay::takeLine(QString line)
+{
+	if (filter.pattern().isEmpty() || filter.exactMatch(line))
+	{
+		ui->lineCountLcd->display(ui->lineCountLcd->value()+1);
+		return;
+	}
+}

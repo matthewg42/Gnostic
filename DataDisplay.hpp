@@ -17,8 +17,8 @@ class DataDisplay : public QWidget
 public:
 	//! \enum DataTypes lets other classes know which types of data this DataDisplay will process.
 	enum DataTypes {
-		Lines    = 0x00000001,  //!< Please connect line input to takeLine.
-		DataItem = 0x00000002,  //!< Please connect data item input to takeDataItem.
+		Lines     = 0x00000001,  //!< Please connect line input to takeLine.
+		DataItems = 0x00000002,  //!< Please connect data item input to takeDataItem.
 	};
 
 	DataDisplay(QWidget *parent = 0);

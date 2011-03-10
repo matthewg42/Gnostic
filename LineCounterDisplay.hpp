@@ -32,6 +32,8 @@ public slots:
 	void setDisplayLabel(bool b);
 	bool getDisplayLabel();
 
+	void takeLine(QString line);
+
 private:
 	Ui::LineCounterDisplay *ui;
 	QRegExp filter;

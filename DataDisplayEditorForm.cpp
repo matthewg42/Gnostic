@@ -5,6 +5,7 @@
 #include "DataDisplayConfigWidget.hpp"
 #include "GnosticApp.hpp"
 #include "GnosticParser.hpp"
+#include "DummyTransport.hpp"
 
 #include <QStandardItem>
 #include <QList>
@@ -171,6 +172,23 @@ void DataDisplayEditorForm::testCurrent()
 	// Create a parser and a dummy data source, and hook it up...
 
 	GnosticParser *parser = new GnosticParser(current);
+	Transport* dummy = new DummyTransport(current);
+	connect(dummy, SIGNAL(spewLine(QString)), parser, SLOT(takeLine(QString)));
+	if (current->wantDataTypes() & DataDisplay::Lines)
+	{
+		qDebug() << "DataDisplayEditorForm::testCurrent it wants Lines... hooking up line feed...";
+		connect(parser, SIGNAL(spewLine(QString)), current, SLOT(takeLine(QString)));
+	}
+	else qDebug() << "DataDisplayEditorForm::testCurrent it doesn't want Lines...";
+
+	if (current->wantDataTypes() & DataDisplay::DataItems)
+	{
+		qDebug() << "DataDisplayEditorForm::testCurrent it wants DataItems... hooking up item feed...";
+		connect(parser, SIGNAL(spewDataItem(double,double,QString)), current, SLOT(takeDataItem(double,double,QString)));
+	}
+	else qDebug() << "DataDisplayEditorForm::testCurrent it doesn't want DataItems...";
 
 	current->show();
+	dummy->start("ignore");
+
 }
