@@ -103,10 +103,14 @@ QStringList DataDisplay::getDataDisplaySections()
 
 void DataDisplay::takeLine(QString line)
 {
+	Q_UNUSED(line);
 }
 
 void DataDisplay::takeDataItem(const double timestamp, const double value, const QString label)
 {
+	Q_UNUSED(timestamp);
+	Q_UNUSED(value);
+	Q_UNUSED(label);
 }
 
 void DataDisplay::setDescription(QString newDescription)
