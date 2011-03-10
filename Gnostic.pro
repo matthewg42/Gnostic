@@ -36,7 +36,8 @@ SOURCES += \
     gui/DataDisplayEditorForm.cpp \
     gui/GnosticMainWindow.cpp \
     gui/TransportConfigWidget.cpp \
-    gui/PasswordDialog.cpp
+    gui/PasswordDialog.cpp \
+    utility/FileUtils.cpp
 
 HEADERS += \
     config.hpp \
@@ -60,7 +61,8 @@ HEADERS += \
     gui/DataDisplayEditorForm.hpp \
     gui/GnosticMainWindow.hpp \
     gui/TransportConfigWidget.hpp \
-    gui/PasswordDialog.hpp
+    gui/PasswordDialog.hpp \
+    utility/FileUtils.hpp
 
 FORMS += \
     transports/LocalTransportConfigWidget.ui \
