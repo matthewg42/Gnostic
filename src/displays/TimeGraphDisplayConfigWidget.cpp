@@ -8,13 +8,27 @@ TimeGraphDisplayConfigWidget::TimeGraphDisplayConfigWidget(DataDisplay* d, QWidg
 {
 	ui->setupUi(this);
 	TimeGraphDisplay* td = static_cast<TimeGraphDisplay*>(d);
-	ui->descriptionEdit->setText(td->getDescription());
-	ui->historySpin->setValue(td->getHistory());
 
 	connect(ui->descriptionEdit, SIGNAL(textEdited(QString)), td, SLOT(setDescription(QString)));
 	connect(ui->descriptionEdit, SIGNAL(textEdited(QString)), this, SLOT(madeUpdate()));
 	connect(ui->historySpin, SIGNAL(valueChanged(int)), td, SLOT(setHistory(int)));
 	connect(ui->historySpin, SIGNAL(valueChanged(int)), this, SLOT(madeUpdate()));
+	connect(ui->updateMsSpin, SIGNAL(valueChanged(int)), td, SLOT(setUpdateMs(int)));
+	connect(ui->updateMsSpin, SIGNAL(valueChanged(int)), this, SLOT(makeUpdate()));
+	connect(ui->manualYScaleGroup, SIGNAL(toggled(bool)), td, SLOT(setYManualScale(bool)));
+	connect(ui->manualYScaleGroup, SIGNAL(toggled(bool)), this, SLOT(madeUpdate()));
+	connect(ui->yMinSpin, SIGNAL(valueChanged(double)), td, SLOT(setYMin(double)));
+	connect(ui->yMinSpin, SIGNAL(valueChanged(double)), this, SLOT(updateMade()));
+	connect(ui->yMaxSpin, SIGNAL(valueChanged(double)), td, SLOT(setYMax(double)));
+	connect(ui->yMaxSpin, SIGNAL(valueChanged(double)), this, SLOT(updateMade()));
+
+	ui->descriptionEdit->setText(td->getDescription());
+	ui->historySpin->setValue(td->getHistory());
+	ui->updateMsSpin->setValue(td->getUpdateMs());
+	ui->manualYScaleGroup->setChecked(td->getYManualScale());
+	ui->yMinSpin->setValue(td->getYMin());
+	ui->yMaxSpin->setValue(td->getYMax());
+
 }
 
 TimeGraphDisplayConfigWidget::~TimeGraphDisplayConfigWidget()

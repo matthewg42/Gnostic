@@ -9,7 +9,6 @@
 #include <QVector>
 #include <QMap>
 #include <QProcess>
-#include <QColor>
 
 namespace Ui {
 	class TimeGraphDisplay;
@@ -42,6 +41,8 @@ public slots:
 	int getHistory();
 	bool getYAutoScale();
 	void setYAutoScale(bool b);
+	bool getYManualScale();
+	void setYManualScale(bool b);
 	void setYMin(double d);
 	double getYMin();
 	void setYMax(double d);
@@ -62,8 +63,6 @@ private:
 
 protected:
 	QPair< QwtPlotCurve*, QPair< QVector<double>*, QVector<double>* > > mkEntry(QwtPlotCurve* c, QVector<double>* x, QVector<double>* y);
-	QColor getNewColorForLabel(const QString& label);
-
 
 protected:
 	QwtPlot* graph;
@@ -72,7 +71,6 @@ protected:
 	int updateMs;
 	double maxX;
 	QMap< QString, QPair< QwtPlotCurve*, QPair< QVector<double>*, QVector<double>* > > > data;
-	QMap< QString, QColor > dataColors;
 	double ymin, ymax;
 
 private:

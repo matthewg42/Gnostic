@@ -175,25 +175,13 @@ void TimeGraphDisplay::takeDataItem(const double timestamp, const double value, 
 
 	if (!data.contains(label))
 	{
-		//qDebug() << "Creating new data set for" << label;
 		curve = new QwtPlotCurve(label);
 		curve->attach(graph);
 		// curve->setLegendAttribute(QwtPlotCurve::LegendShowLine, true);
-		if (dataColors.contains(label))
-		{
-			curve->setPen(QPen(dataColors[label],2));
-		}
+		curve->setPen(GnosticApp::getInstance().getRecentPen(getDescription() + "::" + label));
 		xValues = new QVector<double>;
 		yValues = new QVector<double>;
 		data.insert(label, mkEntry(curve, xValues, yValues));
-
-		if (!dataColors.contains(label))
-		{
-			QColor c = getNewColorForLabel(label);
-			dataColors[label] = c;
-			curve->setPen(QPen(c,2));
-		}
-
 	}
 	else
 	{
@@ -253,6 +241,17 @@ void TimeGraphDisplay::setYAutoScale(bool b)
 	setYScale();
 }
 
+bool TimeGraphDisplay::getYManualScale()
+{
+	return !autoYScale;
+}
+
+void TimeGraphDisplay::setYManualScale(bool b)
+{
+	autoYScale = !b;
+	setYScale();
+}
+
 void TimeGraphDisplay::setYMin(double d)
 {
 	ymin = d;
@@ -309,13 +308,5 @@ QPair< QwtPlotCurve*, QPair< QVector<double>*, QVector<double>* > > TimeGraphDis
 	ret.second.first = x;
 	ret.second.second = y;
 	return ret;
-}
-
-QColor TimeGraphDisplay::getNewColorForLabel(const QString& label)
-{
-	// TODO: keep a global database of used color/label pairs and look up
-	// the most recent, or choose a random color...
-	// maybe choose a color based on a hash of the label
-	return Qt::red;
 }
 

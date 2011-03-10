@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "Transport.hpp"
+#include <QPen>
 
 class QSettings;
 
@@ -32,8 +33,24 @@ public:
 	//! Get the configuration directory path.
 	const QString& getConfigDir();
 
+	//! Looks to see what the most recent QPen was for a given key.  The key is typically
+	//! a combination of the monitor name and label name.  In any case it is hashed and
+	//! the hash is used as the key in the config.ini file (because we can't control
+	//! spaces and other non-legal ini file key characters in the input)
+	//! \param key is something unique for the pen in question.
+	//! \returns the QPen which was most recently defined for a data item
+	//! called "label".  If label is QString(), QPen() is returned.
+	QPen getRecentPen(const QString& key);
+
+	//! Saves the a pen for a given label.
+	void setRecentPen(const QString& key, QPen pen);
+
 private:
 	const QString getIniPath();
+
+	//! takes some srbitrary text and returns a hash from it, which is suitable as a
+	//! key in the config.ini file.
+	const QString hashPenKey(const QString& key);
 
 private:
 	static GnosticApp* singleton;
