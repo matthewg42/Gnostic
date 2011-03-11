@@ -11,12 +11,12 @@ TransportConfigWidget::~TransportConfigWidget()
 {
 }
 
-bool TransportConfigWidget::testTransport()
+bool TransportConfigWidget::test()
 {
 	if (transport==NULL)
 		return false;
 	else
-		return transport->testTransport();
+		return transport->test();
 }
 
 void TransportConfigWidget::madeUpdate()

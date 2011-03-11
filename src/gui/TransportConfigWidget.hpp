@@ -20,7 +20,7 @@ signals:
 	void wasUpdated();
 
 public slots:
-	bool testTransport();
+	bool test();
 	Transport* getTransport();
 
 protected slots:

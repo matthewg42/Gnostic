@@ -33,6 +33,8 @@ protected:
 protected:
 	QString hostId;
 	QString monitorId;
+	QString invocationPath;
+	QString invocationArgs;
 	QChar delimiter;
 	bool inHeader;
 	QRegExp splitRe;

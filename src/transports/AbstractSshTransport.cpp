@@ -17,7 +17,7 @@ AbstractSshTransport::AbstractSshTransport(QObject *parent) :
 
 AbstractSshTransport::~AbstractSshTransport()
 {
-	qDebug() << "AbstractSshTransport::~AbstractSshTransport";
+	//qDebug() << "AbstractSshTransport::~AbstractSshTransport";
 	if (proc.state() != QProcess::NotRunning)
 		proc.kill();
 }
@@ -30,10 +30,10 @@ TransportConfigWidget* AbstractSshTransport::getConfigWidget(QWidget* parent)
 	return configWidget;
 }
 
-const QString AbstractSshTransport::saveTransport()
+const QString AbstractSshTransport::saveSettings()
 {
-	qDebug() << "AbstractSshTransport::saveTransport";
-	Transport::saveTransport();
+	//qDebug() << "AbstractSshTransport::saveSettings";
+	Transport::saveSettings();
 
 	QSettings* settings = GnosticApp::getInstance().settings();
 	settings->setValue(QString("%1/host").arg(id), host);
@@ -48,7 +48,7 @@ const QString AbstractSshTransport::saveTransport()
 
 bool AbstractSshTransport::loadSettings(const QString& section)
 {
-	qDebug() << "AbstractSshTransport::loadSettings" << section;
+	//qDebug() << "AbstractSshTransport::loadSettings" << section;
 	if (!Transport::loadSettings(section))
 		return false;
 
@@ -101,7 +101,7 @@ AbstractSshTransport::SshAuthType AbstractSshTransport::getAuthType()
 
 void AbstractSshTransport::setAuthType(SshAuthType t)
 {
-	qDebug() << "AbstractSshTransport::setAuthType" << t;
+	//qDebug() << "AbstractSshTransport::setAuthType" << t;
 	authType = t;
 }
 
@@ -123,7 +123,7 @@ void AbstractSshTransport::procStatusUpdate(QProcess::ProcessState newState)
 
 void AbstractSshTransport::procReadIn()
 {
-	qDebug() << "AbstractSshTransport::procReadIn";
+	//qDebug() << "AbstractSshTransport::procReadIn";
 	while(1)
 	{
 		QByteArray in = proc.readLine();
@@ -155,10 +155,10 @@ void AbstractSshTransport::procDone(int err)
 
 void AbstractSshTransport::dumpDebug()
 {
-	qDebug() << "AbstractSshTransport::dumpDebug, calling Transport::dumpDebug...";
+	//qDebug() << "AbstractSshTransport::dumpDebug, calling Transport::dumpDebug...";
 	Transport::dumpDebug();
-	qDebug() << "AbstractSshTransport::dumpDebug host=" << host;
-	qDebug() << "AbstractSshTransport::dumpDebug user=" << user;
-	qDebug() << "AbstractSshTransport::dumpDebug authType=" << authType;
-	qDebug() << "AbstractSshTransport::dumpDebug keyFilePath=" << keyFilePath;
+	//qDebug() << "AbstractSshTransport::dumpDebug host=" << host;
+	//qDebug() << "AbstractSshTransport::dumpDebug user=" << user;
+	//qDebug() << "AbstractSshTransport::dumpDebug authType=" << authType;
+	//qDebug() << "AbstractSshTransport::dumpDebug keyFilePath=" << keyFilePath;
 }

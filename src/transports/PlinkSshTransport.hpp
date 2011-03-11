@@ -16,7 +16,7 @@ public:
 	virtual const QString getType() {return "PlinkSshTransport";}
 
 	//! Test that the transport can connect to the remote host and echo "hello world"
-	virtual bool testTransport();
+	virtual bool test();
 
 public slots:
 	//! Use this transport object to run a command
@@ -30,7 +30,7 @@ public slots:
 	virtual void stop();
 
 	//! Save transport settings
-	virtual const QString saveTransport();
+	virtual const QString saveSettings();
 
 	//! Dump debugging info
 	virtual void dumpDebug();

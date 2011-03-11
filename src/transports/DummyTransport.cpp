@@ -24,14 +24,16 @@ DummyTransport::~DummyTransport()
 {
 }
 
-bool DummyTransport::testTransport()
+bool DummyTransport::test()
 {
 	return true;
 }
 
 bool DummyTransport::start(const QString& exec, const QStringList& args)
 {
-	qDebug() << "DummyTransport::start I'm a Dummy, I will ignore params:" <<  exec << args;
+	Q_UNUSED(exec);
+	Q_UNUSED(args);
+	//qDebug() << "DummyTransport::start I'm a Dummy, I will ignore params";
 	setConnectionStatus(Transport::EstablishingConnection);
 	timer.start();
 	setConnectionStatus(Transport::Connected);
@@ -44,24 +46,24 @@ void DummyTransport::stop()
 	setConnectionStatus(Transport::Disconnected);
 }
 
-const QString DummyTransport::saveTransport()
+const QString DummyTransport::saveSettings()
 {
-	qDebug() << "DummyTransport::saveTransport, doesn't save anything...";
+	//qDebug() << "DummyTransport::saveSettings, doesn't save anything...";
 	return QString();
 }
 
 bool DummyTransport::loadSettings(const QString& section)
 {
-	qDebug() << "DummyTransport::loadSettings, doesn't do anything with section" << section;
+	//qDebug() << "DummyTransport::loadSettings, doesn't do anything with section" << section;
 	return true;
 }
 
 
 void DummyTransport::dumpDebug()
 {
-	qDebug() << "DummyTransport::dumpDebug calling Tranport::dumpDebug()";
+	//qDebug() << "DummyTransport::dumpDebug calling Tranport::dumpDebug()";
 	Transport::dumpDebug();
-	qDebug() << "DummyTransport::dumpDebug hurp-a-durp";
+	//qDebug() << "DummyTransport::dumpDebug hurp-a-durp";
 }
 
 TransportConfigWidget* DummyTransport::getConfigWidget(QWidget* parent)
@@ -86,8 +88,15 @@ void DummyTransport::spew()
 	mid.insert("Durp", 70);
 	foreach(QString label, QStringList() << mid.keys())
 	{
+		qint64 ts = QDateTime::currentMSecsSinceEpoch();
+		// every so often, hiccup and send a value older than some previous values...
+		if (((int)rand())%20 == 0)
+		{
+			//qDebug() << "DummyTransport::spew hiccup";
+			ts -= 5000;
+		}
 		emit(spewLine(QString("%1;%2;%3")
-			      .arg(QDateTime::currentMSecsSinceEpoch())
+			      .arg(ts)
 			      .arg(fmod(rand(), 50) - 25 + mid[label])
 			      .arg(label)));
 	}

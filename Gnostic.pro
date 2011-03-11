@@ -28,6 +28,7 @@ INCLUDEPATH += src/gui
 INCLUDEPATH += src/transports
 INCLUDEPATH += src/displays
 INCLUDEPATH += src/utility
+INCLUDEPATH += src/monitors
 
 SOURCES += \
     src/main.cpp \
@@ -55,7 +56,9 @@ SOURCES += \
     src/utility/FileUtils.cpp \
     src/displays/TimeGraphDisplayConfigWidget.cpp \
     src/displays/TimeGraphDisplay.cpp \
-    src/gui/PenStyleWidget.cpp
+    src/gui/PenStyleWidget.cpp \
+    src/monitors/RemoteMonitor.cpp \
+    src/monitors/RemoteCommand.cpp
 
 HEADERS += \
     src/config.hpp \
@@ -83,7 +86,9 @@ HEADERS += \
     src/utility/FileUtils.hpp \
     src/displays/TimeGraphDisplayConfigWidget.hpp \
     src/displays/TimeGraphDisplay.hpp \
-    src/gui/PenStyleWidget.hpp
+    src/gui/PenStyleWidget.hpp \
+    src/monitors/RemoteMonitor.hpp \
+    src/monitors/RemoteCommand.hpp
 
 FORMS += \
     src/transports/LocalTransportConfigWidget.ui \

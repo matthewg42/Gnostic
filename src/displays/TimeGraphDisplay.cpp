@@ -92,11 +92,11 @@ TimeGraphDisplay::TimeGraphDisplay(QWidget *parent) :
 	connect(graph, SIGNAL(legendClicked(QwtPlotItem*)), this, SLOT(setPlotItemStyle(QwtPlotItem*)));
 
 	// Make a timer to call redrawing of graph.
-	QTimer* redraw = new QTimer(this);
-	redraw->setInterval(updateMs);
-	redraw->setSingleShot(false);
-	connect(redraw, SIGNAL(timeout()), graph, SLOT(replot()));
-	redraw->start();
+	redrawTimer = new QTimer(this);
+	redrawTimer->setInterval(updateMs);
+	redrawTimer->setSingleShot(false);
+	connect(redrawTimer, SIGNAL(timeout()), graph, SLOT(replot()));
+	redrawTimer->start();
 }
 
 TimeGraphDisplay::~TimeGraphDisplay()
@@ -121,10 +121,10 @@ DataDisplayConfigWidget* TimeGraphDisplay::getConfigWidget(QWidget* parent)
 	return configWidget;
 }
 
-const QString& TimeGraphDisplay::saveDataDisplay()
+const QString& TimeGraphDisplay::saveSettings()
 {
-	qDebug() << "TimeGraphDisplay::saveDataDisplay";
-	DataDisplay::saveDataDisplay();
+	//qDebug() << "TimeGraphDisplay::saveSettings";
+	DataDisplay::saveSettings();
 
 	QSettings* settings = GnosticApp::getInstance().settings();
 	settings->setValue(QString("%1/history").arg(id), getHistory());
@@ -138,7 +138,7 @@ const QString& TimeGraphDisplay::saveDataDisplay()
 
 bool TimeGraphDisplay::loadSettings(const QString& section)
 {
-	qDebug() << "TimeGraphDisplay::loadSettings" << section;
+	//qDebug() << "TimeGraphDisplay::loadSettings" << section;
 	if (!DataDisplay::loadSettings(section))
 		return false;
 
@@ -154,17 +154,18 @@ bool TimeGraphDisplay::loadSettings(const QString& section)
 
 void TimeGraphDisplay::dumpDebug()
 {
-	qDebug() << "TimeGraphDisplay::dumpDebug calling DataDisplay::dumpDebug()";
-	qDebug() << "TimeGraphDisplay::dumpDebug history" << getHistory();
-	qDebug() << "TimeGraphDisplay::dumpDebug yauto" << getYAutoScale();
-	qDebug() << "TimeGraphDisplay::dumpDebug ymin" << getYMin();
-	qDebug() << "TimeGraphDisplay::dumpDebug ymax" << getYMax();
-	qDebug() << "TimeGraphDisplay::dumpDebug updateMs" << getUpdateMs();
+	//qDebug() << "TimeGraphDisplay::dumpDebug calling DataDisplay::dumpDebug()";
+	//qDebug() << "TimeGraphDisplay::dumpDebug history" << getHistory();
+	//qDebug() << "TimeGraphDisplay::dumpDebug yauto" << getYAutoScale();
+	//qDebug() << "TimeGraphDisplay::dumpDebug ymin" << getYMin();
+	//qDebug() << "TimeGraphDisplay::dumpDebug ymax" << getYMax();
+	//qDebug() << "TimeGraphDisplay::dumpDebug updateMs" << getUpdateMs();
 }
 
 void TimeGraphDisplay::setHistory(int h)
 {
-	history = h;
+	if (history > 0)
+		history = h;
 }
 
 int TimeGraphDisplay::getHistory()
@@ -199,14 +200,22 @@ void TimeGraphDisplay::takeDataItem(const double timestamp, const double value, 
 
 	// point at the last timestamp in the data
 	bool isSorted = true;
-	int insertIdx = 0;
+	int insertIdx = xValues->size() - 1;
 	if (xValues->size() > 0)
 	{
-		for(insertIdx = xValues->size() - 1; xValues->at(insertIdx) > timestamp; insertIdx--) { isSorted = false; }
-		// here insertIdx is one less than that the lowest value in the [sorted] array
-		// which is still greater than timestamp. Note this might be the index -1...
-		insertIdx++;
-		// So we want to do an "insert before insertIdx", and isSorted == false if it was unsorted...
+		while(insertIdx >= 0)
+		{
+			if (xValues->at(insertIdx) > timestamp)
+			{
+				isSorted = false;
+				insertIdx--;
+			}
+			else
+				break;
+
+		}
+		if (insertIdx < 0)
+			insertIdx = 0;
 	}
 
 	// if were still at the end, we should use the [efficient] append function...
@@ -217,6 +226,7 @@ void TimeGraphDisplay::takeDataItem(const double timestamp, const double value, 
 	}
 	else
 	{
+		//qDebug() << "inserting at" << insertIdx << "size is" << xValues->size();
 		xValues->insert(insertIdx, timestamp);
 		yValues->insert(insertIdx, value);
 	}
@@ -225,7 +235,7 @@ void TimeGraphDisplay::takeDataItem(const double timestamp, const double value, 
 	maxX = xValues->at(xValues->size()-1);
 
 	// remove values which are too old
-	if (xValues->at(0) < maxX - (history*1000))
+	while (xValues->at(0) < maxX - (history*1000))
 	{
 		xValues->pop_front();
 		yValues->pop_front();
@@ -284,6 +294,7 @@ double TimeGraphDisplay::getYMax()
 void TimeGraphDisplay::setUpdateMs(int ms)
 {
 	updateMs = ms;
+	redrawTimer->setInterval(updateMs);
 }
 
 int TimeGraphDisplay::getUpdateMs()

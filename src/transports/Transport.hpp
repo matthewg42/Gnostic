@@ -50,7 +50,7 @@ public:
 	//! e.g. that it can connect and authenticate with a remote host,
 	//! issue a command and read back the output.
 	//! \returns true on a successful test, false otherwise.
-	virtual bool testTransport() = 0;
+	virtual bool test() = 0;
 
 	//! Get a widget containing controls necessary to configure this Transport.
 	virtual TransportConfigWidget* getConfigWidget(QWidget* parent=0) = 0;
@@ -64,24 +64,24 @@ public:
 	//! \param parent a QObject which is to be the parent of the new Transport.
 	//! \returns NULL if there is a problem (e.g. unknown transportType), else
 	//!          a pointer to a new Trasport object of the desired type.
-	static Transport* makeTransport(const QString& transportType, QObject* parent=0);
+	static Transport* makeNew(const QString& type, QObject* parent=0);
 
 	//! Create a new Transport object from a definition in the config file.
-	//! \param id the section of the config.ini file which describes the transport.
+	//! \param section the section of the config.ini file which describes the transport.
 	//! \param parent a pointer to a QObject which is the parent of the new transport.
 	//! \returns NULL if there is a problem (e.g. no such id), else
 	//!          a pointer to a new Trasport object of the desired type.
-	static Transport* loadTransport(const QString& id, QObject* parent=0);
+	static Transport* makeFromConfig(const QString& section, QObject* parent=0);
 
 	//! Sequence generator for making a new and unique transport ID.
 	//! \returns string something like this: "transport_1" where the part
 	//!          after the _ is the first integer >= 0 which makes an
 	//!          ID which is not an exisiting section in the config.ini file.
-	static const QString getNewTransportId();
+	static const QString getNewId();
 
 	//! Get a list of all sections in the config.ini file which describe
 	//! Transport objects.
-	static QStringList getTransportSections();
+	static QStringList getSections();
 
 public slots:
 	//! Use this transport object to run a command
@@ -102,7 +102,7 @@ public slots:
 	//! empty, otherwise a new, unique ID will be generated, and set
 	//! as the current ID.
 	//! In either case the ID after the save is returned.
-	virtual const QString saveTransport() = 0;
+	virtual const QString saveSettings() = 0;
 
 	//! Load the settings for this transport from the specified section of the config.ini
 	//! \param section the section in the config.ini file which describes the Transport

@@ -29,10 +29,10 @@ DataDisplayConfigWidget* TailerDisplay::getConfigWidget(QWidget* parent)
 	return configWidget;
 }
 
-const QString& TailerDisplay::saveDataDisplay()
+const QString& TailerDisplay::saveSettings()
 {
-	qDebug() << "TailerDisplay::saveDataDisplay";
-	DataDisplay::saveDataDisplay();
+	//qDebug() << "TailerDisplay::saveSettings";
+	DataDisplay::saveSettings();
 
 	QSettings* settings = GnosticApp::getInstance().settings();
 	settings->setValue(QString("%1/history").arg(id), getHistory());
@@ -41,7 +41,7 @@ const QString& TailerDisplay::saveDataDisplay()
 
 bool TailerDisplay::loadSettings(const QString& section)
 {
-	qDebug() << "TailerDisplay::loadSettings" << section;
+	//qDebug() << "TailerDisplay::loadSettings" << section;
 	if (!DataDisplay::loadSettings(section))
 		return false;
 
@@ -53,9 +53,9 @@ bool TailerDisplay::loadSettings(const QString& section)
 
 void TailerDisplay::dumpDebug()
 {
-	qDebug() << "TailerDisplay::dumpDebug calling DataDisplay::dumpDebug()";
-	qDebug() << "TailerDisplay::dumpDebug history" << getHistory();
-	qDebug() << "TailerDisplay::dumpDebug currently" << buffer.count() << "lines in buffer";
+	//qDebug() << "TailerDisplay::dumpDebug calling DataDisplay::dumpDebug()";
+	//qDebug() << "TailerDisplay::dumpDebug history" << getHistory();
+	//qDebug() << "TailerDisplay::dumpDebug currently" << buffer.count() << "lines in buffer";
 }
 
 void TailerDisplay::setHistory(int h)

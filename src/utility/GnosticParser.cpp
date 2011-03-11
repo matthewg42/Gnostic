@@ -20,19 +20,19 @@ GnosticParser::GnosticParser(QObject *parent) :
 void GnosticParser::setSplitRe()
 {
 	QString s = QString("^(\\d+(\\.\\d*)?)%1(-?\\d+(\\.\\d*)?)%2(.*)$").arg(delimiter).arg(delimiter);
-	qDebug() << "GnosticParser::setSplitRe was set to" << s;
+	//qDebug() << "GnosticParser::setSplitRe was set to" << s;
 	splitRe = QRegExp(s);
 }
 
 void GnosticParser::takeLine(QString line)
 {
 	line.remove(chompRe);
-	qDebug() << "GnosticParser::takeLine" << line;
+	////qDebug() << "GnosticParser::takeLine" << line;
 	// First do header checking...
 	if (line == "GNOSTIC-DATA-PROTOCOL-VERSION=1.0")
 	{
 		inHeader = true;
-		qDebug() << "GnosticParser::takeLine we have a header" << line;
+		////qDebug() << "GnosticParser::takeLine we have a header" << line;
 		return;
 	}
 	if (inHeader)
@@ -41,17 +41,29 @@ void GnosticParser::takeLine(QString line)
 		{
 			hostId = line;
 			hostId.remove(0, 5);
-			qDebug() << "GnosticParser::takeLine in header, set HOST" << hostId;
+			////qDebug() << "GnosticParser::takeLine in header, set HOST" << hostId;
 		}
 		else if (line.startsWith("MONITOR-NAME=")) {
 			monitorId = line;
 			monitorId.remove(0, 13);
-			qDebug() << "GnosticParser::takeLine in header, set MONITOR-NAME" << monitorId;
+			////qDebug() << "GnosticParser::takeLine in header, set MONITOR-NAME" << monitorId;
 		}
 		else if (line.startsWith("DELIMITER=") && line.length() > 10) {
 			delimiter = line.at(10);
-			qDebug() << "GnosticParser::takeLine in header, set DELIMITER" << delimiter;
+			////qDebug() << "GnosticParser::takeLine in header, set DELIMITER" << delimiter;
 			setSplitRe();
+		}
+		else if (line.startsWith("INVOCATION-PATH="))
+		{
+			invocationPath = line;
+			invocationPath = monitorId.remove(0, 16);
+			//qDebug() << "GnosticParser::takeLine in header, set INVOCATION-PATH" << invocationPath;
+		}
+		else if (line.startsWith("INVOCATION-ARGS="))
+		{
+			invocationArgs = line;
+			invocationArgs = monitorId.remove(0, 16);
+			//qDebug() << "GnosticParser::takeLine in header, set INVOCATION-ARGS" << invocationArgs;
 		}
 		else if (line == "END-HEADER")
 		{
@@ -59,7 +71,7 @@ void GnosticParser::takeLine(QString line)
 		}
 		else
 		{
-			qDebug() << "GnosticParser::takeLine unrecognized header line" << line << "SKIPPING";
+			////qDebug() << "GnosticParser::takeLine unrecognized header line" << line << "SKIPPING";
 		}
 		return;
 	}
@@ -84,7 +96,7 @@ void GnosticParser::takeLine(QString line)
 			return;
 		}
 
-		qDebug() << "GnosticParser::takeLine emitting data item" << timestamp << value << splitRe.capturedTexts().at(5);
+		////qDebug() << "GnosticParser::takeLine emitting data item" << timestamp << value << splitRe.capturedTexts().at(5);
 		emit(spewDataItem(timestamp, value, splitRe.capturedTexts().at(5)));
 	}
 }

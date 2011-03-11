@@ -38,7 +38,7 @@ QStringList DataDisplay::getAvailableTypes()
 	return QStringList() << "LineCounterDisplay" << "TailerDisplay" << "TimeGraphDisplay";
 }
 
-DataDisplay* DataDisplay::makeDataDisplay(const QString& type, QWidget* parent)
+DataDisplay* DataDisplay::makeNew(const QString& type, QWidget* parent)
 {
 	if (type == "LineCounterDisplay")
 		return new LineCounterDisplay(parent);
@@ -48,13 +48,13 @@ DataDisplay* DataDisplay::makeDataDisplay(const QString& type, QWidget* parent)
 		return new TimeGraphDisplay(parent);
 	else
 	{
-		qWarning() << "DataDisplay::makeDataDisplay UNKNOWN type" << type;
+		qWarning() << "DataDisplay::makeNew UNKNOWN type" << type;
 		return NULL;
 	}
 
 }
 
-DataDisplay* DataDisplay::loadDataDisplay(const QString& section, QWidget* parent)
+DataDisplay* DataDisplay::makeFromConfig(const QString& section, QWidget* parent)
 {
 	if (!GnosticApp::getInstance().settings()->childGroups().contains(section))
 		return NULL;
@@ -81,7 +81,7 @@ DataDisplay* DataDisplay::loadDataDisplay(const QString& section, QWidget* paren
 	}
 	else
 	{
-		qWarning() << "DataDisplay::loadDataDisplay section" << section << "is for a type" << type << "I don't recognize, returning NULL";
+		qWarning() << "DataDisplay::makeFromConfig section" << section << "is for a type" << type << "I don't recognize, returning NULL";
 		return NULL;
 	}
 
@@ -89,7 +89,7 @@ DataDisplay* DataDisplay::loadDataDisplay(const QString& section, QWidget* paren
 
 }
 
-const QString DataDisplay::getNewDataDisplayId()
+const QString DataDisplay::getNewId()
 {
 	QSet<int> existing;
 	QRegExp rx("^display_(\\d+)$");
@@ -105,7 +105,7 @@ const QString DataDisplay::getNewDataDisplayId()
 	return QString("display_%1").arg(i);
 }
 
-QStringList DataDisplay::getDataDisplaySections()
+QStringList DataDisplay::getSections()
 {
 	QStringList result;
 	foreach (QString s, GnosticApp::getInstance().settings()->childGroups())
@@ -133,10 +133,10 @@ void DataDisplay::setDescription(QString newDescription)
 	description=newDescription;
 }
 
-const QString& DataDisplay::saveDataDisplay()
+const QString& DataDisplay::saveSettings()
 {
 	if (id.isEmpty())
-		id = getNewDataDisplayId();
+		id = getNewId();
 
 	GnosticApp::getInstance().settings()->setValue(QString("%1/type").arg(id), getType());
 	GnosticApp::getInstance().settings()->setValue(QString("%1/description").arg(id), description);
@@ -166,9 +166,9 @@ bool DataDisplay::loadSettings(const QString& section)
 
 void DataDisplay::dumpDebug()
 {
-	qDebug() << "DataDisplay::dumpDebug @ "  << (void*)this;
-	qDebug() << "DataDisplay::dumpDebug id" << id;
-	qDebug() << "DataDisplay::dumpDebug description" << description;
+	//qDebug() << "DataDisplay::dumpDebug @ "  << (void*)this;
+	//qDebug() << "DataDisplay::dumpDebug id" << id;
+	//qDebug() << "DataDisplay::dumpDebug description" << description;
 }
 
 void DataDisplay::closeEvent(QCloseEvent *event)

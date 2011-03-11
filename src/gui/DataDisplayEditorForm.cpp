@@ -51,17 +51,17 @@ DataDisplayEditorForm::~DataDisplayEditorForm()
 
 void DataDisplayEditorForm::populateTable()
 {
-	qDebug() << "DataDisplayEditorForm::populateTable";
+	//qDebug() << "DataDisplayEditorForm::populateTable";
 	model.clear();
 	QSettings* s = GnosticApp::getInstance().settings();
-	foreach (QString section, DataDisplay::getDataDisplaySections())
+	foreach (QString section, DataDisplay::getSections())
 	{
-		qDebug() << "DataDisplayEditorForm::populateTable adding row for section " << section;
+		//qDebug() << "DataDisplayEditorForm::populateTable adding row for section " << section;
 		QList<QStandardItem*> row;
 		row << new QStandardItem(section)
 				<< new QStandardItem(s->value(QString("%1/description").arg(section)).toString());
 
-		qDebug() << row;
+		//qDebug() << row;
 		model.appendRow(row);
 	}
 	ui->displayTable->hideColumn(0);
@@ -89,16 +89,16 @@ void DataDisplayEditorForm::displayTableClicked(QModelIndex idx)
 
 void DataDisplayEditorForm::selectDataDisplay(const QString& section)
 {
-	qDebug() << "DataDisplayEditorForm::selectDataDisplay called with" << section;
+	//qDebug() << "DataDisplayEditorForm::selectDataDisplay called with" << section;
 	clearCurrent();
 
 	ui->saveButton->setEnabled(false);
-	current = DataDisplay::loadDataDisplay(section);
-	qDebug() << "DataDisplayEditorForm::selectDataDisplay after load, current is" << current;
+	current = DataDisplay::makeFromConfig(section);
+	//qDebug() << "DataDisplayEditorForm::selectDataDisplay after load, current is" << current;
 	if (current)
 	{
 		DataDisplayConfigWidget* dconf = current->getConfigWidget(this);
-		qDebug() << "DataDisplayEditorForm::selectDataDisplay" << section << dconf;
+		//qDebug() << "DataDisplayEditorForm::selectDataDisplay" << section << dconf;
 		if (dconf)
 		{
 			connect(dconf, SIGNAL(wasUpdated()), this, SLOT(markUpdated()));
@@ -110,7 +110,7 @@ void DataDisplayEditorForm::selectDataDisplay(const QString& section)
 
 void DataDisplayEditorForm::selectRowWithId(const QString& id)
 {
-	qDebug() << "DataDisplayEditorForm::selectRowWithId" << id;
+	//qDebug() << "DataDisplayEditorForm::selectRowWithId" << id;
 	QList<QStandardItem*> search = model.findItems(id);
 	if (search.count() > 0)
 	{
@@ -128,7 +128,7 @@ void DataDisplayEditorForm::saveCurrent()
 {
 	if (current)
 	{
-		current->saveDataDisplay();
+		current->saveSettings();
 		ui->saveButton->setEnabled(false);
 		populateTable();
 	}
@@ -148,9 +148,9 @@ void DataDisplayEditorForm::addNewDataDisplay()
 	if (ok && !type.isEmpty())
 	{
 		clearCurrent();
-		current = DataDisplay::makeDataDisplay(type);
+		current = DataDisplay::makeNew(type);
 		current->setDescription(QString("new %1 display").arg(type));
-		current->saveDataDisplay();
+		current->saveSettings();
 		populateTable();
 		selectRowWithId(current->getId());
 	}
@@ -177,7 +177,7 @@ void DataDisplayEditorForm::deleteCurrent()
 
 void DataDisplayEditorForm::testCurrent()
 {
-	qDebug() << "DataDisplayEditorForm::testCurrent";
+	//qDebug() << "DataDisplayEditorForm::testCurrent";
 	// Create a parser and a dummy data source, and hook it up...
 
 	GnosticParser *parser = new GnosticParser(current);
@@ -186,17 +186,17 @@ void DataDisplayEditorForm::testCurrent()
 	connect(current, SIGNAL(wasClosed()), dummy, SLOT(stop()));
 	if (current->wantDataTypes() & DataDisplay::Lines)
 	{
-		qDebug() << "DataDisplayEditorForm::testCurrent it wants Lines... hooking up line feed...";
+		//qDebug() << "DataDisplayEditorForm::testCurrent it wants Lines... hooking up line feed...";
 		connect(parser, SIGNAL(spewLine(QString)), current, SLOT(takeLine(QString)));
 	}
-	else qDebug() << "DataDisplayEditorForm::testCurrent it doesn't want Lines...";
+	else //qDebug() << "DataDisplayEditorForm::testCurrent it doesn't want Lines...";
 
 	if (current->wantDataTypes() & DataDisplay::DataItems)
 	{
-		qDebug() << "DataDisplayEditorForm::testCurrent it wants DataItems... hooking up item feed...";
+		//qDebug() << "DataDisplayEditorForm::testCurrent it wants DataItems... hooking up item feed...";
 		connect(parser, SIGNAL(spewDataItem(double,double,QString)), current, SLOT(takeDataItem(double,double,QString)));
 	}
-	else qDebug() << "DataDisplayEditorForm::testCurrent it doesn't want DataItems...";
+	else //qDebug() << "DataDisplayEditorForm::testCurrent it doesn't want DataItems...";
 
 
 	current->show();

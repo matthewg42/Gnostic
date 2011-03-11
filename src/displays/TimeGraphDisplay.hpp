@@ -1,8 +1,6 @@
 #ifndef TIMEGRAPHDISPLAY_HPP
 #define TIMEGRAPHDISPLAY_HPP
 
-
-#include "DataDisplay.hpp"
 #include <QRegExp>
 #include <QStringList>
 #include <QString>
@@ -11,6 +9,8 @@
 #include <QProcess>
 #include <QPen>
 
+#include "DataDisplay.hpp"
+
 namespace Ui {
 	class TimeGraphDisplay;
 }
@@ -18,9 +18,12 @@ namespace Ui {
 class QwtPlot;
 class QwtPlotCurve;
 class QwtPlotItem;
+
 class QCloseEvent;
 class QResizeEvent;
 class QSettings;
+class QTimer;
+
 class DataDisplayConfigWidget;
 class PenStyleWidget;
 
@@ -36,7 +39,7 @@ public:
 	virtual DataDisplayConfigWidget* getConfigWidget(QWidget* parent);
 
 public slots:
-	virtual const QString& saveDataDisplay();
+	virtual const QString& saveSettings();
 	virtual bool loadSettings(const QString& section);
 	virtual void dumpDebug();
 
@@ -86,6 +89,8 @@ private:
 	static const double defaultYMax = 100;
 	PenStyleWidget* penWidget;
 	QwtPlotCurve* selectedCurve;
+	QTimer* redrawTimer;
+
 };
 
 #endif // TIMEGRAPHDISPLAY_HPP

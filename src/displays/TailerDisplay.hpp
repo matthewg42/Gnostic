@@ -23,7 +23,7 @@ public:
 	virtual DataDisplayConfigWidget* getConfigWidget(QWidget* parent);
 
 public slots:
-	virtual const QString& saveDataDisplay();
+	virtual const QString& saveSettings();
 	virtual bool loadSettings(const QString& section);
 	virtual void dumpDebug();
 

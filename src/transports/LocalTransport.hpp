@@ -19,7 +19,7 @@ public:
 	virtual const QString getType() {return "LocalTransport";}
 
 	//! Test that the transport invoke echo "hello world"
-	virtual bool testTransport();
+	virtual bool test();
 
 	//! Get a config widget
 	virtual TransportConfigWidget* getConfigWidget(QWidget* parent);
@@ -35,7 +35,7 @@ public slots:
 	//! Kill the current monitor if it is running
 	virtual void stop();
 
-	virtual const QString saveTransport();
+	virtual const QString saveSettings();
 
 	virtual bool loadSettings(const QString& section);
 

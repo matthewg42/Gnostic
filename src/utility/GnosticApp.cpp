@@ -53,7 +53,7 @@ bool GnosticApp::init()
 		return false;
 	}
 
-	qDebug() << "GnosticApp::GnosticApp ini path is" << getIniPath();
+	//qDebug() << "GnosticApp::GnosticApp ini path is" << getIniPath();
 	return true;
 }
 
@@ -75,7 +75,7 @@ const QString GnosticApp::getIniPath()
 QPen GnosticApp::getRecentPen(const QString& key)
 {
 	QString hash = hashPenKey(key);
-	qDebug() << "GnosticApp::getRecentPen" << key << " -> " << hash;
+	//qDebug() << "GnosticApp::getRecentPen" << key << " -> " << hash;
 	QString serialized = confSettings->value(QString("recent_pens/%1").arg(hash), "").toString();
 	if (serialized == "")
 		return QPen();

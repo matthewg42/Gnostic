@@ -142,6 +142,8 @@ Remote monitor protocol
 
 GNOSTIC-DATA-PROTOCOL-VERSION=1.0
 HOST=the.fq.hostname
+INVOCATION-PATH=/whatever/the/program/was
+INVOCATION-ARGS="list" "of" "quoted arguments"
 MONITOR-NAME=Some monitor
 UPDATE-DELAY=1.0
 DELIMITER=:

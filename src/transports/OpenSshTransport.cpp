@@ -14,15 +14,15 @@ OpenSshTransport::OpenSshTransport(QObject *parent) :
 
 OpenSshTransport::~OpenSshTransport()
 {
-	qDebug() << "OpenSshTransport::~OpenSshTransport";
+	//qDebug() << "OpenSshTransport::~OpenSshTransport";
 }
 
-bool OpenSshTransport::testTransport()
+bool OpenSshTransport::test()
 {
-	qDebug() << "OpenSshTransport::testTransport";
+	//qDebug() << "OpenSshTransport::test";
 	QProcess testProc(this);
 	QString ret = establishConnection(testProc, "echo", QStringList() << "hello world");
-	qDebug() << "OpenSshTransport::testTransport ret" << ret;
+	//qDebug() << "OpenSshTransport::test ret" << ret;
 	if (!testProc.waitForFinished(5000))
 		return false;
 	return (testProc.exitStatus() == 0);
@@ -35,7 +35,7 @@ bool OpenSshTransport::start(const QString& exec, const QStringList& args)
 	if (ret.isEmpty())
 		return false;
 
-	qDebug() << "OpenSshTransport::start process state after establishing is:" << proc.state();
+	//qDebug() << "OpenSshTransport::start process state after establishing is:" << proc.state();
 
 	connect(&proc, SIGNAL(error(QProcess::ProcessError)), this, SLOT(procError(QProcess::ProcessError)));
 	connect(&proc, SIGNAL(readyReadStandardError()), this, SLOT(procReadErr()));
@@ -56,23 +56,23 @@ void OpenSshTransport::stop()
 		proc.kill();
 }
 
-const QString OpenSshTransport::saveTransport()
+const QString OpenSshTransport::saveSettings()
 {
-	qDebug() << "OpenSshTransport::saveTransport";
-	AbstractSshTransport::saveTransport();
+	//qDebug() << "OpenSshTransport::saveSettings";
+	AbstractSshTransport::saveSettings();
 	return id;
 }
 
 void OpenSshTransport::dumpDebug()
 {
-	qDebug() << "OpenSshTransport::dumpDebug, calling AbstractSshTransport::dumpDebug...";
+	//qDebug() << "OpenSshTransport::dumpDebug, calling AbstractSshTransport::dumpDebug...";
 	AbstractSshTransport::dumpDebug();
-	qDebug() << "OpenSshTransport::dumpDebug ssh exe path is" << getOpenExePath();
+	//qDebug() << "OpenSshTransport::dumpDebug ssh exe path is" << getOpenExePath();
 }
 
 QString OpenSshTransport::establishConnection(QProcess& proc, const QString& exe, const QStringList& args)
 {
-	qDebug() << "OpenSshTransport::establishConnection" << exe << args;
+	//qDebug() << "OpenSshTransport::establishConnection" << exe << args;
 	dumpDebug();
 	proc.setProcessChannelMode(QProcess::MergedChannels);
 	QStringList sshArgs;
@@ -92,11 +92,11 @@ QString OpenSshTransport::establishConnection(QProcess& proc, const QString& exe
 
 	sshArgs << QString("%1@%2").arg(user).arg(host) << exe << args;
 
-	qDebug() << "OpenSshTransport::establishConnection start(" << getOpenExePath() << sshArgs << ")";
+	//qDebug() << "OpenSshTransport::establishConnection start(" << getOpenExePath() << sshArgs << ")";
 	proc.start(getOpenExePath(), sshArgs);
 	if (!proc.waitForStarted())
 	{
-		qDebug() << "OpenSshTransport::establishConnection waitForStarted returned false";
+		//qDebug() << "OpenSshTransport::establishConnection waitForStarted returned false";
 		proc.kill();  // just in case it's taking too long but will still start at some point...
 		return false;
 	}
@@ -106,13 +106,13 @@ QString OpenSshTransport::establishConnection(QProcess& proc, const QString& exe
 	{
 		if (!proc.waitForReadyRead(30000))
 		{
-			qDebug() << "OpenSshTransport::establishConnection waitForReadyRead returned false";
+			//qDebug() << "OpenSshTransport::establishConnection waitForReadyRead returned false";
 			proc.kill();
 			return QString();
 		}
 
 		QByteArray output = proc.readAll();
-		qDebug() << "OpenSshTransport::establishConnection read:" << output;
+		//qDebug() << "OpenSshTransport::establishConnection read:" << output;
 		if (QString(output).contains("Are you sure you want to continue connecting?"))
 		{
 			QMessageBox mb;
@@ -131,7 +131,7 @@ QString OpenSshTransport::establishConnection(QProcess& proc, const QString& exe
 		}
 		else if (QString(output).contains("Permission denied")) // e.g. wrong password
 		{
-			qWarning() << "OpenSshTransport::testTransport - access denied";
+			qWarning() << "OpenSshTransport::test - access denied";
 			proc.kill();
 			return QString();
 		}

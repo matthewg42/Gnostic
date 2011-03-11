@@ -49,17 +49,17 @@ TransportEditorForm::~TransportEditorForm()
 
 void TransportEditorForm::populateTable()
 {
-	qDebug() << "TransportEditorForm::populateTable";
+	//qDebug() << "TransportEditorForm::populateTable";
 	model.clear();
 	QSettings* s = GnosticApp::getInstance().settings();
-	foreach (QString section, Transport::getTransportSections())
+	foreach (QString section, Transport::getSections())
 	{
-		qDebug() << "TransportEditorForm::populateTable adding row for section " << section;
+		//qDebug() << "TransportEditorForm::populateTable adding row for section " << section;
 		QList<QStandardItem*> row;
 		row << new QStandardItem(section)
 				<< new QStandardItem(s->value(QString("%1/description").arg(section)).toString());
 
-		qDebug() << row;
+		//qDebug() << row;
 		model.appendRow(row);
 	}
 	ui->transportTable->hideColumn(0);
@@ -90,7 +90,7 @@ void TransportEditorForm::selectTransport(const QString& section)
 	clearCurrent();
 
 	ui->saveButton->setEnabled(false);
-	current = Transport::loadTransport(section);
+	current = Transport::makeFromConfig(section);
 	if (current)
 	{
 		TransportConfigWidget* tconf = current->getConfigWidget(this);
@@ -122,7 +122,7 @@ void TransportEditorForm::saveCurrent()
 {
 	if (current)
 	{
-		current->saveTransport();
+		current->saveSettings();
 		ui->saveButton->setEnabled(false);
 		populateTable();
 	}
@@ -142,9 +142,9 @@ void TransportEditorForm::addNewTransport()
 	if (ok && !type.isEmpty())
 	{
 		clearCurrent();
-		current = Transport::makeTransport(type);
+		current = Transport::makeNew(type);
 		current->setDescription(QString("new %1 transport").arg(type));
-		current->saveTransport();
+		current->saveSettings();
 		populateTable();
 		ui->transportTable->selectRow(model.findItems(current->getId()).at(0)->row());
 		transportTableClicked(ui->transportTable->currentIndex());
@@ -181,7 +181,7 @@ void TransportEditorForm::testCurrent()
 	}
 	else
 	{
-		if (current->testTransport())
+		if (current->test())
 		{
 			mb.setText("Transport configuration looks good");
 			mb.setIcon(QMessageBox::Information);

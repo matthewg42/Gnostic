@@ -31,10 +31,10 @@ DataDisplayConfigWidget* LineCounterDisplay::getConfigWidget(QWidget* parent)
 	return configWidget;
 }
 
-const QString& LineCounterDisplay::saveDataDisplay()
+const QString& LineCounterDisplay::saveSettings()
 {
-	qDebug() << "LineCounterDisplay::saveDataDisplay";
-	DataDisplay::saveDataDisplay();
+	//qDebug() << "LineCounterDisplay::saveSettings";
+	DataDisplay::saveSettings();
 
 	QSettings* settings = GnosticApp::getInstance().settings();
 	settings->setValue(QString("%1/filter").arg(id), getFilter());
@@ -44,7 +44,7 @@ const QString& LineCounterDisplay::saveDataDisplay()
 
 bool LineCounterDisplay::loadSettings(const QString& section)
 {
-	qDebug() << "LineCounterDisplay::loadSettings" << section;
+	//qDebug() << "LineCounterDisplay::loadSettings" << section;
 	if (!DataDisplay::loadSettings(section))
 		return false;
 
@@ -57,9 +57,9 @@ bool LineCounterDisplay::loadSettings(const QString& section)
 
 void LineCounterDisplay::dumpDebug()
 {
-	qDebug() << "LineCounterDisplay::dumpDebug calling DataDisplay::dumpDebug()";
-	qDebug() << "LineCounterDisplay::dumpDebug filter" << getFilter();
-	qDebug() << "LineCounterDisplay::dumpDebug display label" << getDisplayLabel();
+	//qDebug() << "LineCounterDisplay::dumpDebug calling DataDisplay::dumpDebug()";
+	//qDebug() << "LineCounterDisplay::dumpDebug filter" << getFilter();
+	//qDebug() << "LineCounterDisplay::dumpDebug display label" << getDisplayLabel();
 }
 
 void LineCounterDisplay::setFilter(QString pattern)

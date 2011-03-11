@@ -50,24 +50,24 @@ public:
 	//! \param parent a QObject which is to be the parent of the new DataDisplay.
 	//! \returns NULL if there is a problem (e.g. unknown displayType), else
 	//!          a pointer to a new DataDisplay object of the desired type.
-	static DataDisplay* makeDataDisplay(const QString& transportType, QWidget* parent=0);
+	static DataDisplay* makeNew(const QString& transportType, QWidget* parent=0);
 
 	//! Create a new DataDisplay object from a definition in the config file.
 	//! \param id the section of the config.ini file which describes the DataDisplay.
 	//! \param parent a pointer to a QObject which is the parent of the new DataDisplay.
 	//! \returns NULL if there is a problem (e.g. no such id), else
 	//!          a pointer to a new DataDisplay object of the desired type.
-	static DataDisplay* loadDataDisplay(const QString& id, QWidget* parent=0);
+	static DataDisplay* makeFromConfig(const QString& id, QWidget* parent=0);
 
 	//! Sequence generator for making a new and unique display ID.
 	//! \returns string something like this: "display_1" where the part
 	//!          after the _ is the first integer >= 0 which makes an
 	//!          ID which is not an exisiting section in the config.ini file.
-	static const QString getNewDataDisplayId();
+	static const QString getNewId();
 
 	//! Get a list of all sections in the config.ini file which describe
 	//! DataDisplay objects.
-	static QStringList getDataDisplaySections();
+	static QStringList getSections();
 
 public slots:
 	//! This is how DataDisplay objects get their data... A connection is made from a
@@ -83,7 +83,7 @@ public slots:
 	//! empty, otherwise a new, unique ID will be generated, and set
 	//! as the current ID.
 	//! In either case the ID after the save is returned.
-	virtual const QString& saveDataDisplay() = 0;
+	virtual const QString& saveSettings() = 0;
 
 	//! Load the settings for this DataDisplay from the specified section of the config.ini
 	//! \param section the section in the config.ini file which describes the DataDisplay

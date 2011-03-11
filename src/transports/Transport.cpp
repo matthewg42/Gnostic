@@ -43,20 +43,20 @@ QStringList Transport::getAvailableTypes()
 	return QStringList() << "LocalTransport" << "PlinkSshTransport" << "OpenSshTransport";
 }
 
-Transport* Transport::makeTransport(const QString& transportType, QObject* parent)
+Transport* Transport::makeNew(const QString& type, QObject* parent)
 {
-	if (transportType == "LocalTransport")
+	if (type == "LocalTransport")
 		return new LocalTransport(parent);
-	else if (transportType == "PlinkSshTransport")
+	else if (type == "PlinkSshTransport")
 		return new PlinkSshTransport(parent);
-	else if (transportType == "OpenSshTransport")
+	else if (type == "OpenSshTransport")
 		return new OpenSshTransport(parent);
 	else
 		return NULL;
 
 }
 
-Transport* Transport::loadTransport(const QString& section, QObject* parent)
+Transport* Transport::makeFromConfig(const QString& section, QObject* parent)
 {
 	if (!GnosticApp::getInstance().settings()->childGroups().contains(section))
 		return NULL;
@@ -88,7 +88,7 @@ Transport* Transport::loadTransport(const QString& section, QObject* parent)
 
 }
 
-const QString Transport::getNewTransportId()
+const QString Transport::getNewId()
 {
 	QSet<int> existing;
 	QRegExp rx("^transport_(\\d+)$");
@@ -104,7 +104,7 @@ const QString Transport::getNewTransportId()
 	return QString("transport_%1").arg(i);
 }
 
-QStringList Transport::getTransportSections()
+QStringList Transport::getSections()
 {
 	QStringList result;
 	foreach (QString s, GnosticApp::getInstance().settings()->childGroups())
@@ -120,10 +120,10 @@ void Transport::setDescription(QString newDescription)
 	description=newDescription;
 }
 
-const QString Transport::saveTransport()
+const QString Transport::saveSettings()
 {
 	if (id.isEmpty())
-		id = getNewTransportId();
+		id = getNewId();
 
 	GnosticApp::getInstance().settings()->setValue(QString("%1/type").arg(id), getType());
 	GnosticApp::getInstance().settings()->setValue(QString("%1/description").arg(id), description);
@@ -153,9 +153,9 @@ bool Transport::loadSettings(const QString& section)
 
 void Transport::dumpDebug()
 {
-	qDebug() << "Transport::dumpDebug @ "  << (void*)this;
-	qDebug() << "Transport::dumpDebug id" << id;
-	qDebug() << "Transport::dumpDebug description" << description;
+	//qDebug() << "Transport::dumpDebug @ "  << (void*)this;
+	//qDebug() << "Transport::dumpDebug id" << id;
+	//qDebug() << "Transport::dumpDebug description" << description;
 }
 
 void Transport::setConnectionStatus(TransportStatus newStatus)

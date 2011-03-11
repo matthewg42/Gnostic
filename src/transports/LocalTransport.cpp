@@ -26,29 +26,29 @@ LocalTransport::~LocalTransport()
 	proc.kill();
 }
 
-bool LocalTransport::testTransport()
+bool LocalTransport::test()
 {
-	qDebug() << "LocalTransport::testTransport";
+	//qDebug() << "LocalTransport::test";
 
 	QString exe = GnosticApp::getInstance().settings()->value("programs/echo_path", "echo").toString();
 	QProcess testProc;
 	testProc.start(exe, QStringList() << "hello world");
 	if (!testProc.waitForStarted(1000))
 	{
-		qDebug() << "LocalTransport::testTransport waitForStarted returned false";
+		//qDebug() << "LocalTransport::test waitForStarted returned false";
 		testProc.kill();
 		return false;
 	}
 	if (!testProc.waitForFinished(1000))
 	{
-		qDebug() << "LocalTransport::testTransport  waitForFinished returned false";
+		//qDebug() << "LocalTransport::test  waitForFinished returned false";
 		testProc.kill();
 		return false;
 	}
 	QByteArray output = testProc.readAll();
 	if (QString(output) != "hello world\n")
 	{
-		qWarning() << "LocalTransport::testTransport - output was not what was expected:" << output;
+		qWarning() << "LocalTransport::test - output was not what was expected:" << output;
 		return false;
 	}
 	return true;
@@ -76,10 +76,10 @@ void LocalTransport::stop()
 		proc.kill();
 }
 
-const QString LocalTransport::saveTransport()
+const QString LocalTransport::saveSettings()
 {
-	qDebug() << "LocalTransport::saveTransport, calling Transport::saveTransport first";
-	Transport::saveTransport();
+	//qDebug() << "LocalTransport::saveSettings, calling Transport::saveSettings first";
+	Transport::saveSettings();
 	return id;
 	// actually we don't have any settings to save really...  but we should see
 	// the type set correctly in the config.ini file...
@@ -87,7 +87,7 @@ const QString LocalTransport::saveTransport()
 
 bool LocalTransport::loadSettings(const QString& section)
 {
-	qDebug() << "LocalTransport::loadSettings";
+	//qDebug() << "LocalTransport::loadSettings";
 	// LocalTransport doesn't have to do anything more than the base class already does...
 	return Transport::loadSettings(section);
 }
@@ -95,7 +95,7 @@ bool LocalTransport::loadSettings(const QString& section)
 
 void LocalTransport::dumpDebug()
 {
-	qDebug() << "LocalTransport::dumpDebug calling Tranport::dumpDebug()";
+	//qDebug() << "LocalTransport::dumpDebug calling Tranport::dumpDebug()";
 	Transport::dumpDebug();
 }
 
@@ -125,7 +125,7 @@ void LocalTransport::procStatusUpdate(QProcess::ProcessState newState)
 
 void LocalTransport::procReadIn()
 {
-	qDebug() << "LocalTransport::procReadIn";
+	////qDebug() << "LocalTransport::procReadIn";
 	QByteArray line;
 	while (1)
 	{
@@ -133,6 +133,7 @@ void LocalTransport::procReadIn()
 		if (line.isEmpty())
 			break;
 
+		////qDebug() << "LocalTransport::procReadIn line" << line;
 		emit spewLine(line);
 	}
 }
@@ -151,7 +152,7 @@ void LocalTransport::procError(QProcess::ProcessError err)
 
 void LocalTransport::procDone(int status)
 {
-	qDebug() << "LocalTransport::procDone process has ended with status:" << status;
+	//qDebug() << "LocalTransport::procDone process has ended with status:" << status;
 	setConnectionStatus(Transport::Disconnected);
 }
 

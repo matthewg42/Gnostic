@@ -3,9 +3,9 @@
 #include <QDebug>
 #include <QWidget>
 
-#include "LocalTransport.hpp"
-#include "GnosticParser.hpp"
-#include "PenStyleWidget.hpp"
+#include "RemoteMonitor.hpp"
+#include "Transport.hpp"
+#include "DataDisplay.hpp"
 
 GnosticMainWindow* GnosticMainWindow::singleton = NULL;
 
@@ -16,6 +16,12 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
 	Q_ASSERT(!singleton);
 	singleton = this;
         ui->setupUi(this);
+
+	Transport* t = Transport::makeFromConfig("transport_0");
+	DataDisplay* d = DataDisplay::makeFromConfig("display_2");
+	Q_ASSERT(t);
+	Q_ASSERT(d);
+	RemoteMonitor* m = RemoteMonitor::quickstart(t, "/home/mouse/mon.sh", QStringList(), d);
 }
 
 GnosticMainWindow::~GnosticMainWindow()

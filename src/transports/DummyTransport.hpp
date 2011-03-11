@@ -23,7 +23,7 @@ public:
 	virtual const QString getType() {return "DummyTransport";}
 
 	//! A Dummy is always working... returns true;
-	virtual bool testTransport();
+	virtual bool test();
 
 	//! Always returns NULL
 	virtual TransportConfigWidget* getConfigWidget(QWidget* parent);
@@ -36,7 +36,7 @@ public slots:
 	virtual void stop();
 
 	//! Doesn't do anything
-	virtual const QString saveTransport();
+	virtual const QString saveSettings();
 
 	//! Doesn't do anything
 	virtual bool loadSettings(const QString& section);
