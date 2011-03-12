@@ -18,6 +18,8 @@ DummyTransport::DummyTransport(QObject* parent) :
 	timer.setInterval(50);
 	timer.setSingleShot(false);
 	connect(&timer, SIGNAL(timeout()), this, SLOT(spew()));
+	lastVal.insert("Hurp", 0);
+	lastVal.insert("Durp", 80);
 }
 
 DummyTransport::~DummyTransport()
@@ -90,10 +92,7 @@ void DummyTransport::spewHeader()
 
 void DummyTransport::spew()
 {
-	QMap< QString, double > mid;
-	mid.insert("Hurp", 0);
-	mid.insert("Durp", 70);
-	foreach(QString label, QStringList() << mid.keys())
+	foreach(QString label, lastVal.keys())
 	{
 		qint64 ts = QDateTime::currentMSecsSinceEpoch();
 		// every so often, hiccup and send a value older than some previous values...
@@ -102,11 +101,13 @@ void DummyTransport::spew()
 			//qDebug() << "DummyTransport::spew hiccup";
 			ts -= 5000;
 		}
+		lastVal[label] += fmod(rand(), 10) - 4.5;
 		emit(spewLine(QString("%1;%2;%3")
 			      .arg(ts)
-			      .arg(fmod(rand(), 50) - 25 + mid[label])
+			      .arg(lastVal[label])
 			      .arg(label)));
 	}
+
 }
 
 

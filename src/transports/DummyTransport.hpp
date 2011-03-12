@@ -4,6 +4,8 @@
 
 #include "Transport.hpp"
 #include <QTimer>
+#include <QMap>
+#include <QString>
 
 class TransportConfigWidget;
 class QWidget;
@@ -51,6 +53,7 @@ protected slots:
 
 protected:
 	QTimer timer;
+	QMap<QString, double> lastVal;
 };
 
 #endif // LOCALTRANSPORT_HPP
