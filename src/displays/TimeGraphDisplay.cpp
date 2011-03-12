@@ -199,27 +199,15 @@ void TimeGraphDisplay::takeDataItem(const double timestamp, const double value, 
 	}
 
 	// point at the last timestamp in the data
-	bool isSorted = true;
-	int insertIdx = xValues->size() - 1;
-	if (xValues->size() > 0)
+	int insertIdx = xValues->size();
+	for(int i=insertIdx-1; i>=0; i--)
 	{
-		while(insertIdx >= 0)
-		{
-			if (xValues->at(insertIdx) > timestamp)
-			{
-				isSorted = false;
-				insertIdx--;
-			}
-			else
-				break;
-
-		}
-		if (insertIdx < 0)
-			insertIdx = 0;
+		if (xValues->at(i) > timestamp)
+			insertIdx = i;
 	}
 
 	// if were still at the end, we should use the [efficient] append function...
-	if (isSorted)
+	if (insertIdx > xValues->size())
 	{
 		xValues->append(timestamp);
 		yValues->append(value);

@@ -15,7 +15,7 @@
 DummyTransport::DummyTransport(QObject* parent) :
 		Transport(parent)
 {
-	timer.setInterval(300);
+	timer.setInterval(50);
 	timer.setSingleShot(false);
 	connect(&timer, SIGNAL(timeout()), this, SLOT(spew()));
 }

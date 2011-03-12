@@ -70,16 +70,16 @@ p, li { white-space: pre-wrap; }
    <item row="3" column="1">
     <widget class="QSpinBox" name="updateMsSpin">
      <property name="minimum">
-      <number>100</number>
+      <number>20</number>
      </property>
      <property name="maximum">
       <number>60000</number>
      </property>
      <property name="singleStep">
-      <number>50</number>
+      <number>20</number>
      </property>
      <property name="value">
-      <number>300</number>
+      <number>200</number>
      </property>
     </widget>
    </item>
