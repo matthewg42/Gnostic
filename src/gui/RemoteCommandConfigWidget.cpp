@@ -7,6 +7,8 @@
 #include "ui_RemoteCommandConfigWidget.h"
 #include "RemoteCommand.hpp"
 #include "GnosticApp.hpp"
+#include "DataDisplay.hpp"
+#include "GnosticParser.hpp"
 
 RemoteCommandConfigWidget::RemoteCommandConfigWidget(Transport* t, QWidget *parent) :
 		QWidget(parent),
@@ -205,20 +207,12 @@ void RemoteCommandConfigWidget::deleteCurrent()
 
 void RemoteCommandConfigWidget::testCurrent()
 {
-	QMessageBox mb(this);
-
 	if (!current)
-	{
-		mb.setText("No command selected");
-		mb.setIcon(QMessageBox::Warning);
-	}
-	else
-	{
-		mb.setText("Command test TODO");
-		mb.setIcon(QMessageBox::Information);
-	}
-
-	mb.exec();
+		return;
+	DataDisplay* display = DataDisplay::makeNew("TailerDisplay", 0);
+	connect(current->getTransport(), SIGNAL(spewLine(QString)), display, SLOT(takeLine(QString)));
+	display->show();
+	current->start();
 }
 
 void RemoteCommandConfigWidget::madeUpdate()
