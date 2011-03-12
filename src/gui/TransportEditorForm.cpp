@@ -3,6 +3,7 @@
 
 #include "Transport.hpp"
 #include "TransportConfigWidget.hpp"
+#include "RemoteCommandConfigWidget.hpp"
 #include "GnosticApp.hpp"
 
 #include <QStandardItem>
@@ -15,17 +16,18 @@
 
 TransportEditorForm::TransportEditorForm(QWidget *parent) :
 		QWidget(parent),
-		ui(new Ui::TransportEditorForm),
-		current(NULL)
+		ui(new Ui::TransportEditorForm)
 {
 	ui->setupUi(this);
 
+	current = NULL;
+
 
 	connect(ui->transportTable, SIGNAL(clicked(QModelIndex)), this, SLOT(transportTableClicked(QModelIndex)));
-	connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(saveCurrent()));
-	connect(ui->addButton, SIGNAL(clicked()), this, SLOT(addNewTransport()));
-	connect(ui->removeButton, SIGNAL(clicked()), this, SLOT(deleteCurrent()));
-	connect(ui->testButton, SIGNAL(clicked()), this, SLOT(testCurrent()));
+	connect(ui->saveTransportButton, SIGNAL(clicked()), this, SLOT(saveCurrent()));
+	connect(ui->addTransportButton, SIGNAL(clicked()), this, SLOT(addNewTransport()));
+	connect(ui->removeTransportButton, SIGNAL(clicked()), this, SLOT(deleteCurrent()));
+	connect(ui->testTransportButton, SIGNAL(clicked()), this, SLOT(testCurrent()));
 
 	model.setHorizontalHeaderLabels(QStringList() << "Section" << "Transport Description");
 	ui->transportTable->setModel(&model);
@@ -37,7 +39,7 @@ TransportEditorForm::TransportEditorForm(QWidget *parent) :
 		transportTableClicked(ui->transportTable->currentIndex());
 	}
 
-	ui->saveButton->setEnabled(false);
+	ui->saveTransportButton->setEnabled(false);
 }
 
 TransportEditorForm::~TransportEditorForm()
@@ -73,7 +75,11 @@ void TransportEditorForm::clearCurrent()
 	{
 		TransportConfigWidget* tconf = current->getConfigWidget(this);
 		if (tconf)
-			ui->configLayout->removeWidget(current->getConfigWidget(this));
+			ui->transportLayout->removeWidget(current->getConfigWidget(this));
+
+		RemoteCommandConfigWidget* cconf = current->getCommandWidget(this);
+		if (cconf)
+			ui->commandLayout->removeWidget(current->getCommandWidget(this));
 
 		delete current;
 		current = NULL;
@@ -87,9 +93,19 @@ void TransportEditorForm::transportTableClicked(QModelIndex idx)
 
 void TransportEditorForm::selectTransport(const QString& section)
 {
+	RemoteCommandConfigWidget* cconf;
+	if (current)
+	{
+		cconf = current->getCommandWidget(this);
+		if(cconf)
+		{
+			cconf->clearCurrent();
+			delete cconf;
+		}
+	}
 	clearCurrent();
 
-	ui->saveButton->setEnabled(false);
+	ui->saveTransportButton->setEnabled(false);
 	current = Transport::makeFromConfig(section);
 	if (current)
 	{
@@ -97,7 +113,13 @@ void TransportEditorForm::selectTransport(const QString& section)
 		if(tconf)
 		{
 			connect(tconf, SIGNAL(wasUpdated()), this, SLOT(markUpdated()));
-			ui->configLayout->addWidget(dynamic_cast<QWidget*>(tconf));
+			ui->transportLayout->addWidget(dynamic_cast<QWidget*>(tconf));
+		}
+
+		cconf = current->getCommandWidget(this);
+		if(cconf)
+		{
+			ui->commandLayout->addWidget(cconf);
 		}
 	}
 
@@ -115,7 +137,7 @@ void TransportEditorForm::selectRowWithId(const QString& id)
 
 void TransportEditorForm::markUpdated()
 {
-	ui->saveButton->setEnabled(true);
+	ui->saveTransportButton->setEnabled(true);
 }
 
 void TransportEditorForm::saveCurrent()
@@ -123,7 +145,7 @@ void TransportEditorForm::saveCurrent()
 	if (current)
 	{
 		current->saveSettings();
-		ui->saveButton->setEnabled(false);
+		ui->saveTransportButton->setEnabled(false);
 		populateTable();
 	}
 }
@@ -156,7 +178,7 @@ void TransportEditorForm::deleteCurrent()
 	if (current)
 	{
 		GnosticApp::getInstance().settings()->remove(current->getId());
-		ui->configLayout->removeWidget(current->getConfigWidget(this));
+		ui->transportLayout->removeWidget(current->getConfigWidget(this));
 		delete current;
 		current = NULL;
 		populateTable();

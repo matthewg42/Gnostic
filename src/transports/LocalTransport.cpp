@@ -1,6 +1,3 @@
-#include "LocalTransport.hpp"
-#include "GnosticApp.hpp"
-#include "LocalTransportConfigWidget.hpp"
 #include <QProcess>
 #include <QVariant>
 #include <QDateTime>
@@ -9,6 +6,11 @@
 #include <QString>
 #include <QFile>
 #include <QSettings>
+
+#include "LocalTransport.hpp"
+#include "GnosticApp.hpp"
+#include "LocalTransportConfigWidget.hpp"
+#include "RemoteCommandConfigWidget.hpp"
 
 LocalTransport::LocalTransport(QObject* parent) :
 		Transport(parent),
@@ -107,6 +109,15 @@ TransportConfigWidget* LocalTransport::getConfigWidget(QWidget* parent)
 	return configWidget;
 }
 
+RemoteCommandConfigWidget* LocalTransport::getCommandWidget(QWidget* parent)
+{
+	if (!commandWidget)
+		commandWidget = new RemoteCommandConfigWidget(this, parent);
+
+	return commandWidget;
+}
+
+
 void LocalTransport::procStatusUpdate(QProcess::ProcessState newState)
 {
 	switch (newState)
@@ -152,6 +163,7 @@ void LocalTransport::procError(QProcess::ProcessError err)
 
 void LocalTransport::procDone(int status)
 {
+	Q_UNUSED(status);
 	//qDebug() << "LocalTransport::procDone process has ended with status:" << status;
 	setConnectionStatus(Transport::Disconnected);
 }

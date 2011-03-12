@@ -5,6 +5,7 @@
 #include <QStringList>
 
 class TransportConfigWidget;
+class RemoteCommandConfigWidget;
 class QWidget;
 
 //! \class Transport
@@ -54,6 +55,7 @@ public:
 
 	//! Get a widget containing controls necessary to configure this Transport.
 	virtual TransportConfigWidget* getConfigWidget(QWidget* parent=0) = 0;
+	virtual RemoteCommandConfigWidget* getCommandWidget(QWidget* parent=0) = 0;
 
 	//! Get a list of transport types which are known
 	//! \return e.g. ("LocalTransport", "PlinkSshTransport", "OpenSshTransport")
@@ -130,6 +132,7 @@ protected:
 	QString description;
 	TransportStatus connectionStatus;
 	TransportConfigWidget* configWidget;
+	RemoteCommandConfigWidget* commandWidget;
 
 };
 

@@ -39,7 +39,7 @@
        <bool>false</bool>
       </property>
       <property name="dragDropMode">
-       <enum>QAbstractItemView::DragOnly</enum>
+       <enum>QAbstractItemView::DragDrop</enum>
       </property>
       <property name="iconSize">
        <size>
@@ -69,7 +69,7 @@
        <bool>false</bool>
       </property>
       <property name="currentRow">
-       <number>0</number>
+       <number>-1</number>
       </property>
       <item>
        <property name="text">

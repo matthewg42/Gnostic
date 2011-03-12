@@ -23,6 +23,7 @@ public:
 
 	//! Get a config widget
 	virtual TransportConfigWidget* getConfigWidget(QWidget* parent);
+	virtual RemoteCommandConfigWidget* getCommandWidget(QWidget* parent=0);
 
 public slots:
 	//! Use this transport object to run a command

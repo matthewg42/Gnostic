@@ -196,8 +196,10 @@ void DataDisplayEditorForm::testCurrent()
 		//qDebug() << "DataDisplayEditorForm::testCurrent it wants DataItems... hooking up item feed...";
 		connect(parser, SIGNAL(spewDataItem(double,double,QString)), current, SLOT(takeDataItem(double,double,QString)));
 	}
-	else //qDebug() << "DataDisplayEditorForm::testCurrent it doesn't want DataItems...";
-
+	else
+	{
+		//qDebug() << "DataDisplayEditorForm::testCurrent it doesn't want DataItems...";
+	}
 
 	current->show();
 	dummy->start("ignore");

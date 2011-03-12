@@ -30,6 +30,7 @@ public:
 	~AbstractSshTransport() = 0;
 
 	virtual TransportConfigWidget* getConfigWidget(QWidget* parent);
+	virtual RemoteCommandConfigWidget* getCommandWidget(QWidget* parent);
 
 public slots:
 	virtual const QString saveSettings();

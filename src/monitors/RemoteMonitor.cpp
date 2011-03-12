@@ -117,6 +117,7 @@ RemoteMonitor* RemoteMonitor::quickstart(Transport* transport,
 	m->addRemoteCommand(c);
 	m->addDisplay(display);
 	m->start();
+	return m;
 }
 
 

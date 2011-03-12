@@ -26,7 +26,8 @@ public:
 	virtual bool test();
 
 	//! Always returns NULL
-	virtual TransportConfigWidget* getConfigWidget(QWidget* parent);
+	virtual TransportConfigWidget* getConfigWidget(QWidget* parent=0);
+	virtual RemoteCommandConfigWidget* getCommandWidget(QWidget* parent=0);
 
 public slots:
 	//! A DummyTransport calls no programs.. the arguments are ignored.

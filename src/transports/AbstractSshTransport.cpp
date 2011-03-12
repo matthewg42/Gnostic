@@ -2,6 +2,7 @@
 #include "GnosticApp.hpp"
 #include "PasswordDialog.hpp"
 #include "SshTransportConfigWidget.hpp"
+#include "RemoteCommandConfigWidget.hpp"
 
 #include <QProcess>
 #include <QDebug>
@@ -28,6 +29,14 @@ TransportConfigWidget* AbstractSshTransport::getConfigWidget(QWidget* parent)
 		configWidget = new SshTransportConfigWidget(this, parent);
 
 	return configWidget;
+}
+
+RemoteCommandConfigWidget* AbstractSshTransport::getCommandWidget(QWidget* parent)
+{
+	if (!commandWidget)
+		commandWidget = new RemoteCommandConfigWidget(this, parent);
+
+	return commandWidget;
 }
 
 const QString AbstractSshTransport::saveSettings()

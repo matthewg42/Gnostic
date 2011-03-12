@@ -54,6 +54,7 @@ const QString DummyTransport::saveSettings()
 
 bool DummyTransport::loadSettings(const QString& section)
 {
+	Q_UNUSED(section);
 	//qDebug() << "DummyTransport::loadSettings, doesn't do anything with section" << section;
 	return true;
 }
@@ -67,6 +68,12 @@ void DummyTransport::dumpDebug()
 }
 
 TransportConfigWidget* DummyTransport::getConfigWidget(QWidget* parent)
+{
+	Q_UNUSED(parent);
+	return NULL;
+}
+
+RemoteCommandConfigWidget* DummyTransport::getCommandWidget(QWidget* parent)
 {
 	Q_UNUSED(parent);
 	return NULL;

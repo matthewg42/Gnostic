@@ -15,6 +15,7 @@ Transport::Transport(QObject* parent) :
 		connectionStatus(Transport::Disconnected)
 {
 	configWidget = NULL;
+	commandWidget = NULL;
 }
 
 Transport::~Transport()
