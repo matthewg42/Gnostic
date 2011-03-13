@@ -39,9 +39,9 @@ public slots:
 	const QString& getTransportId() { return transportId; }
 	bool setTransportId(const QString& id);
 	const QString& getProgram() { return program; }
-	void setProgram(const QString& p) { program=p; }
+	void setProgram(const QString& p) { program=p; autogenDescription(); }
 	const QStringList& getArguments() { return arguments; }
-	void setArguments(const QStringList& a) { arguments = a; }
+	void setArguments(const QStringList& a) { arguments = a; autogenDescription(); }
 	int getTimeout() { return timeout; }
 	void setTimeout(int t) { timeout = t; }
 	bool getReconnect() { return reconnect; }
@@ -52,6 +52,8 @@ public slots:
 	void dumpDebug();
 
 private:
+	void autogenDescription();
+
 	QString id;
 	QString description;
 	QString transportId;

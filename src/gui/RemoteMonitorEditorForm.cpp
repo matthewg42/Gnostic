@@ -21,7 +21,7 @@ RemoteMonitorEditorForm::RemoteMonitorEditorForm(QWidget *parent) :
 	connect(ui->saveMonitorButton, SIGNAL(clicked()), this, SLOT(saveCurrent()));
 	connect(ui->addMonitorButton, SIGNAL(clicked()), this, SLOT(addNewMonitor()));
 	connect(ui->removeMonitorButton, SIGNAL(clicked()), this, SLOT(deleteCurrent()));
-	connect(ui->testMonitorButton, SIGNAL(clicked()), this, SLOT(testCurrent()));
+	connect(ui->testMonitorButton, SIGNAL(clicked()), this, SLOT(launchCurrent()));
 
 	connect(ui->descriptionEdit, SIGNAL(textEdited(QString)), this, SLOT(madeUpdate()));
 	connect(ui->commandTable, SIGNAL(clicked(QModelIndex)), this, SLOT(madeUpdate()));
@@ -217,11 +217,12 @@ void RemoteMonitorEditorForm::deleteCurrent()
 	}
 }
 
-void RemoteMonitorEditorForm::testCurrent()
+void RemoteMonitorEditorForm::launchCurrent()
 {
 	if (!current)
 		return;
-	// TODO: this !
+
+	current->start();
 }
 
 void RemoteMonitorEditorForm::madeUpdate()

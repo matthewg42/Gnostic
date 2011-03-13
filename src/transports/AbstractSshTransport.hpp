@@ -45,13 +45,17 @@ public slots:
 	const QString getHost();
 	void setHost(const QString& h);
 	const QString getKeyFilePath();
+	void setPort(int p);
+	int getPort();
 	void setKeyFilePath(const QString& k);
 	SshAuthType getAuthType();
 	void setAuthType(SshAuthType t);
 
 protected:
+	void autogenDescription();
 	QString host;
 	QString user;
+	int port;
 	SshAuthType authType;
 	QString keyFilePath;
 

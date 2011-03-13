@@ -11,6 +11,7 @@
 
 AbstractSshTransport::AbstractSshTransport(QObject *parent) :
 		Transport(parent),
+		port(22),
 		authType(AbstractSshTransport::Password),
 		proc(this)
 {
@@ -47,6 +48,7 @@ const QString AbstractSshTransport::saveSettings()
 	QSettings* settings = GnosticApp::getInstance().settings();
 	settings->setValue(QString("%1/host").arg(id), host);
 	settings->setValue(QString("%1/user").arg(id), user);
+	settings->setValue(QString("%1/port").arg(id), port);
 	settings->setValue(QString("%1/key_file_path").arg(id), "");
 	if (authType==AbstractSshTransport::Password)
 		settings->setValue(QString("%1/auth_type").arg(id), "password");
@@ -64,6 +66,7 @@ bool AbstractSshTransport::loadSettings(const QString& section)
 	QSettings* settings = GnosticApp::getInstance().settings();
 	host = settings->value(QString("%1/host").arg(section)).toString();
 	user = settings->value(QString("%1/user").arg(section)).toString();
+	port = settings->value(QString("%1/port").arg(section)).toInt();
 	keyFilePath = GnosticApp::getInstance().settings()->value(QString("%1/key_file_path").arg(section)).toString();
 	if (settings->value(QString("%1/auth_type").arg(section), "password").toString() == "password")
 		authType=AbstractSshTransport::Password;
@@ -81,16 +84,18 @@ const QString AbstractSshTransport::getUser()
 void AbstractSshTransport::setUser(const QString& u)
 {
 	user = u;
+	autogenDescription();
 }
 
 const QString AbstractSshTransport::getHost()
 {
-	return host;
+	return host;	
 }
 
 void AbstractSshTransport::setHost(const QString& h)
 {
 	host = h;
+	autogenDescription();
 }
 
 const QString AbstractSshTransport::getKeyFilePath()
@@ -100,7 +105,17 @@ const QString AbstractSshTransport::getKeyFilePath()
 
 void AbstractSshTransport::setKeyFilePath(const QString& k)
 {
-	keyFilePath= k;
+	keyFilePath = k;
+}
+
+int AbstractSshTransport::getPort()
+{
+	return port;
+}
+
+void AbstractSshTransport::setPort(int p)
+{
+	port = p;
 }
 
 AbstractSshTransport::SshAuthType AbstractSshTransport::getAuthType()
@@ -112,6 +127,17 @@ void AbstractSshTransport::setAuthType(SshAuthType t)
 {
 	//qDebug() << "AbstractSshTransport::setAuthType" << t;
 	authType = t;
+}
+
+void AbstractSshTransport::autogenDescription()
+{
+	QString t = getType();
+	t.remove("SshTransport");
+
+	if (port!=22)
+		setDescription(QString("%1@%2:%3 (%4)").arg(user).arg(host).arg(port).arg(t));
+	else
+		setDescription(QString("%1@%2 (%3)").arg(user).arg(host).arg(t));
 }
 
 void AbstractSshTransport::procStatusUpdate(QProcess::ProcessState newState)

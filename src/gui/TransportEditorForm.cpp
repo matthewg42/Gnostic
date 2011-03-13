@@ -138,6 +138,7 @@ void TransportEditorForm::selectRowWithId(const QString& id)
 void TransportEditorForm::markUpdated()
 {
 	ui->saveTransportButton->setEnabled(true);
+
 }
 
 void TransportEditorForm::saveCurrent()

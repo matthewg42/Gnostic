@@ -25,7 +25,6 @@ RemoteCommandConfigWidget::RemoteCommandConfigWidget(Transport* t, QWidget *pare
 	connect(ui->removeCommandButton, SIGNAL(clicked()), this, SLOT(deleteCurrent()));
 	connect(ui->testCommandButton, SIGNAL(clicked()), this, SLOT(testCurrent()));
 
-	connect(ui->descriptionEdit, SIGNAL(textEdited(QString)), this, SLOT(madeUpdate()));
 	connect(ui->commandEdit, SIGNAL(textEdited(QString)), this, SLOT(madeUpdate()));
 	connect(ui->timeoutSpin, SIGNAL(valueChanged(int)), this, SLOT(madeUpdate()));
 	connect(ui->reconnectCheck, SIGNAL(toggled(bool)), this, SLOT(madeUpdate()));
@@ -81,7 +80,6 @@ void RemoteCommandConfigWidget::populateTable()
 void RemoteCommandConfigWidget::clearCurrent()
 {
 	if (current) {
-		ui->descriptionEdit->setText(QString());
 		ui->commandEdit->setText(QString());
 		ui->timeoutSpin->setValue(60);
 		ui->reconnectCheck->setChecked(true);
@@ -94,7 +92,6 @@ void RemoteCommandConfigWidget::clearCurrent()
 
 void RemoteCommandConfigWidget::setControlsEnabled(bool b)
 {
-	ui->descriptionEdit->setEnabled(b);
 	ui->commandEdit->setEnabled(b);
 	ui->timeoutSpin->setEnabled(b);
 	ui->reconnectCheck->setEnabled(b);
@@ -105,7 +102,6 @@ void RemoteCommandConfigWidget::setControlsFromCommand(RemoteCommand* c)
 {
 	if (c)
 	{
-		ui->descriptionEdit->setText(current->getDescription());
 		ui->commandEdit->setText(current->getProgram() + " " + current->getArguments().join(" "));
 		ui->timeoutSpin->setValue(current->getTimeout());
 		ui->reconnectCheck->setChecked(current->getReconnect());
@@ -149,7 +145,6 @@ void RemoteCommandConfigWidget::saveCurrent()
 {
 	if (current)
 	{
-		current->setDescription(ui->descriptionEdit->text());
 		QStringList args = ui->commandEdit->text().split(" ");
 		qDebug() << "RemoteCommandConfigWidget::saveCurrent args"  << args;
 		QString prog;

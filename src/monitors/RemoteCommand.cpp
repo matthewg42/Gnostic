@@ -154,6 +154,14 @@ void RemoteCommand::dumpDebug()
 	qDebug() << "RemoteCommand::dumpDebug" << this << "program:" << program << "args:" << arguments << "transport:" << GnosticApp::getInstance().settings()->value( QString("%1/description").arg(getTransportId()), "[unknown transport]").toString();
 }
 
+void RemoteCommand::autogenDescription()
+{
+	QStringList a;
+	a << program << arguments;
+	setDescription(a.join(" "));
+}
+
+
 bool RemoteCommand::start()
 {
 	Transport* t = this->getTransport();

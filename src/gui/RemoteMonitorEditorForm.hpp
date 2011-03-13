@@ -32,7 +32,7 @@ private slots:
 	void saveCurrent();
 	void addNewMonitor();
 	void deleteCurrent();
-	void testCurrent();
+	void launchCurrent();
 	void madeUpdate();
 
 private:
