@@ -14,13 +14,13 @@ TimeGraphDisplayConfigWidget::TimeGraphDisplayConfigWidget(DataDisplay* d, QWidg
 	connect(ui->historySpin, SIGNAL(valueChanged(int)), td, SLOT(setHistory(int)));
 	connect(ui->historySpin, SIGNAL(valueChanged(int)), this, SLOT(madeUpdate()));
 	connect(ui->updateMsSpin, SIGNAL(valueChanged(int)), td, SLOT(setUpdateMs(int)));
-	connect(ui->updateMsSpin, SIGNAL(valueChanged(int)), this, SLOT(makeUpdate()));
+	connect(ui->updateMsSpin, SIGNAL(valueChanged(int)), this, SLOT(madeUpdate()));
 	connect(ui->manualYScaleGroup, SIGNAL(toggled(bool)), td, SLOT(setYManualScale(bool)));
 	connect(ui->manualYScaleGroup, SIGNAL(toggled(bool)), this, SLOT(madeUpdate()));
 	connect(ui->yMinSpin, SIGNAL(valueChanged(double)), td, SLOT(setYMin(double)));
-	connect(ui->yMinSpin, SIGNAL(valueChanged(double)), this, SLOT(updateMade()));
+	connect(ui->yMinSpin, SIGNAL(valueChanged(double)), this, SLOT(madeUpdate()));
 	connect(ui->yMaxSpin, SIGNAL(valueChanged(double)), td, SLOT(setYMax(double)));
-	connect(ui->yMaxSpin, SIGNAL(valueChanged(double)), this, SLOT(updateMade()));
+	connect(ui->yMaxSpin, SIGNAL(valueChanged(double)), this, SLOT(madeUpdate()));
 
 	ui->descriptionEdit->setText(td->getDescription());
 	ui->historySpin->setValue(td->getHistory());

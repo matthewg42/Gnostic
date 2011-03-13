@@ -14,15 +14,15 @@ PlinkSshTransport::PlinkSshTransport(QObject *parent) :
 
 PlinkSshTransport::~PlinkSshTransport()
 {
-	//qDebug() << "PlinkSshTransport::~PlinkSshTransport";
+	qDebug() << "PlinkSshTransport::~PlinkSshTransport";
 }
 
 bool PlinkSshTransport::test()
 {
-	//qDebug() << "PlinkSshTransport::test";
+	qDebug() << "PlinkSshTransport::test";
 	QProcess testProc(this);
 	QString ret = establishConnection(testProc, "echo", QStringList() << "hello world");
-	//qDebug() << "PlinkSshTransport::test ret" << ret;
+	qDebug() << "PlinkSshTransport::test ret" << ret;
 	if (!testProc.waitForFinished(5000))
 		return false;
 	return (testProc.exitStatus() == 0);
@@ -35,7 +35,7 @@ bool PlinkSshTransport::start(const QString& exec, const QStringList& args)
 	if (ret.isEmpty())
 		return false;
 
-	//qDebug() << "PlinkSshTransport::start process state after establishing is:" << proc.state();
+	qDebug() << "PlinkSshTransport::start process state after establishing is:" << proc.state();
 
 	connect(&proc, SIGNAL(error(QProcess::ProcessError)), this, SLOT(procError(QProcess::ProcessError)));
 	connect(&proc, SIGNAL(readyReadStandardError()), this, SLOT(procReadErr()));
@@ -58,28 +58,28 @@ void PlinkSshTransport::stop()
 
 const QString PlinkSshTransport::saveSettings()
 {
-	//qDebug() << "PlinkSshTransport::saveSettings";
+	qDebug() << "PlinkSshTransport::saveSettings";
 	AbstractSshTransport::saveSettings();
 	return id;
 }
 
 void PlinkSshTransport::dumpDebug()
 {
-	//qDebug() << "PlinkSshTransport::dumpDebug, calling AbstractSshTransport::dumpDebug...";
+	qDebug() << "PlinkSshTransport::dumpDebug, calling AbstractSshTransport::dumpDebug...";
 	AbstractSshTransport::dumpDebug();
-	//qDebug() << "PlinkSshTransport::dumpDebug plink exe path is" << getPlinkExePath();
+	qDebug() << "PlinkSshTransport::dumpDebug plink exe path is" << getPlinkExePath();
 }
 
 QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& exe, const QStringList& args)
 {
-	//qDebug() << "PlinkSshTransport::establishConnection" << exe << args;
+	qDebug() << "PlinkSshTransport::establishConnection" << exe << args;
 	dumpDebug();
 	proc.setProcessChannelMode(QProcess::MergedChannels);
 	QStringList plinkArgs;
 
 	if (authType == PlinkSshTransport::Password)
 	{
-		//qDebug() << "PlinkSshTransport::establishConnection prompting for password, authType" << authType;
+		qDebug() << "PlinkSshTransport::establishConnection prompting for password, authType" << authType;
 		QString pass;
 		PasswordDialog d(QString("password for %1@%2").arg(user).arg(host));
 		d.exec();
@@ -98,11 +98,11 @@ QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& ex
 	plinkArgs << "-x" << "-a" << "-T" << "-l" << user << host << exe << args;
 
 	// Don't make a habit of printing the password, even to debug...
-	// //qDebug() << "PlinkSshTransport::establishConnection start(" << getPlinkExePath() << plinkArgs << ")";
+	// qDebug() << "PlinkSshTransport::establishConnection start(" << getPlinkExePath() << plinkArgs << ")";
 	proc.start(getPlinkExePath(), plinkArgs);
 	if (!proc.waitForStarted())
 	{
-		//qDebug() << "PlinkSshTransport::establishConnection waitForStarted returned false";
+		qDebug() << "PlinkSshTransport::establishConnection waitForStarted returned false";
 		proc.kill();  // just in case it's taking too long but will still start at some point...
 		return false;
 	}
@@ -112,13 +112,13 @@ QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& ex
 	{
 		if (!proc.waitForReadyRead(8000))
 		{
-			//qDebug() << "PlinkSshTransport::establishConnection waitForReadyRead returned false";
+			qDebug() << "PlinkSshTransport::establishConnection waitForReadyRead returned false";
 			proc.kill();
 			return QString();
 		}
 
 		QByteArray output = proc.readAll();
-		//qDebug() << "PlinkSshTransport::establishConnection read:" << output;
+		qDebug() << "PlinkSshTransport::establishConnection read:" << output;
 		if (QString(output).contains("Store key in cache?"))
 		{
 			QMessageBox mb;

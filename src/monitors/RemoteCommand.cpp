@@ -151,7 +151,7 @@ bool RemoteCommand::setTransportId(const QString& id)
 
 void RemoteCommand::dumpDebug()
 {
-	//qDebug() << "RemoteCommand::dumpDebug" << this << program << "args:" << arguments << "transport:" << GnosticApp::getInstance().settings()->value( QString("%1/description").arg(getTransportId()), "[unknown transport]").toString();
+	qDebug() << "RemoteCommand::dumpDebug" << this << "program:" << program << "args:" << arguments << "transport:" << GnosticApp::getInstance().settings()->value( QString("%1/description").arg(getTransportId()), "[unknown transport]").toString();
 }
 
 bool RemoteCommand::start()

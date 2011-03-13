@@ -27,7 +27,7 @@ void GnosticParser::setSplitRe()
 void GnosticParser::takeLine(QString line)
 {
 	line.remove(chompRe);
-	////qDebug() << "GnosticParser::takeLine" << line;
+	qDebug() << "GnosticParser::takeLine" << line;
 	// First do header checking...
 	if (line == "GNOSTIC-DATA-PROTOCOL-VERSION=1.0")
 	{

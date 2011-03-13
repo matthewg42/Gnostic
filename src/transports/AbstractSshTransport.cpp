@@ -132,7 +132,7 @@ void AbstractSshTransport::procStatusUpdate(QProcess::ProcessState newState)
 
 void AbstractSshTransport::procReadIn()
 {
-	//qDebug() << "AbstractSshTransport::procReadIn";
+	qDebug() << "AbstractSshTransport::procReadIn";
 	while(1)
 	{
 		QByteArray in = proc.readLine();

@@ -158,3 +158,19 @@ timstamp:value:label
 GNOSTIC-ERROR=Monitor sent TERM signal, BYE
 
 timestamps are in number of milli-seconds since epoch.
+
+
+TODO:
+----
+
+Some config items use others; changes to used items should propagate to the
+items which use them.  Specifically, if a used item is deleted, items which
+use it should be updated to clear the used item:
+
+RemoteCommand is used by RemoteMonitor
+Display is used by RemoteMonitor
+Transport is used by RemoteCommand and thus by RemoteMonitor
+
+At the least - when updating a used item, warn about the impact
+on items which use it...  maybe prevent deletions until using items
+are deleted / modified to use another item.

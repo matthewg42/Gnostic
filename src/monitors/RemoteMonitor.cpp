@@ -202,7 +202,9 @@ void RemoteMonitor::addRemoteCommand(RemoteCommand* c)
 	Transport* t = c->getTransport();
 	if (t)
 	{
+		qDebug() << "RemoteMonitor::addRemoteCommand adding" << t->getId() << t->getDescription();
 		connect(t, SIGNAL(spewLine(QString)), parser, SLOT(takeLine(QString)));
+		commands.insert(c);
 	}
 	else
 	{
@@ -210,7 +212,6 @@ void RemoteMonitor::addRemoteCommand(RemoteCommand* c)
 		return;
 	}
 
-	commands.insert(c);
 }
 
 void RemoteMonitor::addRemoteCommand(const QString& section)
@@ -255,25 +256,67 @@ const QString RemoteMonitor::saveSettings()
 
 bool RemoteMonitor::loadSettings(const QString& section)
 {
-	// TODO!
-	return false;
+	if (section.isEmpty())
+	{
+		qWarning() << "RemoteMonitor::loadSettings empty section";
+		return false;
+	}
+
+	QSettings* s = GnosticApp::getInstance().settings();
+	if (!s->childGroups().contains(section))
+	{
+		qWarning() << "RemoteMonitor::loadSettings no such section" << section;
+		return false;
+	}
+
+	if (s->value(QString("%1/type").arg(section), "").toString() != getType())
+	{
+		qWarning() << "RemoteMonitor::loadSettings section" << section << "has wrong type";
+		return false;
+	}
+
+	id = section;
+	s->beginGroup(section);
+	setDescription(s->value("description", "").toString());
+
+	QStringList commandKeys;
+	QStringList displayKeys;
+	foreach(QString key, s->childKeys())
+	{
+		if (key.startsWith("command_"))
+			commandKeys << s->value(key).toString();
+		else if (key.startsWith("display_"))
+			displayKeys << s->value(key).toString();
+	}
+	s->endGroup();
+
+	foreach(QString key, commandKeys)
+	{
+		addRemoteCommand(key);
+	}
+
+	foreach(QString key, displayKeys)
+	{
+		addDisplay(key);
+	}
+	return true;
 }
 
 void RemoteMonitor::dumpDebug()
 {
-	//qDebug() << "RemoteMonitor::dumpDebug @ " << this;
-	//qDebug() << "RemoteMonitor::dumpDebug id" << id;
-	//qDebug() << "RemoteMonitor::dumpDebug description" << description;
-	//qDebug() << "RemoteMonitor::dumpDebug calling dumpDebug for RemoteCommand objects:";
+	qDebug() << "RemoteMonitor::dumpDebug @ " << this;
+	qDebug() << "RemoteMonitor::dumpDebug id" << id;
+	qDebug() << "RemoteMonitor::dumpDebug description" << description;
+	qDebug() << "RemoteMonitor::dumpDebug calling dumpDebug for RemoteCommand objects:";
 	foreach (RemoteCommand* c, commands)
 	{
 		c->dumpDebug();
 	}
-	//qDebug() << "RemoteMonitor::dumpDebug calling dumpDebug for DataDisplay objects:";
+	qDebug() << "RemoteMonitor::dumpDebug calling dumpDebug for DataDisplay objects:";
 	foreach (DataDisplay* d, displays)
 	{
 		d->dumpDebug();
 	}
-	//qDebug() << "RemoteMonitor::dumpDebug END";
+	qDebug() << "RemoteMonitor::dumpDebug END";
 }
 

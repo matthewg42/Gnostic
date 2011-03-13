@@ -153,17 +153,21 @@ void RemoteCommandConfigWidget::saveCurrent()
 	{
 		current->setDescription(ui->descriptionEdit->text());
 		QStringList args = ui->commandEdit->text().split(" ");
+		qDebug() << "RemoteCommandConfigWidget::saveCurrent args"  << args;
 		QString prog;
 		if (args.count() > 0)
 		{
-			QString prog = args.at(0);
+			qDebug() << "RemoteCommandConfigWidget::saveCurrent b4 pop prog" << prog << "args"  << args;
+			prog = args.at(0);
 			args.pop_front();
+			qDebug() << "RemoteCommandConfigWidget::saveCurrent af pop prog" << prog << "args"  << args;
 		}
 		current->setProgram(prog);
 		current->setArguments(args);
 		current->setTimeout(ui->timeoutSpin->value());
 		current->setReconnect(ui->reconnectCheck->isChecked());
 		current->setRetries(ui->retiesSpin->value());
+		current->dumpDebug();
 		current->saveSettings();
 		ui->saveCommandButton->setEnabled(false);
 		populateTable();

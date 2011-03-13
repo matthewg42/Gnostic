@@ -17,11 +17,16 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
 	singleton = this;
         ui->setupUi(this);
 
-//	Transport* t = Transport::makeFromConfig("transport_0");
-//	DataDisplay* d = DataDisplay::makeFromConfig("display_2");
-//	Q_ASSERT(t);
-//	Q_ASSERT(d);
-//	RemoteMonitor* m = RemoteMonitor::quickstart(t, "/home/mouse/mon.sh", QStringList(), d);
+	RemoteMonitor* m = new RemoteMonitor();
+//	m->setDescription("My test monitor");
+//	m->addDisplay("display_0");
+//	m->addRemoteCommand("remote_command_0");
+//	m->saveSettings();
+
+	m->loadSettings("monitor_0");
+	if (m)
+		m->start();
+
 }
 
 GnosticMainWindow::~GnosticMainWindow()
