@@ -31,7 +31,6 @@ private slots:
 	void commandTableClicked(QModelIndex idx);
 	void selectCommand(const QString& section);
 	void selectRowWithId(const QString& id);
-	void markUpdated();
 	void saveCurrent();
 	void addNewCommand();
 	void deleteCurrent();

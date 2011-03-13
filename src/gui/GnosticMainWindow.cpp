@@ -3,10 +3,6 @@
 #include <QDebug>
 #include <QWidget>
 
-#include "RemoteMonitor.hpp"
-#include "Transport.hpp"
-#include "DataDisplay.hpp"
-
 GnosticMainWindow* GnosticMainWindow::singleton = NULL;
 
 GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
@@ -17,15 +13,6 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
 	singleton = this;
         ui->setupUi(this);
 
-	RemoteMonitor* m = new RemoteMonitor();
-//	m->setDescription("My test monitor");
-//	m->addDisplay("display_0");
-//	m->addRemoteCommand("remote_command_0");
-//	m->saveSettings();
-
-	m->loadSettings("monitor_0");
-	if (m)
-		m->start();
 
 }
 

@@ -31,6 +31,7 @@ DataDisplayEditorForm::DataDisplayEditorForm(QWidget *parent) :
 
 	model.setHorizontalHeaderLabels(QStringList() << "Section" << "Display Description");
 	ui->displayTable->setModel(&model);
+	ui->displayTable->horizontalHeader()->setStretchLastSection(true);
 	populateTable();
 
 	if (model.rowCount()>0)
@@ -65,7 +66,6 @@ void DataDisplayEditorForm::populateTable()
 		model.appendRow(row);
 	}
 	ui->displayTable->hideColumn(0);
-	ui->displayTable->setColumnWidth(1, 300);
 
 }
 

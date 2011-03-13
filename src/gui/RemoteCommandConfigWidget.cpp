@@ -33,6 +33,8 @@ RemoteCommandConfigWidget::RemoteCommandConfigWidget(Transport* t, QWidget *pare
 
 	model.setHorizontalHeaderLabels(QStringList() << "Section" << "Remote Command Description");
 	ui->commandTable->setModel(&model);
+	ui->commandTable->horizontalHeader()->setStretchLastSection(true);
+
 	populateTable();
 
 	if (model.rowCount()>0)
@@ -40,8 +42,6 @@ RemoteCommandConfigWidget::RemoteCommandConfigWidget(Transport* t, QWidget *pare
 		ui->commandTable->selectRow(0);
 		commandTableClicked(ui->commandTable->currentIndex());
 	}
-	// TODO: select first row
-	// TODO: hookup connections
 }
 
 RemoteCommandConfigWidget::~RemoteCommandConfigWidget()
@@ -73,8 +73,9 @@ void RemoteCommandConfigWidget::populateTable()
 			qDebug() << "RemoteCommandConfigWidget::populateTable" << section << "isn't for this transport" << transport->getId();
 		}
 	}
+	ui->saveCommandButton->setEnabled(false);
+	ui->testCommandButton->setEnabled(true);
 	ui->commandTable->hideColumn(0);
-	ui->commandTable->setColumnWidth(1, 300);
 }
 
 void RemoteCommandConfigWidget::clearCurrent()
@@ -124,12 +125,14 @@ void RemoteCommandConfigWidget::selectCommand(const QString& section)
 {
 	clearCurrent();
 
-	ui->saveCommandButton->setEnabled(false);
 	current = RemoteCommand::makeFromConfig(section);
 	if (current)
 	{
 		setControlsFromCommand(current);
 	}
+	ui->saveCommandButton->setEnabled(false);
+	ui->testCommandButton->setEnabled(true);
+
 }
 
 void RemoteCommandConfigWidget::selectRowWithId(const QString& id)
@@ -140,11 +143,6 @@ void RemoteCommandConfigWidget::selectRowWithId(const QString& id)
 		ui->commandTable->selectRow(search.at(0)->row());
 		commandTableClicked(ui->commandTable->currentIndex());
 	}
-}
-
-void RemoteCommandConfigWidget::markUpdated()
-{
-	ui->saveCommandButton->setEnabled(true);
 }
 
 void RemoteCommandConfigWidget::saveCurrent()
@@ -170,6 +168,7 @@ void RemoteCommandConfigWidget::saveCurrent()
 		current->dumpDebug();
 		current->saveSettings();
 		ui->saveCommandButton->setEnabled(false);
+		ui->testCommandButton->setEnabled(true);
 		populateTable();
 	}
 }
@@ -184,10 +183,9 @@ void RemoteCommandConfigWidget::addNewCommand()
 	current->saveSettings();
 	populateTable();
 
-	QList<QStandardItem*> items = model.findItems(current->getId());
-	if (items.count() > 0)
+	if (model.rowCount()>0)
 	{
-		ui->commandTable->selectRow(items.at(0)->row());
+		ui->commandTable->selectRow(0);
 		commandTableClicked(ui->commandTable->currentIndex());
 	}
 }
@@ -222,4 +220,6 @@ void RemoteCommandConfigWidget::testCurrent()
 void RemoteCommandConfigWidget::madeUpdate()
 {
 	ui->saveCommandButton->setEnabled(true);
+	ui->testCommandButton->setEnabled(false);
+
 }

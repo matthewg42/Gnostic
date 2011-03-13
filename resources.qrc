@@ -10,5 +10,6 @@
         <file>images/display.png</file>
         <file>images/remote_monitor.png</file>
         <file>images/transport.png</file>
+        <file>images/launch.png</file>
     </qresource>
 </RCC>

@@ -160,8 +160,8 @@ GNOSTIC-ERROR=Monitor sent TERM signal, BYE
 timestamps are in number of milli-seconds since epoch.
 
 
-TODO:
-----
+TODO for 1st release
+--------------------
 
 Some config items use others; changes to used items should propagate to the
 items which use them.  Specifically, if a used item is deleted, items which
@@ -174,3 +174,33 @@ Transport is used by RemoteCommand and thus by RemoteMonitor
 At the least - when updating a used item, warn about the impact
 on items which use it...  maybe prevent deletions until using items
 are deleted / modified to use another item.
+
+---
+
+Stop transport when all related displays have been closed... desttor monitors.
+
+---
+
+PATH configuration / INSTALL directory discovery.
+
+---
+
+win32 build:
+- package plink
+
+---
+
+chase down TODO tags in code
+
+---
+
+make debug level appropriate
+
+
+Second release goals
+--------------------
+
+- Make a "Configurable Item" class & derive stuff from it
+- Have a "Configurable Item Config Widget" parner class
+- Automatic discovery of "used child items"
+

@@ -103,10 +103,13 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="transports">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="margin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="TransportEditorForm" name="widget" native="true"/>
         </item>
@@ -114,12 +117,24 @@
       </widget>
       <widget class="QWidget" name="displays">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="margin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="DataDisplayEditorForm" name="widget_2" native="true"/>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="page"/>
+      <widget class="QWidget" name="monitors">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="RemoteMonitorEditorForm" name="widget_3" native="true"/>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -193,6 +208,12 @@
    <class>TransportEditorForm</class>
    <extends>QWidget</extends>
    <header>TransportEditorForm.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RemoteMonitorEditorForm</class>
+   <extends>QWidget</extends>
+   <header>RemoteMonitorEditorForm.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

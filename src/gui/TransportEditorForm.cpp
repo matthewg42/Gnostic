@@ -31,6 +31,7 @@ TransportEditorForm::TransportEditorForm(QWidget *parent) :
 
 	model.setHorizontalHeaderLabels(QStringList() << "Section" << "Transport Description");
 	ui->transportTable->setModel(&model);
+	ui->transportTable->horizontalHeader()->setStretchLastSection(true);
 	populateTable();
 
 	if (model.rowCount()>0)
@@ -65,7 +66,6 @@ void TransportEditorForm::populateTable()
 		model.appendRow(row);
 	}
 	ui->transportTable->hideColumn(0);
-	ui->transportTable->setColumnWidth(1, 300);
 
 }
 

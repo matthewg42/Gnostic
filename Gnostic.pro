@@ -59,7 +59,8 @@ SOURCES += \
     src/gui/PenStyleWidget.cpp \
     src/monitors/RemoteMonitor.cpp \
     src/monitors/RemoteCommand.cpp \
-    src/gui/RemoteCommandConfigWidget.cpp
+    src/gui/RemoteCommandConfigWidget.cpp \
+    src/gui/RemoteMonitorEditorForm.cpp
 
 HEADERS += \
     src/config.hpp \
@@ -90,7 +91,8 @@ HEADERS += \
     src/gui/PenStyleWidget.hpp \
     src/monitors/RemoteMonitor.hpp \
     src/monitors/RemoteCommand.hpp \
-    src/gui/RemoteCommandConfigWidget.hpp
+    src/gui/RemoteCommandConfigWidget.hpp \
+    src/gui/RemoteMonitorEditorForm.hpp
 
 FORMS += \
     src/transports/LocalTransportConfigWidget.ui \
@@ -106,7 +108,8 @@ FORMS += \
     src/displays/TimeGraphDisplayConfigWidget.ui \
     src/displays/TimeGraphDisplay.ui \
     src/gui/PenStyleWidget.ui \
-    src/gui/RemoteCommandConfigWidget.ui
+    src/gui/RemoteCommandConfigWidget.ui \
+    src/gui/RemoteMonitorEditorForm.ui
 
 OTHER_FILES += \
     README
