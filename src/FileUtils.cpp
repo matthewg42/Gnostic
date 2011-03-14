@@ -66,12 +66,12 @@ void setSystemPath(const QStringList& path)
 void gnosticSetenv(const QString& variable, const QString& value)
 {
 #ifdef Q_OS_WIN
-        if (! SetEnvironmentVariable(variable.toStdWString().c_str(), value.toStdWString().c_str()))
+        if (! SetEnvironmentVariable(variable.toLocal8Bit().constData(), value.toLocal8Bit().constData()))
         {
                 qWarning() << "gnosticSetenv: SetEnvironmentVariable failed" << variable << value;
         }
 #else
-        setenv(variable.toLocal8Bit(), value.toLocal8Bit());
+	setenv(variable.toLocal8Bit().constData(), value.toLocal8Bit().constData(), 1);
 #endif
 }
 

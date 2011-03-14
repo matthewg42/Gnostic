@@ -159,30 +159,16 @@ GNOSTIC-ERROR=Monitor sent TERM signal, BYE
 
 timestamps are in number of milli-seconds since epoch.
 
-
 TODO for 1st release
 --------------------
 
-win32 build:
-- package plink
-
----
-
-chase down TODO tags in code
-
----
-
-make debug level appropriate
-
----
-
-Remove setting of descriptions, add automatic deriving from other data items
-
----
-
----
-
-color dialog
+- more reliable killing of transports
+- some sort of transport status indicator
+- reconnect on transport failure
+- win32 build; package plink
+- chase down TODO tags in code
+- make debug level appropriate
+- color dialog title / better color selector
 
 Second release goals
 --------------------
