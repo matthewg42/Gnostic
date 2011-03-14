@@ -9,6 +9,7 @@ namespace Ui {
 }
 
 class Transport;
+class RemoteCommandConfigWidget;
 
 class TransportEditorForm : public QWidget
 {
@@ -36,6 +37,7 @@ private:
 	Ui::TransportEditorForm *ui;
 	QStandardItemModel model;
 	Transport* current;
+	RemoteCommandConfigWidget* commandWidget;
 };
 
 #endif // TRANSPORTEDITORFORM_HPP

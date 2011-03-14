@@ -4,6 +4,7 @@
 #include "PlinkSshTransport.hpp"
 #include "OpenSshTransport.hpp"
 #include "TransportConfigWidget.hpp"
+#include "RemoteCommandConfigWidget.hpp"
 
 #include <QSettings>
 #include <QDebug>
@@ -22,6 +23,9 @@ Transport::~Transport()
 {
 	if (configWidget)
 		delete configWidget;
+
+	if (commandWidget)
+		commandWidget->deleteLater();
 }
 
 const QString& Transport::getId()

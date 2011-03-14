@@ -21,6 +21,7 @@ TransportEditorForm::TransportEditorForm(QWidget *parent) :
 	ui->setupUi(this);
 
 	current = NULL;
+	commandWidget = NULL;
 
 	connect(ui->transportTable, SIGNAL(clicked(QModelIndex)), this, SLOT(transportTableClicked(QModelIndex)));
 	connect(ui->saveTransportButton, SIGNAL(clicked()), this, SLOT(saveCurrent()));
@@ -53,6 +54,7 @@ void TransportEditorForm::populateTable()
 {
 	//qDebug() << "TransportEditorForm::populateTable";
 	model.clear();
+
 	QSettings* s = GnosticApp::getInstance().settings();
 	foreach (QString section, Transport::getSections())
 	{
@@ -70,17 +72,17 @@ void TransportEditorForm::populateTable()
 
 void TransportEditorForm::clearCurrent()
 {
+
+	for(int i=0; i<ui->commandLayout->count(); i++)
+	{
+		ui->commandLayout->removeItem(ui->commandLayout->itemAt(i));
+	}
+
 	if (current)
 	{
 		TransportConfigWidget* tconf = current->getConfigWidget(this);
 		if (tconf)
 			ui->transportLayout->removeWidget(current->getConfigWidget(this));
-
-		RemoteCommandConfigWidget* cconf = current->getCommandWidget();
-		if (cconf)
-		{
-			ui->commandLayout->removeWidget(cconf);
-		}
 
 		delete current;
 		current = NULL;
@@ -94,21 +96,11 @@ void TransportEditorForm::transportTableClicked(QModelIndex idx)
 
 void TransportEditorForm::selectTransport(const QString& section)
 {	
-	RemoteCommandConfigWidget* cconf;
-	if (current)
-	{
-		cconf = current->getCommandWidget(this);
-		if(cconf)
-		{
-			ui->commandLayout->removeWidget(cconf);
-			// cconf->clearCurrent();
-			delete cconf;
-		}
-	}
 	clearCurrent();
 
 	ui->saveTransportButton->setEnabled(false);
 	current = Transport::makeFromConfig(section);
+
 	if (current)
 	{
 		TransportConfigWidget* tconf = current->getConfigWidget();
@@ -118,9 +110,8 @@ void TransportEditorForm::selectTransport(const QString& section)
 			ui->transportLayout->addWidget(dynamic_cast<QWidget*>(tconf));
 		}
 
-		cconf = current->getCommandWidget();
-
-		if(cconf)
+		RemoteCommandConfigWidget* cconf = current->getCommandWidget();
+		if (cconf)
 		{
 			ui->commandLayout->addWidget(cconf);
 		}
@@ -146,6 +137,11 @@ void TransportEditorForm::markUpdated()
 
 void TransportEditorForm::saveCurrent()
 {
+	for(int i=0; i<ui->commandLayout->count(); i++)
+	{
+		ui->commandLayout->removeItem(ui->commandLayout->itemAt(i));
+	}
+
 	if (current)
 	{
 		current->saveSettings();
@@ -183,6 +179,12 @@ void TransportEditorForm::deleteCurrent()
 	{
 		GnosticApp::getInstance().settings()->remove(current->getId());
 		ui->transportLayout->removeWidget(current->getConfigWidget(this));
+
+		for(int i=0; i<ui->commandLayout->count(); i++)
+		{
+			ui->commandLayout->removeItem(ui->commandLayout->itemAt(i));
+		}
+
 		delete current;
 		current = NULL;
 		populateTable();
