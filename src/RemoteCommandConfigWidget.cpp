@@ -202,7 +202,7 @@ void RemoteCommandConfigWidget::testCurrent()
 {
 	if (!current)
 		return;
-	DataDisplay* display = DataDisplay::makeNew("TailerDisplay", 0);
+        DataDisplay* display = DataDisplay::makeNew("LineCounterDisplay", 0);
 	connect(current->getTransport(), SIGNAL(spewLine(QString)), display, SLOT(takeLine(QString)));
 	connect(display, SIGNAL(wasClosed()), current->getTransport(), SLOT(stop()));
 	display->show();

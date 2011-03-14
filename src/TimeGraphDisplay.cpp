@@ -128,7 +128,7 @@ const QString& TimeGraphDisplay::saveSettings()
 
 	QSettings* settings = GnosticApp::getInstance().settings();
 	settings->setValue(QString("%1/history").arg(id), getHistory());
-	settings->setValue(QString("%1/y_auto_scale").arg(id), getYMax());
+        settings->setValue(QString("%1/y_auto_scale").arg(id), getYAutoScale());
 	settings->setValue(QString("%1/y_min").arg(id), getYMin());
 	settings->setValue(QString("%1/y_max").arg(id), getYMax());
 	settings->setValue(QString("%1/update_ms").arg(id), getUpdateMs());

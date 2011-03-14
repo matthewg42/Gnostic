@@ -15,7 +15,7 @@ TimeGraphDisplayConfigWidget::TimeGraphDisplayConfigWidget(DataDisplay* d, QWidg
 	connect(ui->historySpin, SIGNAL(valueChanged(int)), this, SLOT(madeUpdate()));
 	connect(ui->updateMsSpin, SIGNAL(valueChanged(int)), td, SLOT(setUpdateMs(int)));
 	connect(ui->updateMsSpin, SIGNAL(valueChanged(int)), this, SLOT(madeUpdate()));
-	connect(ui->manualYScaleGroup, SIGNAL(toggled(bool)), td, SLOT(setYManualScale(bool)));
+        connect(ui->manualYScaleGroup, SIGNAL(toggled(bool)), td, SLOT(setYManualScale(bool)));
 	connect(ui->manualYScaleGroup, SIGNAL(toggled(bool)), this, SLOT(madeUpdate()));
 	connect(ui->yMinSpin, SIGNAL(valueChanged(double)), td, SLOT(setYMin(double)));
 	connect(ui->yMinSpin, SIGNAL(valueChanged(double)), this, SLOT(madeUpdate()));

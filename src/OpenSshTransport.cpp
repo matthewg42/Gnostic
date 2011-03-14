@@ -1,6 +1,7 @@
 #include "OpenSshTransport.hpp"
 #include "GnosticApp.hpp"
 #include "PasswordDialog.hpp"
+#include "FileUtils.hpp"
 
 #include <QProcess>
 #include <QDebug>
@@ -149,6 +150,6 @@ QString OpenSshTransport::getOpenExePath()
 {
 	return GnosticApp::getInstance().settings()->value("paths/ssh", "ssh").toString();
 
-        // setenv("SSH_ASKPASS", GnosticApp::getInstance().settings()->value("paths/ssh-askpass", "ssh-askpass").toString().toUtf8(), 1);
+        gnosticSetenv("SSH_ASKPASS", GnosticApp::getInstance().settings()->value("paths/ssh-askpass", "ssh-askpass").toString().toUtf8());
 }
 

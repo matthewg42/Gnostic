@@ -45,7 +45,8 @@ Transport::TransportStatus Transport::getConnectionStatus()
 
 QStringList Transport::getAvailableTypes()
 {
-	return QStringList() << "PlinkSshTransport" << "OpenSshTransport" << "LocalTransport";
+        // return QStringList() << "PlinkSshTransport" << "OpenSshTransport" << "LocalTransport";
+        return QStringList() << "PlinkSshTransport" << "LocalTransport";
 }
 
 Transport* Transport::makeNew(const QString& type, QObject* parent)
