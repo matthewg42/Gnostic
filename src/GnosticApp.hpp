@@ -47,10 +47,10 @@ public:
 	//! \param key is something unique for the pen in question.
 	//! \returns the QPen which was most recently defined for a data item
 	//! called "label".  If label is QString(), QPen() is returned.
-	QPen getRecentPen(const QString& key);
+        QPen getRecentPen(const QString& label, const QString& display);
 
 	//! Saves the a pen for a given label.
-	void setRecentPen(const QString& key, QPen pen);
+        void setRecentPen(const QString& label, const QString& display, QPen pen);
 
 	//! Gets a vector of most recently used display colors, up to max colors.
 	//! If there are less than max recently used colors, standard colors will be

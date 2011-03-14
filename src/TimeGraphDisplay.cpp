@@ -186,7 +186,7 @@ void TimeGraphDisplay::takeDataItem(const double timestamp, const double value, 
 		curve = new QwtPlotCurve(label);
 		curve->attach(graph);
 		// curve->setLegendAttribute(QwtPlotCurve::LegendShowLine, true);
-		curve->setPen(GnosticApp::getInstance().getRecentPen(getDescription() + "::" + label));
+                curve->setPen(GnosticApp::getInstance().getRecentPen(label, getId()));
 		xValues = new QVector<double>;
 		yValues = new QVector<double>;
 		data.insert(label, mkEntry(curve, xValues, yValues));
@@ -333,7 +333,7 @@ void TimeGraphDisplay::setNewPen(QPen p)
 	if (selectedCurve)
 	{
 		selectedCurve->setPen(p);
-		GnosticApp::getInstance().setRecentPen(getDescription() + "::" + selectedCurve->title().text(), p);
+                GnosticApp::getInstance().setRecentPen(selectedCurve->title().text(), getId(), p);
 	}
 }
 

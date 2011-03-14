@@ -108,12 +108,16 @@ const QString GnosticApp::getIniPath()
 	return QString("%1/%2").arg(configDir).arg("config.ini");
 }
 
-QPen GnosticApp::getRecentPen(const QString& key)
+QPen GnosticApp::getRecentPen(const QString& label, const QString& display)
 {
-	QString hash = hashPenKey(key);
+        QString hash_both = hashPenKey(label+"::"+display);
+        QString hash_label = hashPenKey(label);
 	//qDebug() << "GnosticApp::getRecentPen" << key << " -> " << hash;
-	QString serialized = confSettings->value(QString("recent_pens/%1").arg(hash), "").toString();
-	if (serialized == "")
+        QString serialized = confSettings->value(QString("recent_pens/%1").arg(hash_both), "").toString();
+        if (serialized.isEmpty())
+                serialized = confSettings->value(QString("recent_pens/%1").arg(hash_label), "").toString();
+
+        if (serialized.isEmpty())
 		return QPen();
 
 	// The data format is: "s:w:b:c:j"
@@ -148,9 +152,11 @@ QPen GnosticApp::getRecentPen(const QString& key)
 
 }
 
-void GnosticApp::setRecentPen(const QString& key, QPen pen)
+void GnosticApp::setRecentPen(const QString& label, const QString& display, QPen pen)
 {
-	QString hash = hashPenKey(key);
+        QString hash_label = hashPenKey(label);
+        QString hash_both  = hashPenKey(label+"::"+display);
+
 	QString serialized = QString("%1:%2:%3;%4;%5;%6:%7:%8")
 			     .arg((int)pen.style())
 			     .arg(pen.width())
@@ -161,7 +167,8 @@ void GnosticApp::setRecentPen(const QString& key, QPen pen)
 			     .arg((int)pen.capStyle())
 			     .arg((int)pen.joinStyle());
 
-	confSettings->setValue(QString("recent_pens/%1").arg(hash), serialized);
+        confSettings->setValue(QString("recent_pens/%1").arg(hash_label), serialized);
+        confSettings->setValue(QString("recent_pens/%1").arg(hash_both), serialized);
 }
 
 const QString GnosticApp::hashPenKey(const QString& key)
