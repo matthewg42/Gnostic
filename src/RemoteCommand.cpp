@@ -156,7 +156,7 @@ bool RemoteCommand::erase(const QString& section)
 
 	RemoteMonitor::removeForCommand(section);
 	s->remove(section);
-
+        return true;
 }
 
 int RemoteCommand::removeForTransport(const QString& transportId)

@@ -7,6 +7,7 @@
 # For Qwt... adjust according to where it is installed...
 unix:QWT_ROOT  = /opt/qwt
 win32:QWT_ROOT = C:/Qt/Qwt-6.0.0-rc5
+win32:DEFINES = QWT_API_VER_6
 INCLUDEPATH   += $${QWT_ROOT}/include
 LIBS          +=  -L$${QWT_ROOT}/lib
 

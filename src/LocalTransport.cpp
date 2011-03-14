@@ -60,7 +60,7 @@ bool LocalTransport::start(const QString& exec, const QStringList& args)
 {
 	setConnectionStatus(Transport::EstablishingConnection);
 	proc.start(exec, args);
-	if (!proc.waitForStarted(1000))
+        if (!proc.waitForStarted(5000))
 	{
 		qWarning() << "LocalTransport::start is taking way too long to start...";
 		return false;

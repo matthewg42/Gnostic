@@ -6,6 +6,7 @@
 #include <QString>
 #include <QFileInfo>
 #include <QDir>
+#include <QDebug>
 
 #include "GnosticApp.hpp"
 
@@ -15,9 +16,9 @@ PathEditorForm::PathEditorForm(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-	ui->plinkPathEdit->setObjectName("plink");
-	ui->sshPathEdit->setObjectName("ssh");
-	ui->sshAskpassPathEdit->setObjectName("ssh-askpass");
+        ui->plinkPathButton->setObjectName("plink");
+        ui->sshPathButton->setObjectName("ssh");
+        ui->sshAskpassPathButton->setObjectName("ssh-askpass");
 	loadPathsFromConfig();
 
 	connect(ui->plinkPathEdit, SIGNAL(textEdited(QString)), this, SLOT(madeUpdate()));
@@ -57,6 +58,7 @@ void PathEditorForm::savePaths()
 
 bool PathEditorForm::setPath(const QString &path, const QString& program)
 {
+        qDebug() << "PathEditorForm::setPath" << path << program;
 	QString prog = program;
 	if (program.isEmpty())
 		prog = sender()->objectName();

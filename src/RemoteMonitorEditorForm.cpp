@@ -27,12 +27,9 @@ RemoteMonitorEditorForm::RemoteMonitorEditorForm(QWidget *parent) :
 	connect(ui->commandTable, SIGNAL(clicked(QModelIndex)), this, SLOT(madeUpdate()));
 	connect(ui->displayTable, SIGNAL(clicked(QModelIndex)), this, SLOT(madeUpdate()));
 
-	monitorModel.setHorizontalHeaderLabels(QStringList() << "Section" << "Remote Monitor Description");
 	ui->monitorTable->setModel(&monitorModel);
 	ui->monitorTable->horizontalHeader()->setStretchLastSection(true);
-
-	commandModel.setHorizontalHeaderLabels(QStringList() << "Section" << "Remote Command Description");
-	ui->commandTable->setModel(&commandModel);
+        ui->commandTable->setModel(&commandModel);
 	ui->commandTable->horizontalHeader()->setStretchLastSection(true);
 
 	displayModel.setHorizontalHeaderLabels(QStringList() << "Section" << "Display Description");
@@ -104,7 +101,9 @@ void RemoteMonitorEditorForm::populateChildTables()
 		displayModel.appendRow(row);
 	}
 
-	ui->commandTable->hideColumn(0);
+        commandModel.setHorizontalHeaderLabels(QStringList() << "Section" << "Remote Commands");
+        displayModel.setHorizontalHeaderLabels(QStringList() << "Section" << "Remote Displays");
+        ui->commandTable->hideColumn(0);
 	ui->displayTable->hideColumn(0);
 
 }

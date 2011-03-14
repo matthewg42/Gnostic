@@ -4,6 +4,8 @@
 #include <QFileInfo>
 #include <cstdlib>
 #include <QCoreApplication>
+#include <QDebug>
+#include <QByteArray>
 
 const QString getConfigDir()
 {
@@ -54,9 +56,22 @@ void setSystemPath(const QStringList& path)
 {
 #ifdef Q_OS_WIN
 	// stupid windows doing everything annoying different from sane OSes.
-	setenv("PATH", path.join(";").toUtf8(), 1);
+
+        gnosticSetenv("PATH", path.join(";").toLocal8Bit());
 #else
-	setenv("PATH", path.join(":").toUtf8(), 1);
+        gnosticSetenv("PATH", path.join(":").toLocal8Bit());
+#endif
+}
+
+void gnosticSetenv(const QString& variable, const QString& value)
+{
+#ifdef Q_OS_WIN
+        if (! SetEnvironmentVariable(variable.toStdWString().c_str(), value.toStdWString().c_str()))
+        {
+                qWarning() << "gnosticSetenv: SetEnvironmentVariable failed" << variable << value;
+        }
+#else
+        setenv(variable.toLocal8Bit(), value.toLocal8Bit());
 #endif
 }
 

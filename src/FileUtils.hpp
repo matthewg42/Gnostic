@@ -8,6 +8,7 @@ const QString getConfigDir();
 const QString getInstallDir();
 QStringList getSystemPath();
 void setSystemPath(const QStringList& path);
+void gnosticSetenv(const QString& variable, const QString& value);
 
 //! Functions which just didn't fit anywhere else...  I'm using this file to
 //! hide away ugly OS dependent stuff...

@@ -239,7 +239,7 @@ void RemoteMonitor::addDisplay(DataDisplay* d)
 
 	parser->incrementActiveDisplay();
 	connect(d, SIGNAL(wasClosed()), parser, SLOT(decrementActiveDisplay()));
-
+        d->setWindowTitle(this->getDescription());
 	displays.append(d);
 
 }

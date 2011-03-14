@@ -229,7 +229,13 @@ void TimeGraphDisplay::takeDataItem(const double timestamp, const double value, 
 		yValues->pop_front();
 	}
 
+#ifdef QWT_API_VER_6
+        // Argh, this is really horrible, sorry.  I have different versions of Qwt installed
+        // on Linux and Windows with slightly different APIs
+        data[label].first->setRawSamples(xValues->constData(), yValues->constData(), xValues->size());
+#else
 	data[label].first->setRawData(xValues->constData(), yValues->constData(), xValues->size());
+#endif
 
 	setXScale();
 

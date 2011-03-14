@@ -77,6 +77,9 @@ QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& ex
 	proc.setProcessChannelMode(QProcess::MergedChannels);
 	QStringList plinkArgs;
 
+        int startTimeout = GnosticApp::getInstance().settings()->value("plink/start_timeout", 5000).toInt();
+        int connectTimeout = GnosticApp::getInstance().settings()->value("plink/connect_timeout", 10000).toInt();
+
 	if (authType == PlinkSshTransport::Password)
 	{
 		qDebug() << "PlinkSshTransport::establishConnection prompting for password, authType" << authType;
@@ -100,7 +103,7 @@ QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& ex
 	// Don't make a habit of printing the password, even to debug...
 	// qDebug() << "PlinkSshTransport::establishConnection start(" << getPlinkExePath() << plinkArgs << ")";
 	proc.start(getPlinkExePath(), plinkArgs);
-	if (!proc.waitForStarted())
+        if (!proc.waitForStarted(startTimeout))
 	{
 		qDebug() << "PlinkSshTransport::establishConnection waitForStarted returned false";
 		proc.kill();  // just in case it's taking too long but will still start at some point...
@@ -110,7 +113,7 @@ QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& ex
 	bool done = false;
 	while(!done)
 	{
-		if (!proc.waitForReadyRead(8000))
+                if (!proc.waitForReadyRead(connectTimeout))
 		{
 			qDebug() << "PlinkSshTransport::establishConnection waitForReadyRead returned false";
 			proc.kill();
