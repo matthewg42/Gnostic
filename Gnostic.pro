@@ -60,7 +60,8 @@ SOURCES += \
     src/monitors/RemoteMonitor.cpp \
     src/monitors/RemoteCommand.cpp \
     src/gui/RemoteCommandConfigWidget.cpp \
-    src/gui/RemoteMonitorEditorForm.cpp
+    src/gui/RemoteMonitorEditorForm.cpp \
+    src/gui/PathEditorForm.cpp
 
 HEADERS += \
     src/config.hpp \
@@ -92,7 +93,8 @@ HEADERS += \
     src/monitors/RemoteMonitor.hpp \
     src/monitors/RemoteCommand.hpp \
     src/gui/RemoteCommandConfigWidget.hpp \
-    src/gui/RemoteMonitorEditorForm.hpp
+    src/gui/RemoteMonitorEditorForm.hpp \
+    src/gui/PathEditorForm.hpp
 
 FORMS += \
     src/transports/LocalTransportConfigWidget.ui \
@@ -109,7 +111,8 @@ FORMS += \
     src/displays/TimeGraphDisplay.ui \
     src/gui/PenStyleWidget.ui \
     src/gui/RemoteCommandConfigWidget.ui \
-    src/gui/RemoteMonitorEditorForm.ui
+    src/gui/RemoteMonitorEditorForm.ui \
+    src/gui/PathEditorForm.ui
 
 OTHER_FILES += \
     README

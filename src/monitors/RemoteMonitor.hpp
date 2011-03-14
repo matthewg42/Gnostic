@@ -31,6 +31,10 @@ public:
 	const QString& getDescription();
 	// virtual RemoteMonitorConfigWidget* getConfigWidget(QWidget* parent=0);
 
+	const QSet< RemoteCommand* > getCommands() { return commands; }
+	const QList< DataDisplay* > getDisplays() { return displays; }
+
+
 	// Factory members
 	static QStringList getAvailableTypes();
 	static RemoteMonitor* makeNew(const QString& type, QObject* parent=0);
@@ -47,6 +51,8 @@ public:
 public slots:
 	virtual bool start();
 	virtual void stop();
+	void clearDisplays();
+	void clearCommands();
 	void setDescription(const QString& newDescription);
 	void addDisplay(DataDisplay* d);
 	void addDisplay(const QString& section);

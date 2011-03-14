@@ -162,5 +162,5 @@ QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& ex
 
 QString PlinkSshTransport::getPlinkExePath()
 {
-	return GnosticApp::getInstance().settings()->value("programs/plink_path", "plink").toString();
+	return GnosticApp::getInstance().settings()->value("paths/plink", "plink").toString();
 }

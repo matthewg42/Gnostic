@@ -33,7 +33,12 @@ public:
 	QSettings* settings();
 
 	//! Get the configuration directory path.
-	const QString& getConfigDir();
+	const QString getConfigDir();
+
+	//! Get the path of the installation directory.  On systems where installation is
+	//! to multiple directories, the directory where the gnosic binary is located is
+	//! returned.
+	const QString getInstallationDir();
 
 	//! Looks to see what the most recent QPen was for a given key.  The key is typically
 	//! a combination of the monitor name and label name.  In any case it is hashed and

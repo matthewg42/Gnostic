@@ -25,7 +25,6 @@ signals:
 	void setPen(QPen p);
 
 private slots:
-	void redrawSample();
 	void chooseColor();
 	void setWidth(int i);
 	void setPenStyle(QString s);
@@ -36,8 +35,6 @@ private:
 	Ui::PenStyleWidget *ui;
 	QPen workingPen;
 	QPen oldPen;
-	QGraphicsScene* scene;
-	QGraphicsScene* colorScene;
 };
 
 #endif // PENSTYLEWIDGET_HPP

@@ -23,9 +23,12 @@ public:
 signals:
 	void spewLine(const QString line);
 	void spewDataItem(const double timestamp, const double value, const QString label);
+	void noMoreDisplays();
 
 public slots:
 	void takeLine(QString line);
+	void incrementActiveDisplay();
+	void decrementActiveDisplay();
 
 protected:
 	void setSplitRe();
@@ -38,6 +41,7 @@ protected:
 	QChar delimiter;
 	bool inHeader;
 	QRegExp splitRe;
+	int displayCount;
 
 };
 

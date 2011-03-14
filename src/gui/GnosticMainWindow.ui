@@ -56,7 +56,7 @@
       <property name="gridSize">
        <size>
         <width>90</width>
-        <height>104</height>
+        <height>90</height>
        </size>
       </property>
       <property name="viewMode">
@@ -69,7 +69,7 @@
        <bool>false</bool>
       </property>
       <property name="currentRow">
-       <number>-1</number>
+       <number>0</number>
       </property>
       <item>
        <property name="text">
@@ -98,12 +98,21 @@
          <normaloff>:/icons/images/remote_monitor.png</normaloff>:/icons/images/remote_monitor.png</iconset>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>Paths</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icons/images/disk.png</normaloff>:/icons/images/disk.png</iconset>
+       </property>
+      </item>
      </widget>
     </item>
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="transports">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -132,6 +141,13 @@
         </property>
         <item>
          <widget class="RemoteMonitorEditorForm" name="widget_3" native="true"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="paths">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="PathEditorForm" name="pathConfigWidget" native="true"/>
         </item>
        </layout>
       </widget>
@@ -214,6 +230,12 @@
    <class>RemoteMonitorEditorForm</class>
    <extends>QWidget</extends>
    <header>RemoteMonitorEditorForm.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PathEditorForm</class>
+   <extends>QWidget</extends>
+   <header>PathEditorForm.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

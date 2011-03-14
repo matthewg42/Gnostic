@@ -22,26 +22,6 @@ PenStyleWidget::PenStyleWidget(QWidget *parent) :
 	connect(ui->colorButton, SIGNAL(clicked()), this, SLOT(chooseColor()));
 	connect(ui->widthSpin, SIGNAL(valueChanged(int)), this, SLOT(setWidth(int)));
 	connect(ui->styleCombo, SIGNAL(currentIndexChanged(QString)), this, SLOT(setPenStyle(QString)));
-	//connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(saveStyle()));
-	//connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(revertStyle()));
-	scene = new QGraphicsScene(0,0,100,100,this);
-	ui->sampleView->setScene(scene);
-	ui->sampleView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	ui->sampleView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	ui->sampleView->fitInView(0,0,100,50);
-
-	colorScene = new QGraphicsScene(0,0,4,1, this);
-	ui->colorView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	ui->colorView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	ui->colorView->setScene(colorScene);
-	QVector<QColor> recentColors = GnosticApp::getInstance().getRecentColors(8);
-	for (int i=0; i<8; i++)
-	{
-		colorScene->addRect(i,0,i+1,1, QPen(), QBrush(recentColors.at(i)));
-	}
-	ui->colorView->fitInView(0,0,8,1, Qt::IgnoreAspectRatio);
-
-	redrawSample();
 }
 
 PenStyleWidget::~PenStyleWidget()
@@ -60,13 +40,13 @@ void PenStyleWidget::chooseColor()
 {
 	QColor newColor = QColorDialog::getColor(workingPen.color(), this, "Choose color", QColorDialog::ShowAlphaChannel);
 	workingPen.setBrush(newColor);
-	redrawSample();
+	saveStyle();
 }
 
 void PenStyleWidget::setWidth(int i)
 {
 	workingPen.setWidth(i);
-	redrawSample();
+	saveStyle();
 }
 
 void PenStyleWidget::setPenStyle(QString s)
@@ -78,14 +58,15 @@ void PenStyleWidget::setPenStyle(QString s)
 	else if (s=="Dot")
 		workingPen.setStyle(Qt::DotLine);
 
-	redrawSample();
+	saveStyle();
+
 }
 
 void PenStyleWidget::saveStyle()
 {
 	// this is called on accepted... it means the pen is OK  :)
 	emit(setPen(workingPen));
-	this->close();
+	// this->close();
 }
 
 void PenStyleWidget::revertStyle()
@@ -94,19 +75,4 @@ void PenStyleWidget::revertStyle()
 	emit(setPen(oldPen));
 	this->close();
 }
-
-void PenStyleWidget::redrawSample()
-{
-	scene->clear();
-	double x = 10;
-	QVector<double> ys;
-	ys << 20 << 25 << 60 << 80 << 50 << 60 << 30 << 10;
-	for(int i=0; i<ys.size()-1; i++)
-	{
-		scene->addLine(x, ys.at(i), x+10, ys.at(i+1),workingPen);
-		x+=10;
-	}
-	emit(setPen(workingPen));
-}
-
 

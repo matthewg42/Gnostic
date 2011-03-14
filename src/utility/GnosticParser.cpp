@@ -12,7 +12,8 @@ GnosticParser::GnosticParser(QObject *parent) :
     hostId(),
     monitorId(),
     delimiter(';'),
-    inHeader(false)
+    inHeader(false),
+    displayCount(0)
 {
 	setSplitRe();
 }
@@ -27,7 +28,7 @@ void GnosticParser::setSplitRe()
 void GnosticParser::takeLine(QString line)
 {
 	line.remove(chompRe);
-	qDebug() << "GnosticParser::takeLine" << line;
+	// qDebug() << "GnosticParser::takeLine" << line;
 	// First do header checking...
 	if (line == "GNOSTIC-DATA-PROTOCOL-VERSION=1.0")
 	{
@@ -71,7 +72,7 @@ void GnosticParser::takeLine(QString line)
 		}
 		else
 		{
-			////qDebug() << "GnosticParser::takeLine unrecognized header line" << line << "SKIPPING";
+			qWarning() << "GnosticParser::takeLine unrecognized header line" << line << "SKIPPING";
 		}
 		return;
 	}
@@ -96,7 +97,21 @@ void GnosticParser::takeLine(QString line)
 			return;
 		}
 
-		////qDebug() << "GnosticParser::takeLine emitting data item" << timestamp << value << splitRe.capturedTexts().at(5);
+		//qDebug() << "GnosticParser::takeLine emitting data item" << timestamp << value << splitRe.capturedTexts().at(5);
 		emit(spewDataItem(timestamp, value, splitRe.capturedTexts().at(5)));
+	}
+}
+
+void GnosticParser::incrementActiveDisplay()
+{
+	displayCount++;
+}
+
+void GnosticParser::decrementActiveDisplay()
+{
+	displayCount--;
+	if (displayCount<=0)
+	{
+		emit(noMoreDisplays());
 	}
 }

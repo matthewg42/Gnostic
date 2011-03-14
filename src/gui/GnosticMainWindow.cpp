@@ -12,8 +12,7 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
 	Q_ASSERT(!singleton);
 	singleton = this;
         ui->setupUi(this);
-
-
+	ui->listWidget->setCurrentRow(0);
 }
 
 GnosticMainWindow::~GnosticMainWindow()

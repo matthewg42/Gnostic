@@ -15,6 +15,7 @@ RemoteCommandConfigWidget::RemoteCommandConfigWidget(Transport* t, QWidget *pare
 		ui(new Ui::RemoteCommandConfigWidget)
 {
 	Q_ASSERT(t);
+	qDebug() << "RemoteCommandConfigWidget::RemoteCommandConfigWidget for" << t->getDescription();
 	current = NULL;
 	transport = t;
 	ui->setupUi(this);
@@ -208,6 +209,7 @@ void RemoteCommandConfigWidget::testCurrent()
 		return;
 	DataDisplay* display = DataDisplay::makeNew("TailerDisplay", 0);
 	connect(current->getTransport(), SIGNAL(spewLine(QString)), display, SLOT(takeLine(QString)));
+	connect(display, SIGNAL(wasClosed()), current->getTransport(), SLOT(stop()));
 	display->show();
 	current->start();
 }

@@ -147,6 +147,7 @@ QString OpenSshTransport::establishConnection(QProcess& proc, const QString& exe
 
 QString OpenSshTransport::getOpenExePath()
 {
-	return GnosticApp::getInstance().settings()->value("programs/ssh_path", "ssh").toString();
+	return GnosticApp::getInstance().settings()->value("paths/ssh", "ssh").toString();
+	setenv("SSH_ASKPASS", GnosticApp::getInstance().settings()->value("paths/ssh-askpass", "ssh-askpass").toString().toUtf8(), 1);
 }
 

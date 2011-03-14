@@ -11,5 +11,6 @@
         <file>images/remote_monitor.png</file>
         <file>images/transport.png</file>
         <file>images/launch.png</file>
+        <file>images/disk.png</file>
     </qresource>
 </RCC>

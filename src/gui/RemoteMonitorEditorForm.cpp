@@ -116,13 +116,45 @@ void RemoteMonitorEditorForm::clearCurrent()
 		delete current;
 		current = NULL;
 	}
+	populateChildTables();
 }
 
 void RemoteMonitorEditorForm::setControlsFromMonitor(RemoteMonitor* m)
 {
 	if (m)
 	{
+		qDebug() << "RemoteMonitorEditorForm::setControlsFromMonitor";
 		ui->descriptionEdit->setText(current->getDescription());
+
+		// select the rows in the command table for this monitor...
+		QList<int> rowsToSelect;
+		foreach (RemoteCommand* c, m->getCommands())
+		{
+			QList<QStandardItem*> search = commandModel.findItems(c->getId());
+			for(int i=0; i<search.count(); i++)
+			{
+				rowsToSelect << search.at(0)->row();
+			}
+		}
+		foreach(int i, rowsToSelect)
+		{
+			ui->commandTable->selectRow(i);
+		}
+
+		// and for the displays...
+		rowsToSelect.clear();
+		foreach (DataDisplay* c, m->getDisplays())
+		{
+			QList<QStandardItem*> search = displayModel.findItems(c->getId());
+			for(int i=0; i<search.count(); i++)
+			{
+				rowsToSelect << search.at(0)->row();
+			}
+		}
+		foreach(int i, rowsToSelect)
+		{
+			ui->displayTable->selectRow(i);
+		}
 	}
 	else
 		this->clearCurrent();
@@ -141,7 +173,6 @@ void RemoteMonitorEditorForm::selectMonitor(const QString& section)
 	if (current)
 	{
 		setControlsFromMonitor(current);
-		// TODO set selection on display and command tables to reflect included items
 	}
 	ui->saveMonitorButton->setEnabled(false);
 	ui->testMonitorButton->setEnabled(true);
@@ -160,22 +191,31 @@ void RemoteMonitorEditorForm::selectRowWithId(const QString& id)
 
 void RemoteMonitorEditorForm::saveCurrent()
 {
+	qDebug() << "######################## SAVE ##############################";
 	if (current)
 	{
 		current->setDescription(ui->descriptionEdit->text());
-		// TODO - make displays and command from tables and add them to current...
+		current->clearDisplays();
+		current->clearCommands();
+
 		foreach (QModelIndex idx, ui->commandTable->selectionModel()->selection().indexes())
 		{
-			QString section = commandModel.data(commandModel.index(idx.row(), 0)).toString();
-			qDebug() << "RemoteMonitorEditorForm::saveCurrent got a selected command" << section;
-			current->addRemoteCommand(section);
+			if (idx.column()==1)
+			{
+				QString section = commandModel.data(commandModel.index(idx.row(), 0)).toString();
+				qDebug() << "RemoteMonitorEditorForm::saveCurrent got a selected command" << section << "from" << idx.row() << idx.column();
+				current->addRemoteCommand(section);
+			}
 		}
 
 		foreach (QModelIndex idx, ui->displayTable->selectionModel()->selection().indexes())
 		{
-			QString section = displayModel.data(displayModel.index(idx.row(), 0)).toString();
-			qDebug() << "RemoteMonitorEditorForm::saveCurrent got a selected display" << section;
-			current->addDisplay(section);
+			if (idx.column()==1)
+			{
+				QString section = displayModel.data(displayModel.index(idx.row(), 0)).toString();
+				qDebug() << "RemoteMonitorEditorForm::saveCurrent got a selected display" << section;
+				current->addDisplay(section);
+			}
 		}
 
 		current->dumpDebug();
@@ -190,7 +230,7 @@ void RemoteMonitorEditorForm::addNewMonitor()
 {
 	clearCurrent();
 	current = new RemoteMonitor(this);
-	current->setDescription("new command");
+	current->setDescription("new monitor");
 	current->saveSettings();
 	populateTable();
 

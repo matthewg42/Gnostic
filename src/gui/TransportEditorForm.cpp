@@ -22,7 +22,6 @@ TransportEditorForm::TransportEditorForm(QWidget *parent) :
 
 	current = NULL;
 
-
 	connect(ui->transportTable, SIGNAL(clicked(QModelIndex)), this, SLOT(transportTableClicked(QModelIndex)));
 	connect(ui->saveTransportButton, SIGNAL(clicked()), this, SLOT(saveCurrent()));
 	connect(ui->addTransportButton, SIGNAL(clicked()), this, SLOT(addNewTransport()));
@@ -77,9 +76,11 @@ void TransportEditorForm::clearCurrent()
 		if (tconf)
 			ui->transportLayout->removeWidget(current->getConfigWidget(this));
 
-		RemoteCommandConfigWidget* cconf = current->getCommandWidget(this);
+		RemoteCommandConfigWidget* cconf = current->getCommandWidget();
 		if (cconf)
-			ui->commandLayout->removeWidget(current->getCommandWidget(this));
+		{
+			ui->commandLayout->removeWidget(cconf);
+		}
 
 		delete current;
 		current = NULL;
@@ -92,14 +93,15 @@ void TransportEditorForm::transportTableClicked(QModelIndex idx)
 }
 
 void TransportEditorForm::selectTransport(const QString& section)
-{
+{	
 	RemoteCommandConfigWidget* cconf;
 	if (current)
 	{
 		cconf = current->getCommandWidget(this);
 		if(cconf)
 		{
-			cconf->clearCurrent();
+			ui->commandLayout->removeWidget(cconf);
+			// cconf->clearCurrent();
 			delete cconf;
 		}
 	}
@@ -109,14 +111,15 @@ void TransportEditorForm::selectTransport(const QString& section)
 	current = Transport::makeFromConfig(section);
 	if (current)
 	{
-		TransportConfigWidget* tconf = current->getConfigWidget(this);
+		TransportConfigWidget* tconf = current->getConfigWidget();
 		if(tconf)
 		{
 			connect(tconf, SIGNAL(wasUpdated()), this, SLOT(markUpdated()));
 			ui->transportLayout->addWidget(dynamic_cast<QWidget*>(tconf));
 		}
 
-		cconf = current->getCommandWidget(this);
+		cconf = current->getCommandWidget();
+
 		if(cconf)
 		{
 			ui->commandLayout->addWidget(cconf);

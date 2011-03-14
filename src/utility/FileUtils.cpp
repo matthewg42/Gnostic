@@ -1,7 +1,9 @@
 #include "config.hpp"
 #include "FileUtils.hpp"
 #include <QDir>
-
+#include <QFileInfo>
+#include <cstdlib>
+#include <QCoreApplication>
 
 const QString getConfigDir()
 {
@@ -35,9 +37,28 @@ const QString getConfigDir()
 
 const QString getInstallDir()
 {
-	return QString();
+	return QFileInfo(QCoreApplication::argv()[0]).dir().path();
 }
 
+QStringList getSystemPath()
+{
+#ifdef Q_OS_WIN
+	// stupid windows doing everything annoying different from sane OSes.
+	return QString(getenv("PATH")).split(";");
+#else
+	return QString(getenv("PATH")).split(":");
+#endif
+}
+
+void setSystemPath(const QStringList& path)
+{
+#ifdef Q_OS_WIN
+	// stupid windows doing everything annoying different from sane OSes.
+	setenv("PATH", path.join(";").toUtf8(), 1);
+#else
+	setenv("PATH", path.join(":").toUtf8(), 1);
+#endif
+}
 
 #ifdef Q_OS_WIN
 QString getWin32SpecialDirPath(int csidlId)

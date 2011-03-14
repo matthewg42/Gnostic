@@ -2,10 +2,12 @@
 #define FILEUTILS_HPP
 
 #include <QString>
+#include <QStringList>
 
 const QString getConfigDir();
 const QString getInstallDir();
-
+QStringList getSystemPath();
+void setSystemPath(const QStringList& path);
 
 //! Functions which just didn't fit anywhere else...  I'm using this file to
 //! hide away ugly OS dependent stuff...

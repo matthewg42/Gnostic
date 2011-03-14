@@ -157,7 +157,12 @@ void RemoteCommand::dumpDebug()
 void RemoteCommand::autogenDescription()
 {
 	QStringList a;
-	a << program << arguments;
+	Transport* transport = getTransport();
+	if (!transport)
+		a << "[no transport]";
+	else
+		a << transport->getDescription();
+	a << " running " << program << arguments;
 	setDescription(a.join(" "));
 }
 

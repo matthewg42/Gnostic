@@ -157,6 +157,28 @@ void RemoteMonitor::stop()
 	}
 }
 
+void RemoteMonitor::clearDisplays()
+{
+	qDebug() << "RemoteMonitor::clearDisplays";
+	foreach (DataDisplay *d, displays)
+	{
+		if (d)
+			delete d;
+	}
+	displays.clear();
+}
+
+void RemoteMonitor::clearCommands()
+{
+	qDebug() << "RemoteMonitor::clearCommands";
+	foreach (RemoteCommand* c, commands)
+	{
+		if (c)
+			delete c;
+	}
+	commands.clear();
+}
+
 void RemoteMonitor::setDescription(const QString& newDescription)
 {
 	description = newDescription;
@@ -175,6 +197,9 @@ void RemoteMonitor::addDisplay(DataDisplay* d)
 		connect(parser, SIGNAL(spewLine(QString)), d, SLOT(takeLine(QString)));
 	if(d->wantDataTypes() & DataDisplay::DataItems)
 		connect(parser, SIGNAL(spewDataItem(double,double,QString)), d, SLOT(takeDataItem(double,double,QString)));
+
+	parser->incrementActiveDisplay();
+	connect(d, SIGNAL(wasClosed()), parser, SLOT(decrementActiveDisplay()));
 
 	displays.append(d);
 
@@ -204,6 +229,7 @@ void RemoteMonitor::addRemoteCommand(RemoteCommand* c)
 	{
 		qDebug() << "RemoteMonitor::addRemoteCommand adding" << t->getId() << t->getDescription();
 		connect(t, SIGNAL(spewLine(QString)), parser, SLOT(takeLine(QString)));
+		connect(parser, SIGNAL(noMoreDisplays()), t, SLOT(stop()));
 		commands.insert(c);
 	}
 	else
@@ -224,17 +250,27 @@ const QString RemoteMonitor::saveSettings()
 	if (id.isEmpty())
 		id = getNewId();
 
-	GnosticApp::getInstance().settings()->setValue(QString("%1/type").arg(id), getType());
-	GnosticApp::getInstance().settings()->setValue(QString("%1/description").arg(id), description);
+	QSettings* s = GnosticApp::getInstance().settings();
+	s->beginGroup(id);
+	s->setValue("type", getType());
+	s->setValue("description", description);
+
+	// clear old commands and displays (in case we're removing some)
+	foreach(QString key, s->childKeys())
+	{
+		if (key.startsWith("command_") || key.startsWith("display_"))
+		{
+			qDebug() << "RemoteMonitor::saveSettings CLEARING old key" << key;
+			s->remove(key);
+		}
+	}
 
 	int n=0;
 	foreach(RemoteCommand* c, commands)
 	{
 		if (!c->getId().isEmpty())
 		{
-			GnosticApp::getInstance().settings()->setValue(
-					QString("%1/command_%2").arg(id).arg(n),
-					c->getId());
+			s->setValue(QString("command_%2").arg(n), c->getId());
 			n++;
 		}
 	}
@@ -244,12 +280,12 @@ const QString RemoteMonitor::saveSettings()
 	{
 		if (!d->getId().isEmpty())
 		{
-			GnosticApp::getInstance().settings()->setValue(
-					QString("%1/display_%2").arg(id).arg(n),
-					d->getId());
+			s->setValue(QString("display_%2").arg(n), d->getId());
 			n++;
 		}
 	}
+
+	s->endGroup();
 
 	return id;
 }

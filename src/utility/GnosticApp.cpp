@@ -1,4 +1,5 @@
 #include <QDir>
+#include <QFile>
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QDebug>
@@ -11,6 +12,7 @@
 #include "GnosticApp.hpp"
 #include "LocalTransport.hpp"
 #include "PlinkSshTransport.hpp"
+#include "FileUtils.hpp"
 
 GnosticApp* GnosticApp::singleton = NULL;
 
@@ -53,7 +55,35 @@ bool GnosticApp::init()
 		return false;
 	}
 
-	//qDebug() << "GnosticApp::GnosticApp ini path is" << getIniPath();
+	// Add the gnostic install directory to the system path
+	QStringList paths = getSystemPath(); // from the utils
+	paths.push_front(getInstallDir());
+	setSystemPath(paths);
+	qDebug() << "GnosticApp::init PATH is" << getSystemPath();
+
+	foreach (QString exe, QStringList() << "ssh" << "plink" << "ssh-askpass")
+	{
+		QString key = QString("paths/%1").arg(exe);
+		if (!confSettings->contains(key))
+		{
+			qDebug() << "GnosticApp::init no path to" << exe << "was found... trying to find it";
+			foreach (QString d, getSystemPath())
+			{
+				QString candidate = QString("%1/%2").arg(d).arg(exe);
+				if (QFileInfo(candidate).isExecutable())
+				{
+					qDebug() << "GnosticApp::init found" << candidate;
+					confSettings->setValue(key, candidate);
+					break;
+				}
+				else
+				{
+					qDebug() << "GnosticApp::init not found" << candidate;
+				}
+			}
+		}
+	}
+
 	return true;
 }
 
@@ -62,9 +92,15 @@ QSettings* GnosticApp::settings()
 	return confSettings;
 }
 
-const QString& GnosticApp::getConfigDir()
+const QString GnosticApp::getConfigDir()
 {
 	return configDir;
+}
+
+const QString GnosticApp::getInstallationDir()
+{
+	// TODO!
+	return getInstallDir();
 }
 
 const QString GnosticApp::getIniPath()
