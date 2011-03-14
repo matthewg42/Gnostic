@@ -28,6 +28,8 @@ public:
 	static RemoteCommand* makeFromConfig(const QString& section);
 	static QStringList getSections();
 	static const QString getNewId();
+	static bool erase(const QString& section);
+	static int removeForTransport(const QString& transportId);
 
 public slots:
 	bool start();

@@ -40,13 +40,16 @@ public:
 	static RemoteMonitor* makeNew(const QString& type, QObject* parent=0);
 	static RemoteMonitor* makeFromConfig(const QString& section, QObject* parent=0);
 	static const QString getNewId();
+	static bool erase(const QString& section);
 	static QStringList getSections();
+	static int removeForCommand(const QString& commandId);
 
 	static RemoteMonitor* quickstart(Transport* transport,
 					 const QString& program,
 					 const QStringList& args,
 					 DataDisplay* display,
 					 QObject* parent=0);
+
 
 public slots:
 	virtual bool start();

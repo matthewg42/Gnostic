@@ -4,6 +4,7 @@
 #include "Transport.hpp"
 #include "TransportConfigWidget.hpp"
 #include "RemoteCommandConfigWidget.hpp"
+#include "RemoteCommand.hpp"
 #include "GnosticApp.hpp"
 
 #include <QStandardItem>
@@ -144,9 +145,11 @@ void TransportEditorForm::saveCurrent()
 
 	if (current)
 	{
+		QString theId = current->getId();
 		current->saveSettings();
 		ui->saveTransportButton->setEnabled(false);
 		populateTable();
+		selectRowWithId(theId);
 	}
 }
 
@@ -178,6 +181,7 @@ void TransportEditorForm::deleteCurrent()
 	if (current)
 	{
 		GnosticApp::getInstance().settings()->remove(current->getId());
+		RemoteCommand::removeForTransport(current->getId());
 		ui->transportLayout->removeWidget(current->getConfigWidget(this));
 
 		for(int i=0; i<ui->commandLayout->count(); i++)

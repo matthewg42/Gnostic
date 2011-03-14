@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include "RemoteCommand.hpp"
+#include "RemoteMonitor.hpp"
 #include "GnosticApp.hpp"
 #include "Transport.hpp"
 
@@ -25,6 +26,7 @@ const QString RemoteCommand::saveSettings()
 		id = getNewId();
 
 	QSettings* settings = GnosticApp::getInstance().settings();
+	settings->setValue(QString("%1/type").arg(id), "RemoteCommand");
 	settings->setValue(QString("%1/description").arg(id), description);
 	settings->setValue(QString("%1/transport_id").arg(id), getTransportId());
 	settings->setValue(QString("%1/program").arg(id), getProgram());
@@ -43,21 +45,29 @@ const QString RemoteCommand::saveSettings()
 
 bool RemoteCommand::loadSettings(const QString& section)
 {
-	if (!GnosticApp::getInstance().settings()->childGroups().contains(section))
+	QSettings* s = GnosticApp::getInstance().settings();
+	if (!s->childGroups().contains(section))
 	{
 		qWarning() << "RemoteCommand::loadSettings no such section in config" << section;
 		return false;
 	}
 
+	if (s->value(QString("%1/type").arg(section), "").toString() != "RemoteCommand")
+	{
+		qWarning() << "RemoteCommand::loadSettings section" << section << "incorrect type:" << s->value(QString("%1/type").arg(section), "").toString();
+		return false;
+	}
+
+
 	id = section;
 
-	setDescription(GnosticApp::getInstance().settings()->value(QString("%1/description").arg(section)).toString());
-	setTransportId(GnosticApp::getInstance().settings()->value(QString("%1/transport_id").arg(section)).toString());
-	setProgram(GnosticApp::getInstance().settings()->value(QString("%1/program").arg(section)).toString());
-	setArguments(GnosticApp::getInstance().settings()->value(QString("%1/arguments").arg(section)).toStringList());
-	setTimeout(GnosticApp::getInstance().settings()->value(QString("%1/timeout").arg(section)).toInt());
-	setReconnect(GnosticApp::getInstance().settings()->value(QString("%1/reconnect").arg(section)).toBool());
-	setRetries(GnosticApp::getInstance().settings()->value(QString("%1/retries").arg(section)).toInt());
+	setDescription(s->value(QString("%1/description").arg(section)).toString());
+	setTransportId(s->value(QString("%1/transport_id").arg(section)).toString());
+	setProgram(s->value(QString("%1/program").arg(section)).toString());
+	setArguments(s->value(QString("%1/arguments").arg(section)).toStringList());
+	setTimeout(s->value(QString("%1/timeout").arg(section)).toInt());
+	setReconnect(s->value(QString("%1/reconnect").arg(section)).toBool());
+	setRetries(s->value(QString("%1/retries").arg(section)).toInt());
 
 	return true;
 }
@@ -133,6 +143,38 @@ const QString RemoteCommand::getNewId()
 	int i=0;
 	while(existing.contains(i)) { i++; }
 	return QString("remote_command_%1").arg(i);
+}
+
+bool RemoteCommand::erase(const QString& section)
+{
+	QSettings* s = GnosticApp::getInstance().settings();
+	if (!s->childGroups().contains(section))
+		return false;
+
+	if (s->value(QString("%1/type").arg(section), "").toString() != "RemoteCommand")
+		return false;
+
+	RemoteMonitor::removeForCommand(section);
+	s->remove(section);
+
+}
+
+int RemoteCommand::removeForTransport(const QString& transportId)
+{
+	if (transportId.isEmpty())
+		return 0;
+
+	int count = 0;
+	QSettings* s = GnosticApp::getInstance().settings();
+	foreach(QString section, getSections())
+	{
+		if (s->value(QString("%1/transport_id").arg(section), "").toString() == transportId)
+		{
+			s->remove(section);
+			count++;
+		}
+	}
+	return count;
 }
 
 bool RemoteCommand::setTransportId(const QString& id)

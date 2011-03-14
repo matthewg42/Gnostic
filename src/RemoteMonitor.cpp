@@ -97,6 +97,45 @@ QStringList RemoteMonitor::getSections()
 	return result;
 }
 
+int RemoteMonitor::removeForCommand(const QString& commandId)
+{
+	int count;
+	foreach (QString section, getSections())
+	{
+		RemoteMonitor *m = makeFromConfig(section);
+		bool removeMe = false;
+		foreach(RemoteCommand* c, m->getCommands())
+		{
+			Q_ASSERT(c);
+			if (c->getId() == commandId)
+				removeMe = true;
+		}
+		if (removeMe)
+		{
+			qDebug() << "RemoteMonitor::removeForCommand removing" << m->getId() << "because it uses" << commandId;
+			RemoteMonitor::erase(m->getId());
+			count++;
+		}
+	}
+	return count;
+}
+
+bool RemoteMonitor::erase(const QString& section)
+{
+	QSettings* s = GnosticApp::getInstance().settings();
+	if (!s->childGroups().contains(section))
+		return false;
+
+	if (s->value(QString("%1/type").arg(section), "").toString()!= "RemoteMonitor")
+	{
+		qWarning() << "RemoteMonitor::erase section" << section << "has incorrect type" << s->value(QString("%1/type").arg(section), "").toString();
+		return false;
+	}
+
+	s->remove(section);
+	return true;
+}
+
 RemoteMonitor* RemoteMonitor::quickstart(Transport* transport,
 					 const QString& program,
 					 const QStringList& args,

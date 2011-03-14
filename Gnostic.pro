@@ -24,95 +24,90 @@ TARGET   = Gnostic
 TEMPLATE = app
 
 INCLUDEPATH += src
-INCLUDEPATH += src/gui
-INCLUDEPATH += src/transports
-INCLUDEPATH += src/displays
-INCLUDEPATH += src/utility
-INCLUDEPATH += src/monitors
 
 SOURCES += \
     src/main.cpp \
-    src/utility/GnosticApp.cpp \
-    src/utility/GnosticParser.cpp \
-    src/transports/Transport.cpp \
-    src/transports/PlinkSshTransport.cpp \
-    src/transports/OpenSshTransport.cpp \
-    src/transports/DummyTransport.cpp \
-    src/transports/LocalTransport.cpp \
-    src/transports/LocalTransportConfigWidget.cpp \
-    src/transports/AbstractSshTransport.cpp \
-    src/transports/SshTransportConfigWidget.cpp \
-    src/displays/DataDisplay.cpp \
-    src/displays/DataDisplayConfigWidget.cpp \
-    src/displays/LineCounterDisplay.cpp \
-    src/displays/LineCounterDisplayConfigWidget.cpp \
-    src/displays/TailerDisplay.cpp \
-    src/displays/TailerDisplayConfigWidget.cpp \
-    src/gui/TransportEditorForm.cpp \ 
-    src/gui/DataDisplayEditorForm.cpp \
-    src/gui/GnosticMainWindow.cpp \
-    src/gui/TransportConfigWidget.cpp \
-    src/gui/PasswordDialog.cpp \
-    src/utility/FileUtils.cpp \
-    src/displays/TimeGraphDisplayConfigWidget.cpp \
-    src/displays/TimeGraphDisplay.cpp \
-    src/gui/PenStyleWidget.cpp \
-    src/monitors/RemoteMonitor.cpp \
-    src/monitors/RemoteCommand.cpp \
-    src/gui/RemoteCommandConfigWidget.cpp \
-    src/gui/RemoteMonitorEditorForm.cpp \
-    src/gui/PathEditorForm.cpp
+    src/GnosticApp.cpp \
+    src/GnosticParser.cpp \
+    src/Transport.cpp \
+    src/PlinkSshTransport.cpp \
+    src/OpenSshTransport.cpp \
+    src/DummyTransport.cpp \
+    src/LocalTransport.cpp \
+    src/LocalTransportConfigWidget.cpp \
+    src/AbstractSshTransport.cpp \
+    src/SshTransportConfigWidget.cpp \
+    src/DataDisplay.cpp \
+    src/DataDisplayConfigWidget.cpp \
+    src/LineCounterDisplay.cpp \
+    src/LineCounterDisplayConfigWidget.cpp \
+    src/TailerDisplay.cpp \
+    src/TailerDisplayConfigWidget.cpp \
+    src/TransportEditorForm.cpp \ 
+    src/DataDisplayEditorForm.cpp \
+    src/GnosticMainWindow.cpp \
+    src/TransportConfigWidget.cpp \
+    src/PasswordDialog.cpp \
+    src/FileUtils.cpp \
+    src/TimeGraphDisplayConfigWidget.cpp \
+    src/TimeGraphDisplay.cpp \
+    src/PenStyleWidget.cpp \
+    src/RemoteMonitor.cpp \
+    src/RemoteCommand.cpp \
+    src/RemoteCommandConfigWidget.cpp \
+    src/RemoteMonitorEditorForm.cpp \
+    src/PathEditorForm.cpp
 
 HEADERS += \
     src/config.hpp \
-    src/utility/GnosticApp.hpp \
-    src/utility/GnosticParser.hpp \
-    src/transports/Transport.hpp \
-    src/transports/PlinkSshTransport.hpp \
-    src/transports/OpenSshTransport.hpp \
-    src/transports/DummyTransport.hpp \
-    src/transports/LocalTransport.hpp \
-    src/transports/LocalTransportConfigWidget.hpp \
-    src/transports/AbstractSshTransport.hpp\
-    src/transports/SshTransportConfigWidget.hpp \
-    src/displays/DataDisplay.hpp \
-    src/displays/DataDisplayConfigWidget.hpp \
-    src/displays/LineCounterDisplay.hpp \
-    src/displays/LineCounterDisplayConfigWidget.hpp \
-    src/displays/TailerDisplay.hpp \
-    src/displays/TailerDisplayConfigWidget.hpp \
-    src/gui/TransportEditorForm.hpp \
-    src/gui/DataDisplayEditorForm.hpp \
-    src/gui/GnosticMainWindow.hpp \
-    src/gui/TransportConfigWidget.hpp \
-    src/gui/PasswordDialog.hpp \
-    src/utility/FileUtils.hpp \
-    src/displays/TimeGraphDisplayConfigWidget.hpp \
-    src/displays/TimeGraphDisplay.hpp \
-    src/gui/PenStyleWidget.hpp \
-    src/monitors/RemoteMonitor.hpp \
-    src/monitors/RemoteCommand.hpp \
-    src/gui/RemoteCommandConfigWidget.hpp \
-    src/gui/RemoteMonitorEditorForm.hpp \
-    src/gui/PathEditorForm.hpp
+    src/GnosticApp.hpp \
+    src/GnosticParser.hpp \
+    src/Transport.hpp \
+    src/PlinkSshTransport.hpp \
+    src/OpenSshTransport.hpp \
+    src/DummyTransport.hpp \
+    src/LocalTransport.hpp \
+    src/LocalTransportConfigWidget.hpp \
+    src/AbstractSshTransport.hpp\
+    src/SshTransportConfigWidget.hpp \
+    src/DataDisplay.hpp \
+    src/DataDisplayConfigWidget.hpp \
+    src/LineCounterDisplay.hpp \
+    src/LineCounterDisplayConfigWidget.hpp \
+    src/TailerDisplay.hpp \
+    src/TailerDisplayConfigWidget.hpp \
+    src/TransportEditorForm.hpp \
+    src/DataDisplayEditorForm.hpp \
+    src/GnosticMainWindow.hpp \
+    src/TransportConfigWidget.hpp \
+    src/PasswordDialog.hpp \
+    src/FileUtils.hpp \
+    src/TimeGraphDisplayConfigWidget.hpp \
+    src/TimeGraphDisplay.hpp \
+    src/PenStyleWidget.hpp \
+    src/RemoteMonitor.hpp \
+    src/RemoteCommand.hpp \
+    src/RemoteCommandConfigWidget.hpp \
+    src/RemoteMonitorEditorForm.hpp \
+    src/PathEditorForm.hpp
 
 FORMS += \
-    src/transports/LocalTransportConfigWidget.ui \
-    src/transports/SshTransportConfigWidget.ui \
-    src/displays/LineCounterDisplay.ui \ 
-    src/displays/LineCounterDisplayConfigWidget.ui \
-    src/displays/TailerDisplay.ui \
-    src/displays/TailerDisplayConfigWidget.ui \
-    src/gui/DataDisplayEditorForm.ui \
-    src/gui/GnosticMainWindow.ui \
-    src/gui/PasswordDialog.ui \
-    src/gui/TransportEditorForm.ui \
-    src/displays/TimeGraphDisplayConfigWidget.ui \
-    src/displays/TimeGraphDisplay.ui \
-    src/gui/PenStyleWidget.ui \
-    src/gui/RemoteCommandConfigWidget.ui \
-    src/gui/RemoteMonitorEditorForm.ui \
-    src/gui/PathEditorForm.ui
+    src/LocalTransportConfigWidget.ui \
+    src/SshTransportConfigWidget.ui \
+    src/LineCounterDisplay.ui \ 
+    src/LineCounterDisplayConfigWidget.ui \
+    src/TailerDisplay.ui \
+    src/TailerDisplayConfigWidget.ui \
+    src/DataDisplayEditorForm.ui \
+    src/GnosticMainWindow.ui \
+    src/PasswordDialog.ui \
+    src/TransportEditorForm.ui \
+    src/TimeGraphDisplayConfigWidget.ui \
+    src/TimeGraphDisplay.ui \
+    src/PenStyleWidget.ui \
+    src/RemoteCommandConfigWidget.ui \
+    src/RemoteMonitorEditorForm.ui \
+    src/PathEditorForm.ui
 
 OTHER_FILES += \
     README

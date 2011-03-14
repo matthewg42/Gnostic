@@ -76,7 +76,7 @@
         <string>Transports</string>
        </property>
        <property name="icon">
-        <iconset resource="../../resources.qrc">
+        <iconset resource="../resources.qrc">
          <normaloff>:/icons/images/transport.png</normaloff>:/icons/images/transport.png</iconset>
        </property>
       </item>
@@ -85,7 +85,7 @@
         <string>Displays</string>
        </property>
        <property name="icon">
-        <iconset resource="../../resources.qrc">
+        <iconset resource="../resources.qrc">
          <normaloff>:/icons/images/display.png</normaloff>:/icons/images/display.png</iconset>
        </property>
       </item>
@@ -94,7 +94,7 @@
         <string>Monitors</string>
        </property>
        <property name="icon">
-        <iconset resource="../../resources.qrc">
+        <iconset resource="../resources.qrc">
          <normaloff>:/icons/images/remote_monitor.png</normaloff>:/icons/images/remote_monitor.png</iconset>
        </property>
       </item>
@@ -103,7 +103,7 @@
         <string>Paths</string>
        </property>
        <property name="icon">
-        <iconset resource="../../resources.qrc">
+        <iconset resource="../resources.qrc">
          <normaloff>:/icons/images/disk.png</normaloff>:/icons/images/disk.png</iconset>
        </property>
       </item>
@@ -240,7 +240,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../resources.qrc"/>
+  <include location="../resources.qrc"/>
  </resources>
  <connections>
   <connection>

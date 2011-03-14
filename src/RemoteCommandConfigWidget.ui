@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>308</width>
-    <height>429</height>
+    <width>276</width>
+    <height>385</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -138,6 +138,19 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <widget class="QToolButton" name="addCommandButton">
        <property name="toolTip">
         <string>Add new transport</string>
@@ -146,7 +159,7 @@
         <string>+</string>
        </property>
        <property name="icon">
-        <iconset resource="../../resources.qrc">
+        <iconset resource="../resources.qrc">
          <normaloff>:/icons/images/add-icon.png</normaloff>:/icons/images/add-icon.png</iconset>
        </property>
        <property name="iconSize">
@@ -169,7 +182,7 @@
         <string>-</string>
        </property>
        <property name="icon">
-        <iconset resource="../../resources.qrc">
+        <iconset resource="../resources.qrc">
          <normaloff>:/icons/images/remove-icon.png</normaloff>:/icons/images/remove-icon.png</iconset>
        </property>
        <property name="iconSize">
@@ -192,7 +205,7 @@
         <string>T</string>
        </property>
        <property name="icon">
-        <iconset resource="../../resources.qrc">
+        <iconset resource="../resources.qrc">
          <normaloff>:/icons/images/test-icon.png</normaloff>:/icons/images/test-icon.png</iconset>
        </property>
        <property name="iconSize">
@@ -215,7 +228,7 @@
         <string>S</string>
        </property>
        <property name="icon">
-        <iconset resource="../../resources.qrc">
+        <iconset resource="../resources.qrc">
          <normaloff>:/icons/images/save-icon.png</normaloff>:/icons/images/save-icon.png</iconset>
        </property>
        <property name="iconSize">
@@ -231,7 +244,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../resources.qrc"/>
+  <include location="../resources.qrc"/>
  </resources>
  <connections/>
 </ui>

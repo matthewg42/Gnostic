@@ -178,12 +178,7 @@ void RemoteCommandConfigWidget::addNewCommand()
 	current->setTransportId(transport->getId());
 	current->saveSettings();
 	populateTable();
-
-	if (model.rowCount()>0)
-	{
-		ui->commandTable->selectRow(0);
-		commandTableClicked(ui->commandTable->currentIndex());
-	}
+	selectRowWithId(current->getId());
 }
 
 void RemoteCommandConfigWidget::deleteCurrent()
