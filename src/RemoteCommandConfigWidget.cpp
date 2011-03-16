@@ -103,7 +103,8 @@ void RemoteCommandConfigWidget::setControlsFromCommand(RemoteCommand* c)
 {
 	if (c)
 	{
-		ui->commandEdit->setText(current->getProgram() + " " + current->getArguments().join(" "));
+		QString cmd = current->getProgram().trimmed() + " " + current->getArguments().join(" ").trimmed();
+		ui->commandEdit->setText(cmd.trimmed());
 		ui->timeoutSpin->setValue(current->getTimeout());
 		ui->reconnectCheck->setChecked(current->getReconnect());
 		ui->retiesSpin->setValue(current->getRetries());
@@ -156,7 +157,7 @@ void RemoteCommandConfigWidget::saveCurrent()
 			args.pop_front();
 			qDebug() << "RemoteCommandConfigWidget::saveCurrent af pop prog" << prog << "args"  << args;
 		}
-		current->setProgram(prog);
+		current->setProgram(prog.trimmed());
 		current->setArguments(args);
 		current->setTimeout(ui->timeoutSpin->value());
 		current->setReconnect(ui->reconnectCheck->isChecked());
