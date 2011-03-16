@@ -162,13 +162,20 @@ timestamps are in number of milli-seconds since epoch.
 TODO for 1st release
 --------------------
 
+- save buttons should delete existing object and re-create it... this
+  is so that if you re-test a graph or monitor, the new values are taken
+  - should propagate - i.e. saving a display should kill an existing
+    monitor object and so on... also - should refresh lists in other
+    config widgets.
 - more reliable killing of transports
 - some sort of transport status indicator
 - reconnect on transport failure
+- win32 - why is tailer not working well?  multi-byte strings perhaps
 - win32 build; package plink
 - chase down TODO tags in code
 - make debug level appropriate
 - color dialog title / better color selector
+- propagate connection failure to RemoteMonitor
 
 Second release goals
 --------------------

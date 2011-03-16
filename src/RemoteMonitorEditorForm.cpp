@@ -3,6 +3,7 @@
 
 #include <QSettings>
 #include <QDebug>
+#include <QMessageBox>
 
 #include "RemoteMonitor.hpp"
 #include "DataDisplay.hpp"
@@ -261,7 +262,13 @@ void RemoteMonitorEditorForm::launchCurrent()
 	if (!current)
 		return;
 
-	current->start();
+	if (!current->start())
+	{
+		QMessageBox mb;
+		mb.setText("Failed to start RemoteMonitor " + current->getDescription());
+		mb.setIcon(QMessageBox::Warning);
+		mb.exec();
+	}
 }
 
 void RemoteMonitorEditorForm::madeUpdate()

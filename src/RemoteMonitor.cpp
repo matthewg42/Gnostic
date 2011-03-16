@@ -179,7 +179,14 @@ bool RemoteMonitor::start()
 			failed++;
 	}
 
-	//qDebug() << "RemoteMonitor::start " << succeeded << " started OK, " << failed << " failed to start";
+	if (failed)
+	{
+		qWarning() << "RemoteMonitor::start"<< failed << "RemoteCommand(s) failed to start";
+	}
+	else
+	{
+		qDebug() << "RemoteMonitor::start " << succeeded << " started OK, " << failed << " failed to start";
+	}
 	return (failed==0);
 }
 
