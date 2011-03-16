@@ -167,7 +167,7 @@ TODO for 1st release
   - should propagate - i.e. saving a display should kill an existing
     monitor object and so on... also - should refresh lists in other
     config widgets.
-- more reliable killing of transports
+- more reliable killing of transports / notification of death
 - some sort of transport status indicator
 - reconnect on transport failure
 - win32 - why is tailer not working well?  multi-byte strings perhaps
@@ -184,4 +184,6 @@ Second release goals
 - Have a "Configurable Item Config Widget" parner class
 - Automatic discovery of "used child items"
 - export / import settings
+- copy a bunch of RemoteCommands from one Transport to another...
+- filtering on command in monitor config
 

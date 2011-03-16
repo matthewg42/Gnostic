@@ -57,7 +57,8 @@ SOURCES += \
     src/RemoteCommand.cpp \
     src/RemoteCommandConfigWidget.cpp \
     src/RemoteMonitorEditorForm.cpp \
-    src/PathEditorForm.cpp
+    src/PathEditorForm.cpp \
+    src/ConfigurationWindow.cpp
 
 HEADERS += \
     src/config.hpp \
@@ -90,7 +91,8 @@ HEADERS += \
     src/RemoteCommand.hpp \
     src/RemoteCommandConfigWidget.hpp \
     src/RemoteMonitorEditorForm.hpp \
-    src/PathEditorForm.hpp
+    src/PathEditorForm.hpp \
+    src/ConfigurationWindow.hpp
 
 FORMS += \
     src/LocalTransportConfigWidget.ui \
@@ -108,7 +110,8 @@ FORMS += \
     src/PenStyleWidget.ui \
     src/RemoteCommandConfigWidget.ui \
     src/RemoteMonitorEditorForm.ui \
-    src/PathEditorForm.ui
+    src/PathEditorForm.ui \
+    src/ConfigurationWindow.ui
 
 OTHER_FILES += \
     README
