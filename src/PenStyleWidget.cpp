@@ -16,6 +16,7 @@ PenStyleWidget::PenStyleWidget(QWidget *parent) :
 {
 	ui->setupUi(this);
 
+        this->setWindowFlags(Qt::Tool);
 	ui->styleCombo->insertItem(Qt::SolidLine, "Solid");
 	ui->styleCombo->insertItem(Qt::DashLine, "Dash");
 	ui->styleCombo->insertItem(Qt::DotLine, "Dot");
@@ -33,6 +34,7 @@ void PenStyleWidget::setInitialPen(QPen p)
 {
 	workingPen = p;
 	oldPen = p;
+        updatePreview();
 }
 
 
@@ -66,6 +68,7 @@ void PenStyleWidget::saveStyle()
 {
 	// this is called on accepted... it means the pen is OK  :)
 	emit(setPen(workingPen));
+        updatePreview();
 	// this->close();
 }
 
@@ -76,3 +79,10 @@ void PenStyleWidget::revertStyle()
 	this->close();
 }
 
+void PenStyleWidget::updatePreview()
+{
+        QPixmap colPixmap(22,22);
+        colPixmap.fill(workingPen.color());
+        colorIcon = QIcon(QPixmap(colPixmap));
+        ui->colorButton->setIcon(colorIcon);
+}

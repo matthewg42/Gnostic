@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPen>
+#include <QIcon>
 
 class QGraphicsScene;
 class QGraphicsPathItem;
@@ -30,11 +31,13 @@ private slots:
 	void setPenStyle(QString s);
 	void saveStyle();
 	void revertStyle();
+        void updatePreview();
 
 private:
 	Ui::PenStyleWidget *ui;
 	QPen workingPen;
 	QPen oldPen;
+        QIcon colorIcon;
 };
 
 #endif // PENSTYLEWIDGET_HPP

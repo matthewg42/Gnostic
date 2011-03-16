@@ -355,7 +355,7 @@ QPair< QwtPlotCurve*, QPair< QVector<double>*, QVector<double>* > > TimeGraphDis
 void TimeGraphDisplay::contextMenuEvent(QContextMenuEvent* event)
 {
         QMenu menu(this);
-        menu.addAction(QIcon(QPixmap(":/images/exit.png")), "Close display", this, SLOT(close()));
+        menu.addAction(QIcon(":/icons/images/exit.png"), "Close display", this, SLOT(close()));
         menu.exec(mapToGlobal(event->pos()));
         return;
 }
