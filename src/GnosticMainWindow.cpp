@@ -7,7 +7,6 @@
 #include <QDebug>
 #include <QWidget>
 #include <QTableWidgetItem>
-#include <QDockWidget>
 
 GnosticMainWindow* GnosticMainWindow::singleton = NULL;
 
@@ -19,13 +18,17 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
 	singleton = this;
         ui->setupUi(this);
 	configWindow = new ConfigurationWindow();
+        aboutWindow = new About();
 
-	ui->actionShow_monitors->setChecked(ui->monitorWidget->isVisible());
-	connect(ui->actionConfigure, SIGNAL(triggered()), this, SLOT(showConfigWindow()));
-	connect(ui->actionFullscreen, SIGNAL(toggled(bool)), this, SLOT(setFullscreen(bool)));
+        ui->actionShow_monitors->setChecked(ui->monitorWidget->isVisible());
+        connect(ui->actionConfigure, SIGNAL(triggered()), configWindow, SLOT(show()));
+        connect(ui->actionAbout, SIGNAL(triggered()), aboutWindow, SLOT(show()));
+        connect(ui->actionFullscreen, SIGNAL(toggled(bool)), this, SLOT(setFullscreen(bool)));
 	connect(ui->actionShow_monitors, SIGNAL(toggled(bool)), this, SLOT(showMonitors(bool)));
 	connect(ui->monitorWidget, SIGNAL(visibilityChanged(bool)), ui->actionShow_monitors, SLOT(setChecked(bool)));
 	connect(ui->monitorTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(monitorTableLaunch(QModelIndex)));
+        connect(ui->configButton, SIGNAL(clicked()), configWindow, SLOT(show()));
+
 	refreshMonitorList();
 }
 
@@ -38,15 +41,6 @@ GnosticMainWindow& GnosticMainWindow::getInstance()
 {
 	Q_ASSERT(singleton);
 	return *singleton;
-}
-
-void GnosticMainWindow::showConfigWindow(bool b)
-{
-	if (b)
-		configWindow->show();
-	else
-		configWindow->close();
-
 }
 
 void GnosticMainWindow::setFullscreen(bool b)
@@ -98,7 +92,6 @@ void GnosticMainWindow::monitorTableLaunch(QModelIndex idx)
 		foreach (DataDisplay* d, m->getDisplays())
 		{
 			Q_ASSERT(d);
-			QDockWidget* dock = new QDockWidget();
 			ui->monitorLayout->addWidget(static_cast<QWidget*>(d));
 		}
 

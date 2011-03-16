@@ -19,6 +19,7 @@ class QwtPlot;
 class QwtPlotCurve;
 class QwtPlotItem;
 
+class QContextMenuEvent;
 class QCloseEvent;
 class QResizeEvent;
 class QSettings;
@@ -71,6 +72,7 @@ private:
 
 protected:
 	QPair< QwtPlotCurve*, QPair< QVector<double>*, QVector<double>* > > mkEntry(QwtPlotCurve* c, QVector<double>* x, QVector<double>* y);
+        void contextMenuEvent(QContextMenuEvent* event);
 
 protected:
 	QwtPlot* graph;

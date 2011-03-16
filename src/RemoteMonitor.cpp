@@ -99,7 +99,7 @@ QStringList RemoteMonitor::getSections()
 
 int RemoteMonitor::removeForCommand(const QString& commandId)
 {
-	int count;
+        int count = 0;
 	foreach (QString section, getSections())
 	{
 		RemoteMonitor *m = makeFromConfig(section);

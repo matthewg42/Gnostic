@@ -80,7 +80,7 @@ void TailerDisplay::redisplayBuffer()
 	// First, determine if the display was "at the end"
 	QScrollBar *sb = ui->textEdit->verticalScrollBar();
 	bool atEnd = true;
-	int oldValue;
+        int oldValue = 0;
 	if (sb)
 	{
 		oldValue = sb->value();

@@ -35,8 +35,8 @@ const QString& DataDisplay::getDescription()
 
 QStringList DataDisplay::getAvailableTypes()
 {
-//	return QStringList() << "TimeGraphDisplay" << "TailerDisplay" << "LineCounterDisplay";
-        return QStringList() << "TimeGraphDisplay";
+        return QStringList() << "TimeGraphDisplay" << "TailerDisplay" << "LineCounterDisplay";
+//        return QStringList() << "TimeGraphDisplay";
 }
 
 DataDisplay* DataDisplay::makeNew(const QString& type, QWidget* parent)

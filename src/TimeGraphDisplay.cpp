@@ -18,6 +18,9 @@
 #include <QScrollBar>
 #include <QDateTime>
 #include <QTimer>
+#include <QMenu>
+#include <QIcon>
+#include <QContextMenuEvent>
 
 
 // TODO: split TimeScaleDraw out into separate files
@@ -348,4 +351,13 @@ QPair< QwtPlotCurve*, QPair< QVector<double>*, QVector<double>* > > TimeGraphDis
 	ret.second.second = y;
 	return ret;
 }
+
+void TimeGraphDisplay::contextMenuEvent(QContextMenuEvent* event)
+{
+        QMenu menu(this);
+        menu.addAction(QIcon(QPixmap(":/images/exit.png")), "Close display", this, SLOT(close()));
+        menu.exec(mapToGlobal(event->pos()));
+        return;
+}
+
 

@@ -9,12 +9,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>183</width>
-    <height>64</height>
+    <width>197</width>
+    <height>71</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Modify Style</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

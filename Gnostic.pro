@@ -23,6 +23,7 @@ QT       += core gui network
 CONFIG   += qwt
 TARGET   = Gnostic
 TEMPLATE = app
+win32:RC_FILE = gnostic.rc
 
 INCLUDEPATH += src
 
@@ -58,7 +59,8 @@ SOURCES += \
     src/RemoteCommandConfigWidget.cpp \
     src/RemoteMonitorEditorForm.cpp \
     src/PathEditorForm.cpp \
-    src/ConfigurationWindow.cpp
+    src/ConfigurationWindow.cpp \
+    src/About.cpp
 
 HEADERS += \
     src/config.hpp \
@@ -92,7 +94,8 @@ HEADERS += \
     src/RemoteCommandConfigWidget.hpp \
     src/RemoteMonitorEditorForm.hpp \
     src/PathEditorForm.hpp \
-    src/ConfigurationWindow.hpp
+    src/ConfigurationWindow.hpp \
+    src/About.hpp
 
 FORMS += \
     src/LocalTransportConfigWidget.ui \
@@ -111,10 +114,12 @@ FORMS += \
     src/RemoteCommandConfigWidget.ui \
     src/RemoteMonitorEditorForm.ui \
     src/PathEditorForm.ui \
-    src/ConfigurationWindow.ui
+    src/ConfigurationWindow.ui \
+    src/About.ui
 
 OTHER_FILES += \
-    README
+    README \
+    gnostic.rc
 
 RESOURCES += \
     resources.qrc
