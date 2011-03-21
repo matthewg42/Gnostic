@@ -37,14 +37,9 @@ RemoteMonitorEditorForm::RemoteMonitorEditorForm(QWidget *parent) :
 	ui->displayTable->setModel(&displayModel);
 	ui->displayTable->horizontalHeader()->setStretchLastSection(true);
 
-	populateTable();
-	populateChildTables();
+        connect(&GnosticApp::getInstance(), SIGNAL(configUpdated(GnosticApp::ConfigType)), this, SLOT(externalUpdate(GnosticApp::ConfigType)));
 
-	if (monitorModel.rowCount()>0)
-	{
-		ui->monitorTable->selectRow(0);
-		monitorTableClicked(ui->monitorTable->currentIndex());
-	}
+        populateTables();
 
 }
 
@@ -53,9 +48,18 @@ RemoteMonitorEditorForm::~RemoteMonitorEditorForm()
 	delete ui;
 }
 
-void RemoteMonitorEditorForm::populateTable()
+void RemoteMonitorEditorForm::populateTables()
 {
-	qDebug() << "RemoteMonitorEditorForm::populateTable";
+        qDebug() << "RemoteMonitorEditorForm::populateTables";
+        // remember the old selection if there is one...
+        QString oldSelectionId;
+        QModelIndexList oldSelection = ui->monitorTable->selectionModel()->selectedRows();
+        if (oldSelection.count()>0)
+        {
+                oldSelectionId = oldSelection.at(0).data().toString();
+                qDebug() << "RemoteMonitorEditorForm::populateTables oldSelectionId was" << oldSelectionId;
+        }
+
 	monitorModel.clear();
 	QSettings* s = GnosticApp::getInstance().settings();
 	foreach (QString section, RemoteMonitor::getSections())
@@ -69,6 +73,15 @@ void RemoteMonitorEditorForm::populateTable()
 	ui->saveMonitorButton->setEnabled(false);
 	ui->testMonitorButton->setEnabled(true);
 	ui->monitorTable->hideColumn(0);
+        populateChildTables();
+        if (!oldSelectionId.isEmpty())
+        {
+                selectRowWithId(oldSelectionId);
+        }
+        else if (monitorModel.rowCount()>0)
+        {
+                selectRowWithId(monitorModel.item(0,0)->data(Qt::DisplayRole).toString());
+        }
 }
 
 void RemoteMonitorEditorForm::populateChildTables()
@@ -222,7 +235,7 @@ void RemoteMonitorEditorForm::saveCurrent()
 		current->saveSettings();
 		ui->saveMonitorButton->setEnabled(false);
 		ui->testMonitorButton->setEnabled(true);
-		populateTable();
+                populateTables();
 	}
 }
 
@@ -232,13 +245,7 @@ void RemoteMonitorEditorForm::addNewMonitor()
 	current = new RemoteMonitor(this);
 	current->setDescription("new monitor");
 	current->saveSettings();
-	populateTable();
-
-	if (monitorModel.rowCount()>0)
-	{
-		ui->monitorTable->selectRow(0);
-		monitorTableClicked(ui->monitorTable->currentIndex());
-	}
+        populateTables();
 }
 
 void RemoteMonitorEditorForm::deleteCurrent()
@@ -247,13 +254,8 @@ void RemoteMonitorEditorForm::deleteCurrent()
 	{
 		GnosticApp::getInstance().settings()->remove(current->getId());
 		clearCurrent();
-		populateTable();
-
-		if (monitorModel.rowCount()>0)
-		{
-			ui->monitorTable->selectRow(0);
-			monitorTableClicked(ui->monitorTable->currentIndex());
-		}
+                populateTables();
+                GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Monitor);
 	}
 }
 
@@ -275,4 +277,10 @@ void RemoteMonitorEditorForm::madeUpdate()
 {
 	ui->saveMonitorButton->setEnabled(true);
 	ui->testMonitorButton->setEnabled(false);
+}
+
+void RemoteMonitorEditorForm::externalUpdate(GnosticApp::ConfigType t)
+{
+        if (t != GnosticApp::Monitor)
+                populateTables();
 }

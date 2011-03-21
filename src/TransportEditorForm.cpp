@@ -35,12 +35,6 @@ TransportEditorForm::TransportEditorForm(QWidget *parent) :
 	ui->transportTable->horizontalHeader()->setStretchLastSection(true);
 	populateTable();
 
-	if (model.rowCount()>0)
-	{
-		ui->transportTable->selectRow(0);
-		transportTableClicked(ui->transportTable->currentIndex());
-	}
-
 	ui->saveTransportButton->setEnabled(false);
 }
 
@@ -49,11 +43,14 @@ TransportEditorForm::~TransportEditorForm()
 	delete ui;
 }
 
-
-
 void TransportEditorForm::populateTable()
 {
 	//qDebug() << "TransportEditorForm::populateTable";
+        QString oldSelection;
+        QModelIndexList selectedRows = ui->transportTable->selectionModel()->selectedRows();
+        if (selectedRows.count()>0)
+                oldSelection = selectedRows.at(0).data().toString();
+
 	model.clear();
 
 	QSettings* s = GnosticApp::getInstance().settings();
@@ -68,7 +65,14 @@ void TransportEditorForm::populateTable()
 		model.appendRow(row);
 	}
 	ui->transportTable->hideColumn(0);
-
+        if (!selectedRows.isEmpty())
+        {
+                selectRowWithId(oldSelection);
+        }
+        else if (model.rowCount() > 0)
+        {
+                selectRowWithId(model.item(0,0)->data(Qt::DisplayRole).toString());
+        }
 }
 
 void TransportEditorForm::clearCurrent()
@@ -192,13 +196,7 @@ void TransportEditorForm::deleteCurrent()
 		delete current;
 		current = NULL;
 		populateTable();
-
-		if (model.rowCount()>0)
-		{
-			ui->transportTable->selectRow(0);
-			transportTableClicked(ui->transportTable->currentIndex());
-		}
-
+                GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Transport);
 	}
 }
 

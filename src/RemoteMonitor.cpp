@@ -332,7 +332,7 @@ const QString RemoteMonitor::saveSettings()
 	}
 
 	s->endGroup();
-
+        GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Monitor);
 	return id;
 }
 

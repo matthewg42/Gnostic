@@ -189,13 +189,7 @@ void RemoteCommandConfigWidget::deleteCurrent()
 		GnosticApp::getInstance().settings()->remove(current->getId());
 		clearCurrent();
 		populateTable();
-
-		if (model.rowCount()>0)
-		{
-			ui->commandTable->selectRow(0);
-			commandTableClicked(ui->commandTable->currentIndex());
-		}
-
+                GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Command);
 	}
 }
 

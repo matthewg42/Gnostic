@@ -54,7 +54,8 @@ const QString AbstractSshTransport::saveSettings()
 		settings->setValue(QString("%1/auth_type").arg(id), "password");
 	else
 		settings->setValue(QString("%1/auth_type").arg(id), "public_key");
-	return id;
+
+        return id;
 }
 
 bool AbstractSshTransport::loadSettings(const QString& section)

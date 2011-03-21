@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QStandardItemModel>
 
+#include "GnosticApp.hpp"
+
 namespace Ui {
 	class DataDisplayEditorForm;
 }
@@ -31,6 +33,7 @@ private slots:
 	void addNewDataDisplay();
 	void deleteCurrent();
 	void testCurrent();
+        void externalUpdate(GnosticApp::ConfigType);
 
 private:
 	Ui::DataDisplayEditorForm *ui;

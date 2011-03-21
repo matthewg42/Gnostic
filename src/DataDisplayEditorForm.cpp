@@ -28,17 +28,12 @@ DataDisplayEditorForm::DataDisplayEditorForm(QWidget *parent) :
 	connect(ui->addButton, SIGNAL(clicked()), this, SLOT(addNewDataDisplay()));
 	connect(ui->removeButton, SIGNAL(clicked()), this, SLOT(deleteCurrent()));
 	connect(ui->testButton, SIGNAL(clicked()), this, SLOT(testCurrent()));
+        connect(&GnosticApp::getInstance(), SIGNAL(configUpdated(GnosticApp::ConfigType)), this, SLOT(externalUpdate(GnosticApp::ConfigType)));
 
 	model.setHorizontalHeaderLabels(QStringList() << "Section" << "Display Description");
 	ui->displayTable->setModel(&model);
 	ui->displayTable->horizontalHeader()->setStretchLastSection(true);
 	populateTable();
-
-	if (model.rowCount()>0)
-	{
-		ui->displayTable->selectRow(0);
-		displayTableClicked(ui->displayTable->currentIndex());
-	}
 
 	ui->saveButton->setEnabled(false);
 }
@@ -53,6 +48,13 @@ DataDisplayEditorForm::~DataDisplayEditorForm()
 void DataDisplayEditorForm::populateTable()
 {
 	//qDebug() << "DataDisplayEditorForm::populateTable";
+        QString oldSelection;
+        QModelIndexList selectedRows = ui->displayTable->selectionModel()->selectedRows();
+        if (selectedRows.count()>0)
+        {
+                oldSelection = selectedRows.at(0).data().toString();
+        }
+
 	model.clear();
 	QSettings* s = GnosticApp::getInstance().settings();
 	foreach (QString section, DataDisplay::getSections())
@@ -66,7 +68,14 @@ void DataDisplayEditorForm::populateTable()
 		model.appendRow(row);
 	}
 	ui->displayTable->hideColumn(0);
-
+        if(!oldSelection.isEmpty())
+        {
+                selectRowWithId(oldSelection);
+        }
+        else if (model.rowCount()>0)
+        {
+                selectRowWithId(model.item(0,0)->data(Qt::DisplayRole).toString());
+        }
 }
 
 void DataDisplayEditorForm::clearCurrent()
@@ -165,13 +174,7 @@ void DataDisplayEditorForm::deleteCurrent()
 		delete current;
 		current = NULL;
 		populateTable();
-
-		if (model.rowCount()>0)
-		{
-			ui->displayTable->selectRow(0);
-			displayTableClicked(ui->displayTable->currentIndex());
-		}
-
+                GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Display);
 	}
 }
 
@@ -203,4 +206,10 @@ void DataDisplayEditorForm::testCurrent()
 
 	current->show();
 	dummy->start("ignore");
+}
+
+void DataDisplayEditorForm::externalUpdate(GnosticApp::ConfigType type)
+{
+        if (type != GnosticApp::Display)
+                populateTable();
 }

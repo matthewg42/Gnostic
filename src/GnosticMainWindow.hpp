@@ -7,6 +7,8 @@
 #include "ConfigurationWindow.hpp"
 #include "About.hpp"
 
+class QFocusEvent;
+
 
 namespace Ui {
 	class GnosticMainWindow;

@@ -1,6 +1,6 @@
 
-#ifndef LOCALTRANSPORT_HPP
-#define LOCALTRANSPORT_HPP
+#ifndef DUMMYTRANSPORT_HPP
+#define DUMMYTRANSPORT_HPP
 
 #include "Transport.hpp"
 #include <QTimer>
@@ -56,4 +56,4 @@ protected:
 	QMap<QString, double> lastVal;
 };
 
-#endif // LOCALTRANSPORT_HPP
+#endif // DUMMYTRANSPORT_HPP

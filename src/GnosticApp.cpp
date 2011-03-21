@@ -230,4 +230,10 @@ void GnosticApp::addRecentColor(QColor c)
 	}
 }
 
+void GnosticApp::sendConfigUpdated(GnosticApp::ConfigType type)
+{
+        emit(configUpdated(type));
+}
+
+
 

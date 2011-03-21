@@ -19,11 +19,13 @@ win32 {
     }
 }
 
+
 QT       += core gui network
 CONFIG   += qwt
 TARGET   = Gnostic
 TEMPLATE = app
 win32:RC_FILE = gnostic.rc
+# DEFINES  += DUMMYOUTOFSEQ
 
 INCLUDEPATH += src
 

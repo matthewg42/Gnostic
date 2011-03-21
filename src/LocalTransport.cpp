@@ -82,6 +82,7 @@ const QString LocalTransport::saveSettings()
 {
 	//qDebug() << "LocalTransport::saveSettings, calling Transport::saveSettings first";
 	Transport::saveSettings();
+        GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Transport);
 	return id;
 	// actually we don't have any settings to save really...  but we should see
 	// the type set correctly in the config.ini file...

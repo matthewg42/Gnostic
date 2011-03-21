@@ -60,6 +60,7 @@ const QString PlinkSshTransport::saveSettings()
 {
 	qDebug() << "PlinkSshTransport::saveSettings";
 	AbstractSshTransport::saveSettings();
+        GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Transport);
 	return id;
 }
 

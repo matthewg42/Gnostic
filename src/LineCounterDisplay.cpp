@@ -39,6 +39,7 @@ const QString& LineCounterDisplay::saveSettings()
 	QSettings* settings = GnosticApp::getInstance().settings();
 	settings->setValue(QString("%1/filter").arg(id), getFilter());
 	settings->setValue(QString("%1/display_label").arg(id), getDisplayLabel());
+        GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Display);
 	return id;
 }
 

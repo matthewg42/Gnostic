@@ -39,7 +39,7 @@ const QString RemoteCommand::saveSettings()
 	settings->setValue(QString("%1/timeout").arg(id), getTimeout());
 	settings->setValue(QString("%1/reconnect").arg(id), getReconnect());
 	settings->setValue(QString("%1/retries").arg(id), getRetries());
-
+        GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Command);
 	return id;
 }
 

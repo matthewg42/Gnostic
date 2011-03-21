@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QByteArray>
 #include <QString>
+#include <QLabel>
 #include <QFile>
 #include <QSettings>
 #include <QMap>
@@ -71,14 +72,14 @@ void DummyTransport::dumpDebug()
 
 TransportConfigWidget* DummyTransport::getConfigWidget(QWidget* parent)
 {
-	Q_UNUSED(parent);
-	return NULL;
+        Q_UNUSED(parent);
+        return NULL;
 }
 
 RemoteCommandConfigWidget* DummyTransport::getCommandWidget(QWidget* parent)
 {
-	Q_UNUSED(parent);
-	return NULL;
+        Q_UNUSED(parent);
+        return NULL;
 }
 
 void DummyTransport::spewHeader()
@@ -96,11 +97,13 @@ void DummyTransport::spew()
 	{
 		qint64 ts = QDateTime::currentMSecsSinceEpoch();
 		// every so often, hiccup and send a value older than some previous values...
+#ifdef DUMMYOUTOFSEQ
 		if (((int)rand())%20 == 0)
 		{
 			//qDebug() << "DummyTransport::spew hiccup";
 			ts -= 5000;
 		}
+#endif
 		lastVal[label] += fmod(rand(), 10) - 4.5;
 		emit(spewLine(QString("%1;%2;%3")
 			      .arg(ts)

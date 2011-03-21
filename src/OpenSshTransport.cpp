@@ -61,6 +61,7 @@ const QString OpenSshTransport::saveSettings()
 {
 	//qDebug() << "OpenSshTransport::saveSettings";
 	AbstractSshTransport::saveSettings();
+        GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Transport);
 	return id;
 }
 

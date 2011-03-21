@@ -8,6 +8,7 @@
 #include <QColor>
 
 class QSettings;
+class QFocusEvent;
 
 
 //! \class GnosticApp
@@ -17,6 +18,13 @@ class GnosticApp : public QObject
 {
 	Q_OBJECT
 public:
+        enum ConfigType {
+                Transport,
+                Display,
+                Command,
+                Monitor
+        };
+
 	//! Constructor
 	//! \param confDir the path to the configuration directory to use.  This is platform-specific.
 	//! \param parent the QObject parent if desired.
@@ -62,6 +70,11 @@ public:
 	//! saves a recently used color
 	void addRecentColor(QColor c);
 
+public slots:
+        void sendConfigUpdated(GnosticApp::ConfigType type);
+
+signals:
+        void configUpdated(GnosticApp::ConfigType);
 
 private:
 	const QString getIniPath();

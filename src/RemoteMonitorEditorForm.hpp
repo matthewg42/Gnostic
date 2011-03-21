@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QStandardItemModel>
 
+#include "GnosticApp.hpp"
+
 class RemoteMonitor;
 
 namespace Ui {
@@ -21,8 +23,6 @@ public:
 	void clearCurrent();
 
 private:
-	void populateTable();
-	void populateChildTables();
 	void setControlsFromMonitor(RemoteMonitor* m);
 
 private slots:
@@ -34,6 +34,9 @@ private slots:
 	void deleteCurrent();
 	void launchCurrent();
 	void madeUpdate();
+        void externalUpdate(GnosticApp::ConfigType);
+        void populateTables();
+        void populateChildTables();
 
 private:
 	Ui::RemoteMonitorEditorForm *ui;

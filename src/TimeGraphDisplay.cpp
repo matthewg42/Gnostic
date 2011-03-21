@@ -135,7 +135,7 @@ const QString& TimeGraphDisplay::saveSettings()
 	settings->setValue(QString("%1/y_min").arg(id), getYMin());
 	settings->setValue(QString("%1/y_max").arg(id), getYMax());
 	settings->setValue(QString("%1/update_ms").arg(id), getUpdateMs());
-
+        GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Display);
 	return id;
 }
 

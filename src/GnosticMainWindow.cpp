@@ -3,10 +3,12 @@
 
 #include "RemoteMonitor.hpp"
 #include "DataDisplay.hpp"
+#include "GnosticApp.hpp"
 
 #include <QDebug>
 #include <QWidget>
 #include <QTableWidgetItem>
+#include <QFocusEvent>
 
 GnosticMainWindow* GnosticMainWindow::singleton = NULL;
 
@@ -28,6 +30,7 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
 	connect(ui->monitorWidget, SIGNAL(visibilityChanged(bool)), ui->actionShow_monitors, SLOT(setChecked(bool)));
 	connect(ui->monitorTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(monitorTableLaunch(QModelIndex)));
         connect(ui->configButton, SIGNAL(clicked()), configWindow, SLOT(show()));
+        connect(&GnosticApp::getInstance(), SIGNAL(configUpdated()), this, SLOT(refreshMonitorList()));
 
 	refreshMonitorList();
 }
@@ -58,8 +61,8 @@ void GnosticMainWindow::showMonitors(bool b)
 
 void GnosticMainWindow::refreshMonitorList()
 {
-
 	ui->monitorTable->clear();
+        ui->monitorTable->setRowCount(0);
 	ui->monitorTable->setColumnCount(2);
 	ui->monitorTable->hideColumn(0);
 	ui->monitorTable->horizontalHeader()->setStretchLastSection(true);

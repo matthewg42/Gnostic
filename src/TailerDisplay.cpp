@@ -36,6 +36,7 @@ const QString& TailerDisplay::saveSettings()
 
 	QSettings* settings = GnosticApp::getInstance().settings();
 	settings->setValue(QString("%1/history").arg(id), getHistory());
+        GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Display);
 	return id;
 }
 
