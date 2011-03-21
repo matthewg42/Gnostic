@@ -78,7 +78,7 @@
           <string>F2</string>
          </property>
          <property name="text">
-          <string>Configure Gnostic</string>
+          <string>Configure Gnostic [F2]</string>
          </property>
          <property name="icon">
           <iconset resource="../resources.qrc">

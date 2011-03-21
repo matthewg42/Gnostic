@@ -62,7 +62,8 @@ SOURCES += \
     src/RemoteMonitorEditorForm.cpp \
     src/PathEditorForm.cpp \
     src/ConfigurationWindow.cpp \
-    src/About.cpp
+    src/About.cpp \
+    src/FirstRunWizard.cpp
 
 HEADERS += \
     src/config.hpp \
@@ -97,7 +98,8 @@ HEADERS += \
     src/RemoteMonitorEditorForm.hpp \
     src/PathEditorForm.hpp \
     src/ConfigurationWindow.hpp \
-    src/About.hpp
+    src/About.hpp \
+    src/FirstRunWizard.hpp
 
 FORMS += \
     src/LocalTransportConfigWidget.ui \
@@ -117,7 +119,8 @@ FORMS += \
     src/RemoteMonitorEditorForm.ui \
     src/PathEditorForm.ui \
     src/ConfigurationWindow.ui \
-    src/About.ui
+    src/About.ui \
+    src/FirstRunWizard.ui
 
 OTHER_FILES += \
     README \

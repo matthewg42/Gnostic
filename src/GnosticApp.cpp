@@ -9,10 +9,12 @@
 #include <QVariant>
 #include <QRegExp>
 #include <QCryptographicHash>
+#include <QMessageBox>
 #include "GnosticApp.hpp"
 #include "LocalTransport.hpp"
 #include "PlinkSshTransport.hpp"
 #include "FileUtils.hpp"
+#include "FirstRunWizard.hpp"
 
 GnosticApp* GnosticApp::singleton = NULL;
 
@@ -47,6 +49,20 @@ bool GnosticApp::init()
 			return false;
 		}
 	}
+
+        // Check to see if this is a first run (i.e. no config.ini0, and if so offer to copy an
+        // example config.ini file.
+        if (!QFileInfo(getIniPath()).exists())
+        {
+                FirstRunWizard wiz;
+                wiz.exec();
+                qDebug() << "GnosticApp::init() wizard completed, iniPath is:" << wiz.getIniPath();
+                QFile copyFile(wiz.getIniPath());
+                if (copyFile.exists())
+                {
+                        copyFile.copy(getIniPath());
+                }
+        }
 
 	confSettings = new QSettings(getIniPath(), QSettings::IniFormat);
 	if (!confSettings)

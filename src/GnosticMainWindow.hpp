@@ -5,6 +5,7 @@
 #include <QModelIndex>
 
 #include "ConfigurationWindow.hpp"
+#include "GnosticApp.hpp"
 #include "About.hpp"
 
 class QFocusEvent;
@@ -28,6 +29,9 @@ public slots:
 	void showMonitors(bool b=true);
 	void refreshMonitorList();
 	void monitorTableLaunch(QModelIndex idx);
+
+private slots:
+        void externalUpdate(GnosticApp::ConfigType t);
 
 private:
 	static GnosticMainWindow* singleton;

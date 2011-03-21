@@ -245,7 +245,10 @@ void RemoteMonitorEditorForm::addNewMonitor()
 	current = new RemoteMonitor(this);
 	current->setDescription("new monitor");
 	current->saveSettings();
+        QString id = current->getId();
         populateTables();
+        selectRowWithId(id);
+
 }
 
 void RemoteMonitorEditorForm::deleteCurrent()

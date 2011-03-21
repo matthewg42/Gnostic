@@ -17,5 +17,9 @@
         <file>images/config.png</file>
         <file>images/fullscreen.png</file>
         <file>images/exit.png</file>
+        <file>images/wizard.bmp</file>
+    </qresource>
+    <qresource prefix="/data">
+        <file>sample_config.ini</file>
     </qresource>
 </RCC>

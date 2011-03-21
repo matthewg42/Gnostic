@@ -12,6 +12,10 @@ AppPublisher=Matthew Gates
 AppPublisherURL=http://porpoisehead.net/
 AppSupportURL=http://porpoisehead.net/mysw/index.php?pgid=gnostic
 AppUpdatesURL=http://porpoisehead.net/mysw/index.php?pgid=gnostic
+WizardSmallImageFile=E:\Projects\Gnostic\images\ouroboros64x64.bmp
+WizardImageFile=E:\Projects\Gnostic\images\wizard.bmp
+WizardImageStretch=no
+WizardImageBackColor=clBlack
 DefaultDirName={pf}\Gnostic
 DisableDirPage=yes
 DefaultGroupName=Gnostic

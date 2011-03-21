@@ -30,7 +30,7 @@ GnosticMainWindow::GnosticMainWindow(QWidget *parent) :
 	connect(ui->monitorWidget, SIGNAL(visibilityChanged(bool)), ui->actionShow_monitors, SLOT(setChecked(bool)));
 	connect(ui->monitorTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(monitorTableLaunch(QModelIndex)));
         connect(ui->configButton, SIGNAL(clicked()), configWindow, SLOT(show()));
-        connect(&GnosticApp::getInstance(), SIGNAL(configUpdated()), this, SLOT(refreshMonitorList()));
+        connect(&GnosticApp::getInstance(), SIGNAL(configUpdated(GnosticApp::ConfigType)), this, SLOT(externalUpdate(GnosticApp::ConfigType)));
 
 	refreshMonitorList();
 }
@@ -100,5 +100,10 @@ void GnosticMainWindow::monitorTableLaunch(QModelIndex idx)
 
 		m->start();
 	}
+}
+
+void GnosticMainWindow::externalUpdate(GnosticApp::ConfigType t)
+{
+        refreshMonitorList();
 }
 
