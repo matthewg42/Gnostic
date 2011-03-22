@@ -65,14 +65,7 @@ void TransportEditorForm::populateTable()
 		model.appendRow(row);
 	}
 	ui->transportTable->hideColumn(0);
-        if (!selectedRows.isEmpty())
-        {
-                selectRowWithId(oldSelection);
-        }
-        else if (model.rowCount() > 0)
-        {
-                selectRowWithId(model.item(0,0)->data(Qt::DisplayRole).toString());
-        }
+        selectRowWithId(oldSelection);
 }
 
 void TransportEditorForm::clearCurrent()
@@ -132,6 +125,11 @@ void TransportEditorForm::selectRowWithId(const QString& id)
 		ui->transportTable->selectRow(search.at(0)->row());
 		transportTableClicked(ui->transportTable->currentIndex());
 	}
+        else if (model.rowCount()>0)
+        {
+                ui->transportTable->selectRow(0);
+                transportTableClicked(ui->transportTable->currentIndex());
+        }
 }
 
 void TransportEditorForm::markUpdated()
@@ -174,9 +172,9 @@ void TransportEditorForm::addNewTransport()
 		current = Transport::makeNew(type);
 		current->setDescription(QString("new %1 transport").arg(type));
 		current->saveSettings();
+                QString id = current->getId();
 		populateTable();
-		ui->transportTable->selectRow(model.findItems(current->getId()).at(0)->row());
-		transportTableClicked(ui->transportTable->currentIndex());
+                selectRowWithId(id);
 	}
 }
 

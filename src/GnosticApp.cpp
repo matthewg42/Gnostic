@@ -61,6 +61,7 @@ bool GnosticApp::init()
                 if (copyFile.exists())
                 {
                         copyFile.copy(getIniPath());
+                        QFile(getIniPath()).setPermissions(QFile::ReadOwner|QFile::WriteOwner);
                 }
         }
 
@@ -74,6 +75,7 @@ bool GnosticApp::init()
 	// Add the gnostic install directory to the system path
 	QStringList paths = getSystemPath(); // from the utils
 	paths.push_front(getInstallDir());
+        qDebug() << "GnosticApp::init setting paths:" << paths;
 	setSystemPath(paths);
 	qDebug() << "GnosticApp::init PATH is" << getSystemPath();
 
@@ -83,7 +85,14 @@ bool GnosticApp::init()
 		if (!confSettings->contains(key))
 		{
 			qDebug() << "GnosticApp::init no path to" << exe << "was found... trying to find it";
-			foreach (QString d, getSystemPath())
+                        QStringList paths = getSystemPath();
+#ifdef Q_OS_WIN
+                        // TODO: fix the bug with setting environment vars in win32, and then
+                        // erase this sillyness.
+                        paths.push_front(getInstallDir());
+#endif
+
+                        foreach (QString d, paths)
 			{
 				QString candidate = QString("%1/%2").arg(d).arg(exe);
 				if (QFileInfo(candidate).isExecutable())

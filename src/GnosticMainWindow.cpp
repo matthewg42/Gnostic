@@ -104,6 +104,7 @@ void GnosticMainWindow::monitorTableLaunch(QModelIndex idx)
 
 void GnosticMainWindow::externalUpdate(GnosticApp::ConfigType t)
 {
+	Q_UNUSED(t);
         refreshMonitorList();
 }
 

@@ -54,6 +54,13 @@ void RemoteCommandConfigWidget::populateTable()
 {
 	qDebug() << "RemoteCommandConfigWidget::populateTable";
 	model.clear();
+        QString oldSelection;
+        QModelIndexList selected = ui->commandTable->selectionModel()->selectedRows();
+        if (selected.count()>0)
+        {
+                oldSelection = selected.at(0).data().toString();
+        }
+
 	QSettings* s = GnosticApp::getInstance().settings();
 	foreach (QString section, RemoteCommand::getSections())
 	{
@@ -76,6 +83,7 @@ void RemoteCommandConfigWidget::populateTable()
 	ui->saveCommandButton->setEnabled(false);
 	ui->testCommandButton->setEnabled(true);
 	ui->commandTable->hideColumn(0);
+        selectRowWithId(oldSelection);
 }
 
 void RemoteCommandConfigWidget::clearCurrent()
@@ -141,6 +149,11 @@ void RemoteCommandConfigWidget::selectRowWithId(const QString& id)
 		ui->commandTable->selectRow(search.at(0)->row());
 		commandTableClicked(ui->commandTable->currentIndex());
 	}
+        else if (model.rowCount()>0)
+        {
+                ui->commandTable->selectRow(0);
+                commandTableClicked(ui->commandTable->currentIndex());
+        }
 }
 
 void RemoteCommandConfigWidget::saveCurrent()
@@ -178,8 +191,9 @@ void RemoteCommandConfigWidget::addNewCommand()
 	current->setDescription("new command");
 	current->setTransportId(transport->getId());
 	current->saveSettings();
+        QString id = current->getId();
 	populateTable();
-	selectRowWithId(current->getId());
+        selectRowWithId(id);
 }
 
 void RemoteCommandConfigWidget::deleteCurrent()

@@ -12,8 +12,8 @@ ConfigurationWindow::ConfigurationWindow(QWidget *parent) :
 	ui->setupUi(this);
 
         if (GnosticApp::getInstance().settings()->value("paths/plink", "").toString().isEmpty() ||
-            GnosticApp::getInstance().settings()->value("paths/ssh", "").toString().isEmpty() &&
-            GnosticApp::getInstance().settings()->value("paths/ssh_askpass", "").toString().isEmpty())
+	    (GnosticApp::getInstance().settings()->value("paths/ssh", "").toString().isEmpty() &&
+	     GnosticApp::getInstance().settings()->value("paths/ssh_askpass", "").toString().isEmpty()))
         {
                 ui->listWidget->setCurrentRow(3);
                 ui->stackedWidget->setCurrentIndex(3);

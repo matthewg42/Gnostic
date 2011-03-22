@@ -33,11 +33,13 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "C:\media\e\Projects\Gnostic-build-desktop\release\Gnostic.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\media\e\Projects\Gnostic-askpass-desktop\release\ssh-askpass.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Qt\2010.05\mingw\bin\mingwm10.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Qt\2010.05\mingw\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Qt\2010.05\qt\bin\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Qt\2010.05\qt\bin\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Qt\2010.05\qwt-6.0.0-rc5\lib\qwt.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Program Files\Putty\PLINK.EXE"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Projects\Gnostic\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Projects\Gnostic\gnostic.ico"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files

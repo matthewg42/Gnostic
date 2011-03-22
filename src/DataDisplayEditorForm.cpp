@@ -68,14 +68,7 @@ void DataDisplayEditorForm::populateTable()
 		model.appendRow(row);
 	}
 	ui->displayTable->hideColumn(0);
-        if(!oldSelection.isEmpty())
-        {
-                selectRowWithId(oldSelection);
-        }
-        else if (model.rowCount()>0)
-        {
-                selectRowWithId(model.item(0,0)->data(Qt::DisplayRole).toString());
-        }
+        selectRowWithId(oldSelection);
 }
 
 void DataDisplayEditorForm::clearCurrent()
@@ -126,6 +119,11 @@ void DataDisplayEditorForm::selectRowWithId(const QString& id)
 		ui->displayTable->selectRow(search.at(0)->row());
 		displayTableClicked(ui->displayTable->currentIndex());
 	}
+        else if (model.rowCount()>0)
+        {
+                ui->displayTable->selectRow(0);
+                displayTableClicked(ui->displayTable->currentIndex());
+        }
 }
 
 void DataDisplayEditorForm::markUpdated()
@@ -160,8 +158,9 @@ void DataDisplayEditorForm::addNewDataDisplay()
 		current = DataDisplay::makeNew(type);
 		current->setDescription(QString("new %1 display").arg(type));
 		current->saveSettings();
+                QString id = current->getId();
 		populateTable();
-		selectRowWithId(current->getId());
+                selectRowWithId(id);
 	}
 }
 
@@ -170,9 +169,10 @@ void DataDisplayEditorForm::deleteCurrent()
 	if (current)
 	{
 		GnosticApp::getInstance().settings()->remove(current->getId());
-		ui->configLayout->removeWidget(current->getConfigWidget(this));
-		delete current;
-		current = NULL;
+                // ui->configLayout->removeWidget(current->getConfigWidget(this));
+//		delete current;
+//		current = NULL;
+                clearCurrent();
 		populateTable();
                 GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Display);
 	}

@@ -57,7 +57,7 @@ void RemoteMonitorEditorForm::populateTables()
         if (oldSelection.count()>0)
         {
                 oldSelectionId = oldSelection.at(0).data().toString();
-                qDebug() << "RemoteMonitorEditorForm::populateTables oldSelectionId was" << oldSelectionId;
+                // qDebug() << "RemoteMonitorEditorForm::populateTables oldSelectionId was" << oldSelectionId;
         }
 
 	monitorModel.clear();
@@ -74,14 +74,7 @@ void RemoteMonitorEditorForm::populateTables()
 	ui->testMonitorButton->setEnabled(true);
 	ui->monitorTable->hideColumn(0);
         populateChildTables();
-        if (!oldSelectionId.isEmpty())
-        {
-                selectRowWithId(oldSelectionId);
-        }
-        else if (monitorModel.rowCount()>0)
-        {
-                selectRowWithId(monitorModel.item(0,0)->data(Qt::DisplayRole).toString());
-        }
+        selectRowWithId(oldSelectionId);
 }
 
 void RemoteMonitorEditorForm::populateChildTables()
@@ -200,6 +193,11 @@ void RemoteMonitorEditorForm::selectRowWithId(const QString& id)
 		ui->monitorTable->selectRow(search.at(0)->row());
 		monitorTableClicked(ui->monitorTable->currentIndex());
 	}
+        else if (monitorModel.rowCount()>0)
+        {
+                ui->monitorTable->selectRow(0);
+                monitorTableClicked(ui->monitorTable->currentIndex());
+        }
 }
 
 void RemoteMonitorEditorForm::saveCurrent()
