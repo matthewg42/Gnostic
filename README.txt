@@ -1,144 +1,83 @@
-Gnostic
--------
 
-Gosh, Network Operation Seems Terrifically Interesting. Champion!
-Gates' Nearly Omnipotent Software That Is Cromulent.
-Get New Operating System. The Is Crap" (choose your target platform)
-Gnostic's not overly stupid, technically it's complicated
-Graphic Notifying Omni-Platform Software Tool Inspecting Clusters
-Gnostic Notifies On Servers Taking Inconvenient Craps
-Great, No One Saw That It Crashed
-Gnostiq: Graphing, Notification, Omni-Platform Surveillance Tool In Qt4
+GNOSTIC
+M N Gates, 2011
+
 
 What it is
-----------
+==========
 
 It's a remote process montoring visualization tool.
 
 Gnostic connects to remote servers, executes a command there, and plots
 pretty graphs from the output of those remote programs.
 
-These programs are called Monitors, and are simply programs which
-spit out data in a format which Gnostic understands. They can be
-implemented any which way you like, but are typically something like
-a Perl script.  Their output should adhere to the Gnosic Data Protocol
-(see below).  The short version is: three delimited fields per line:
-a timestamp, a label and a numeric value.
 
-Gnostic makes time / value charts from this.  The definition of a
-Monitor also includes stuff like:
-- path to program to execute on remote host
-- arguments to remote program
-- value (Y) axis: fixed scale or auto scale?
-- how much history should there be?
-- refresh rate
-- scrolling or wrapping?
+Build Dependencies
+------------------
 
-Anyway, Monitor definitions are separate from Transports, which are the
-way in which the connection to the remote host is done.  That method -
-the "Transport", contains information about the conenction...
-authentication credentials, actual mechanism and so on.
-
-So the user sets up one or more Transports, and one or more Monitors
-and then calls a Monitor with a Transport - a so-called
-RemoteTransport.
+- A recent Qt.  4.x should work, I used 4.7
+- Qwt.  I use Qwt-6.0.0-rc5 on win32, and SVN export on Ubuntu.
+- gcc goodness.  On win32 this is bundled with Qt.
 
 
-Dependencies
-------------
+Runtime Dependencies
+====================
 
-for OpenSshTransport: ssh-askpass or compatibile, openssh
-for PlinkTransport: plink
-
-Windows remote exec.  Hmm.
--------------------------
-
-Well here's a thing, remotely executing a command on a windows server and
-getting a bunch of text back is a pain in the ass.  Looks like the only
-native method is rexec, presumably from their POSIX layer, which makes me
-shudder.
-
-So the options are:  install ssh servers on remote hosts, or maybe a light
-weight custom process launcher, and make a transport class for that...
-
-The problem is authentication.  Don't want to send passwords in the clear
-but would like to use windows authentication if possible... which means
-having a public key system to exchange a session key for a stream cipher,
-which is essentially re-implementing a part of the SSH protocol.  Ho hum.
-
-Need to have a think on that.
+for OpenSshTransport: ssh + ssh-askpass
+for PlinkTransport:   plink (shipped with win32 installer)
 
 
-Thinking out loud
------------------
+Concepts
+========
 
-Transport::start(exe, args)
-Transport::spewLine() --> GnosticParser::takeLine()
-			  {
-			      // process headers & set up internal state
-			      // wait for end of headers and then...
-			      emit(spewLine(raw line));
-			      filter & split
-			      emit(spewDataItem(timestamp, value, label));
-			  }
+Transports
+----------
+A Transport is a pipe to a remote server which can be used to get output
+from some remote command which is running there.  Think a rexec or ssh
+session.
 
-Now we might have a simple tailer object hooked up like this:
+Remote Commands
+---------------
+A remote command is just a command on a system which spits out data in a
+format Gnostic can understand.  That essentially means adhereing to the
+Gnostic Protocol, which is a simple text-based format.  See below.
 
-GnosticParser::spewLine() --> TailerDataDisplay::takeLine()
-			 {
-			     // colorize based on REs
-			     // filter
-			     // display
-			 }
+Remote Commands can be written in any language, so long as they spit out
+intelligible data.  A Remote Command is started when Gnostic connects to
+a machine, and keeps running until Gnostic disconnects (i.e. stops
+plotting data for a given remote command.
 
-Or even simpler:
+Each Remote Command is associated with a Transport.  A Transport can have
+any number of Remote Commands associated with it.
 
-GnosticParser::spewLine() --> CounterDataDisplay::takeLine()
-			 {
-			     // increment counter widget
-			 }
+Data Displays
+-------------
+A Data Display is some method to visualize the output of a Remote Command.
+Currently, three types of Data Display are implemented:
 
-
-But the real goal is this:
-GnosticParser::spewDataItem() --> Grapher::plotDataItem()
-			     {
-				 // do that graphing goodness.
-			     }
+* Counter:   simply counts the number of lines of input which have arrived
+             from a Remote Command.
+* Tailer:    like the UNIX tail command
+* TimeGraph: plots a graph of each incoming data item from a Remote Command.
 
 
-Monitors
---------
+Remote Monitors
+---------------
+A Remote Monitor connects one or more Remote Commands to one or more Data
+Displays.  A simple example would be for a Remote Command to print new
+lines appearing in a log file, and connect this to a Tailer Data Display.
 
-For monitors to be configured in the same way as the Transports (one window,
-config dependent on type which provides a function to get a widget to configure
-a Monitor...)... we need to derive them all from one abstract type, and have
-generalised methods for:
-- getting config widget
-- loading (static)
-- saving
-- updating
-- connecting to a GnosticParser object
-
-Implementation strategy:
-1. Make a single CounterDataDisplay class
-   - hook it up to a transport & GnosticParser
-   - hook GnosticParser up to a real transport
-   - watch it work
-
-2. Abstract out base class
-3. Implement TailerDataDisplay class as sibling of CounterDataDisplay
-4. make CounterDataDisplayConfigWidget & TailerDataDisplayConfigWidget
-5. Hone the base class some
-6. Implement GraphDataDisplay as sibling of TailerDataDisplay & co.
-   - also GraphDataDisplayConfigWidget
-
-After that all we have to do is make a nice GUI for pairing
-Transports and DataDisplays, and a way to launch these pairs and
-we're more or less done!
+A more complicated example might be for a Remote Command to tail a log and
+print some statistics (e.g. lines per second) according to the Gnostic
+Protocol.  This command might be executed on several different machines
+(via different Transports), but have all of them connected to a single
+Time Graph display.
 
 
-Remote monitor protocol
------------------------
+The Gnostic Data Protocol
+=========================
+
+An example is probably better than an explanation:
 
 GNOSTIC-DATA-PROTOCOL-VERSION=1.0
 HOST=the.fq.hostname
@@ -157,28 +96,29 @@ timstamp:value:label
 timstamp:value:label
 GNOSTIC-ERROR=Monitor sent TERM signal, BYE
 
-timestamps are in number of milli-seconds since epoch.
+Notes
+-----
+* Timestamps are in number of milli-seconds since epoch.
+* GNOSTIC-ERRORs and GNOSTIC-WARNINGs are not currently supported
+* Most header values don't do very much
+* It is nice, but not totally necessary that lines arrive in
+  chronological order.
+* new labels will be dynamically added to a graph as they appear
+
 
 TODO for 1st release
 --------------------
 
-- save buttons should delete existing object and re-create it... this
-  is so that if you re-test a graph or monitor, the new values are taken
-  - should propagate - i.e. saving a display should kill an existing
-    monitor object and so on... also - should refresh lists in other
-    config widgets.
 - more reliable killing of transports / notification of death
 - some sort of transport status indicator
 - reconnect on transport failure
-- win32 - why is tailer not working well?  multi-byte strings perhaps
-- win32 build; package plink
+- win32 - why is tailer not working well?  multi-byte strings perhaps?
 - chase down TODO tags in code
-- make debug level appropriate
-- color dialog title / better color selector
 - propagate connection failure to RemoteMonitor
 
-Second release goals
---------------------
+
+Future Goals
+============
 
 - Make a "Configurable Item" class & derive stuff from it
 - Have a "Configurable Item Config Widget" parner class
@@ -187,3 +127,35 @@ Second release goals
 - copy a bunch of RemoteCommands from one Transport to another...
 - filtering on command in monitor config
 
+
+Musings
+=======
+
+Windows remote exec
+-------------------
+Well here's a thing, remotely executing a command on a windows server and
+getting a bunch of text back is a pain in the ass.  Looks like the only
+native method is rexec, presumably from their POSIX layer, which makes me
+shudder.
+
+So the options are:  install ssh servers on remote hosts, or maybe a light
+weight custom process launcher, and make a transport class for that...
+
+The problem is authentication.  Don't want to send passwords in the clear
+but would like to use windows authentication if possible... which means
+having a public key system to exchange a session key for a stream cipher,
+which is essentially re-implementing a part of the SSH protocol.  Ho hum.
+
+Need to have a think on that.
+
+
+Backronyms - no Free Software project should be without them
+============================================================
+
+Gosh, Network Operation Seems Terrifically Interesting. Champion!
+Gates' Nearly Omnipotent Software That Is Cromulent.
+Get New Operating System. This Is Crap" (choose your target platform)
+Gnostic's not overly stupid, technically it's complicated
+Graphic Notifying Omni-Platform Software Tool Inspecting Clusters
+Gnostic Notifies On Servers Taking Inconvenient Craps
+Great, No One Saw That It Crashed

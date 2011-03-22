@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{EBBD90E5-890F-4622-A0CA-4DF76C582ACE}
 AppName=Gnostic
-AppVerName=Gnostic 1.0 alpha
+AppVerName=Gnostic 1.0.2 beta
 AppPublisher=Matthew Gates
 AppPublisherURL=http://porpoisehead.net/
 AppSupportURL=http://porpoisehead.net/mysw/index.php?pgid=gnostic
@@ -41,11 +41,13 @@ Source: "C:\Qt\2010.05\qt\bin\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversi
 Source: "C:\Qt\2010.05\qwt-6.0.0-rc5\lib\qwt.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Program Files\Putty\PLINK.EXE"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Projects\Gnostic\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Projects\Gnostic\README.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Projects\Gnostic\gnostic.ico"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 Name: "{group}\Gnostic"; Filename: "{app}\Gnostic.exe"; IconFilename: "{app}\gnostic.ico"
+Name: "{group}\README.txt"; Filename: "{app}\README.txt"
 Name: "{group}\{cm:ProgramOnTheWeb,Gnostic}"; Filename: "http://porpoisehead.net/mysw/index.php?pgid=gnostic"
 Name: "{commondesktop}\Gnostic"; Filename: "{app}\Gnostic.exe"; Tasks: desktopicon
 

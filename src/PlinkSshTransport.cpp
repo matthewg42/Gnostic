@@ -99,7 +99,7 @@ QString PlinkSshTransport::establishConnection(QProcess& proc, const QString& ex
 		return QString();
 	}
 
-	plinkArgs << "-x" << "-a" << "-T" << "-l" << user << host << exe << args;
+	plinkArgs << "-x" << "-a" << "-t" << "-l" << user << host << exe << args;
 
 	// Don't make a habit of printing the password, even to debug...
 	// qDebug() << "PlinkSshTransport::establishConnection start(" << getPlinkExePath() << plinkArgs << ")";

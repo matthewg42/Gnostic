@@ -123,7 +123,7 @@ FORMS += \
     src/FirstRunWizard.ui
 
 OTHER_FILES += \
-    README \
+    README.txt \
     gnostic.rc
 
 RESOURCES += \
