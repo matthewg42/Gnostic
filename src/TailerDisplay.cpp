@@ -14,8 +14,6 @@ TailerDisplay::TailerDisplay(QWidget *parent) :
 {
 	ui->setupUi(this);
 	setHistory(defaultHistoryLines);
-	this->addHighlight("Hurp", Qt::red);
-	this->addHighlight("Durp", Qt::blue);
 }
 
 TailerDisplay::~TailerDisplay()
