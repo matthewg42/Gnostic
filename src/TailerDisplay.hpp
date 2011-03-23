@@ -4,6 +4,9 @@
 #include "DataDisplay.hpp"
 #include <QRegExp>
 #include <QStringList>
+#include <QMap>
+#include <QString>
+#include <QColor>
 
 namespace Ui {
 	class TailerDisplay;
@@ -27,21 +30,19 @@ public slots:
 	virtual bool loadSettings(const QString& section);
 	virtual void dumpDebug();
 
+	void addHighlight(const QString& pattern, const QColor color);
+	void deleteHighlight(const QString& pattern);
+	QMap< QString, QColor > getHighlights() { return highlights; }
+
 	void setHistory(int h);
 	int getHistory();
 
 	void takeLine(QString line);
 
-protected slots:
-	void redisplayBuffer();
-
 private:
 	Ui::TailerDisplay *ui;
-	static const int defaultHistoryLines = 200;
-
-protected:
-	int history;
-	QStringList buffer;
+	static const int defaultHistoryLines = 100;
+	QMap< QString, QColor > highlights;
 
 };
 

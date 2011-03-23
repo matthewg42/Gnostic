@@ -202,7 +202,7 @@ void RemoteMonitorEditorForm::selectRowWithId(const QString& id)
 
 void RemoteMonitorEditorForm::saveCurrent()
 {
-	qDebug() << "######################## SAVE ##############################";
+	qDebug() << "RemoteMonitorEditorForm::saveCurrent";
 	if (current)
 	{
 		current->setDescription(ui->descriptionEdit->text());

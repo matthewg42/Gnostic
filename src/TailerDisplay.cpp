@@ -10,10 +10,12 @@
 
 TailerDisplay::TailerDisplay(QWidget *parent) :
 		DataDisplay(parent),
-		ui(new Ui::TailerDisplay),
-		history(defaultHistoryLines)
+		ui(new Ui::TailerDisplay)
 {
 	ui->setupUi(this);
+	setHistory(defaultHistoryLines);
+	this->addHighlight("Hurp", Qt::red);
+	this->addHighlight("Durp", Qt::blue);
 }
 
 TailerDisplay::~TailerDisplay()
@@ -31,11 +33,26 @@ DataDisplayConfigWidget* TailerDisplay::getConfigWidget(QWidget* parent)
 
 const QString& TailerDisplay::saveSettings()
 {
-	//qDebug() << "TailerDisplay::saveSettings";
+	qDebug() << "TailerDisplay::saveSettings";
 	DataDisplay::saveSettings();
 
 	QSettings* settings = GnosticApp::getInstance().settings();
 	settings->setValue(QString("%1/history").arg(id), getHistory());
+
+	int n=0;
+	foreach(QString pattern, highlights.keys())
+	{
+		QColor c = highlights[pattern];
+		QString val = QString("%1:%2:%3:%4:%5")
+			      .arg(c.red())
+			      .arg(c.green())
+			      .arg(c.blue())
+			      .arg(c.alpha())
+			      .arg(pattern);
+		settings->setValue(QString("%1/highlight_%2").arg(id).arg(n), val);
+		n++;
+	}
+
         GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Display);
 	return id;
 }
@@ -47,57 +64,73 @@ bool TailerDisplay::loadSettings(const QString& section)
 		return false;
 
 	QSettings* settings = GnosticApp::getInstance().settings();
-	setHistory(settings->value(QString("%1/history").arg(section), defaultHistoryLines).toInt());
+	settings->beginGroup(section);
+	setHistory(settings->value("history", defaultHistoryLines).toInt());
+
+	highlights.clear();
+	foreach(QString key, settings->childKeys())
+	{
+		if (key.startsWith("highlight_"))
+		{
+			QRegExp rx("^(\\d+):(\\d+):(\\d+):(\\d+):(.*)$");
+			if (rx.exactMatch(settings->value(key).toString()))
+			{
+				QColor c(QVariant(rx.capturedTexts().at(1)).toInt(),
+					 QVariant(rx.capturedTexts().at(2)).toInt(),
+					 QVariant(rx.capturedTexts().at(3)).toInt(),
+					 QVariant(rx.capturedTexts().at(4)).toInt());
+				addHighlight(rx.capturedTexts().at(5), c);
+			}
+		}
+	}
+	settings->endGroup();
 
 	return true;
 }
 
 void TailerDisplay::dumpDebug()
 {
-	//qDebug() << "TailerDisplay::dumpDebug calling DataDisplay::dumpDebug()";
-	//qDebug() << "TailerDisplay::dumpDebug history" << getHistory();
-	//qDebug() << "TailerDisplay::dumpDebug currently" << buffer.count() << "lines in buffer";
+	qDebug() << "TailerDisplay::dumpDebug calling DataDisplay::dumpDebug()";
+	qDebug() << "TailerDisplay::dumpDebug history" << getHistory();
+	foreach(QString pattern, highlights.keys())
+	{
+		qDebug() << "TailerDisplay::dumpDebug pattern" << pattern << highlights[pattern];
+	}
+}
+
+void TailerDisplay::addHighlight(const QString& pattern, const QColor color)
+{
+	highlights.insert(pattern, color);
+}
+
+void TailerDisplay::deleteHighlight(const QString& pattern)
+{
+	highlights.remove(pattern);
 }
 
 void TailerDisplay::setHistory(int h)
 {
-	history = h;
-	redisplayBuffer();
+	ui->textEdit->document()->setMaximumBlockCount(h);
 }
 
 int TailerDisplay::getHistory()
 {
-	return history;
+	return ui->textEdit->document()->maximumBlockCount();
 }
 
 void TailerDisplay::takeLine(QString line)
 {
-	buffer << line;
-	redisplayBuffer();
+	QTextCharFormat fmt = ui->textEdit->currentCharFormat();
+	fmt.setForeground(QBrush(Qt::black));
+	foreach (QString pattern, highlights.keys())
+	{
+		if (line.contains(QRegExp(pattern)))
+		{
+			fmt.setForeground(QBrush(highlights[pattern]));
+			break;
+		}
+	}
+	ui->textEdit->setCurrentCharFormat(fmt);
+	ui->textEdit->append(line);
 }
 
-void TailerDisplay::redisplayBuffer()
-{
-	// First, determine if the display was "at the end"
-	QScrollBar *sb = ui->textEdit->verticalScrollBar();
-	bool atEnd = true;
-        int oldValue = 0;
-	if (sb)
-	{
-		oldValue = sb->value();
-		atEnd = (sb->value() == sb->maximum());
-	}
-
-	while (buffer.count() > history)
-		buffer.pop_front();
-
-	ui->textEdit->setPlainText(buffer.join("\n"));
-	sb = ui->textEdit->verticalScrollBar();
-	if (sb)
-	{
-		if (atEnd)
-			sb->setValue(sb->maximum());
-		else
-			sb->setValue(oldValue);
-	}
-}

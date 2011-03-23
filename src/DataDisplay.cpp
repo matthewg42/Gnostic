@@ -139,6 +139,7 @@ const QString& DataDisplay::saveSettings()
 	if (id.isEmpty())
 		id = getNewId();
 
+	GnosticApp::getInstance().settings()->remove(id);
 	GnosticApp::getInstance().settings()->setValue(QString("%1/type").arg(id), getType());
 	GnosticApp::getInstance().settings()->setValue(QString("%1/description").arg(id), description);
 
