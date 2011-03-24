@@ -109,12 +109,13 @@ Notes
 TODO for 1st release
 --------------------
 
-- more reliable killing of transports / notification of death
+- better connection status notification
+  - robust notification of connection failures
+  - not locking up while connecting
+  - propagate connection failure to RemoteMonitor
 - some sort of transport status indicator
 - reconnect on transport failure
-- win32 - why is tailer not working well?  multi-byte strings perhaps?
 - chase down TODO tags in code
-- propagate connection failure to RemoteMonitor
 
 
 Future Goals
