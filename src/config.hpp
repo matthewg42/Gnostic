@@ -3,7 +3,7 @@
 
 #include <QString>
 
-static const QString PROG_VERSION("1.0.3");
+static const QString PROG_VERSION("1.0.4");
 static const QString PROG_NAME("Gnostic");
 static const QString PROG_DOMAIN("porpoisehead.net");
 static const QString PROG_ORG("Mousefad Software");

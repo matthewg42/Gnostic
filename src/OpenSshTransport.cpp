@@ -92,7 +92,7 @@ QString OpenSshTransport::establishConnection(QProcess& proc, const QString& exe
 		return QString();
 	}
 
-	sshArgs << "-t" << QString("%1@%2").arg(user).arg(host) << exe << args;
+        sshArgs << QString("%1@%2").arg(user).arg(host) << exe << args;
 
 	//qDebug() << "OpenSshTransport::establishConnection start(" << getOpenExePath() << sshArgs << ")";
 	proc.start(getOpenExePath(), sshArgs);

@@ -117,6 +117,41 @@ TODO for 1st release
 - reconnect on transport failure
 - chase down TODO tags in code
 
+Known Bugs
+==========
+
+To PTY or not to PTY?
+---------------------
+When launching shell scripts on remote hosts with SSH, they don't get
+allocated a pty unless the -t option is passed to ssh / plink.
+This means that shell scripts don't terminate when the connection is
+torn down.  For some reason perl scripts do this just fine, which is
+something I personally don't understand at all.
+
+In any case, adding the -t option fixes this, but changes the remote
+shell from a login shell to a "naked" environment shell, which is even
+worse than having a bunch of remote monitors left running IMO.  Neither
+is ideal.
+
+So what to do...?  In the current version I'm leaving out -t, and will
+simply have to deal with stale remote commands on the other end for now.
+
+In future, I need to find a solution.  Either some way to make the
+remote command execute in a login shell with a pty (they seems mutually
+exclusive, but maybe there is a work around).
+
+The alternative, which is so ugly it hurts, is to have an option to
+add -t, and antoher option to prefix remote commands with something
+like sh -l -e "command", but this is very very nasty - kills argument
+quoting for example (although that doesn't really work properly at the
+moment anyway).
+
+Argument Quoting
+----------------
+Remote commands and their arguments are, at the moment split from the
+config widget's command field, simply by spaces.  Should split them
+according to shell quoting rules.
+
 
 Future Goals
 ============
