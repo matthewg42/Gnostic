@@ -65,7 +65,8 @@ TimeGraphDisplay::TimeGraphDisplay(QWidget *parent) :
 		history(TimeGraphDisplay::defaultHistoryS),
 		updateMs(TimeGraphDisplay::defaultUpdateMs),
 		ymin(TimeGraphDisplay::defaultYMin),
-		ymax(TimeGraphDisplay::defaultYMax)
+		ymax(TimeGraphDisplay::defaultYMax),
+		followRealTime(false)
 {
 	ui->setupUi(this);
 
@@ -99,6 +100,7 @@ TimeGraphDisplay::TimeGraphDisplay(QWidget *parent) :
 	redrawTimer->setInterval(updateMs);
 	redrawTimer->setSingleShot(false);
 	connect(redrawTimer, SIGNAL(timeout()), graph, SLOT(replot()));
+	connect(redrawTimer, SIGNAL(timeout()), this, SLOT(updateXMax()));
 	redrawTimer->start();
 }
 
@@ -135,7 +137,9 @@ const QString& TimeGraphDisplay::saveSettings()
 	settings->setValue(QString("%1/y_min").arg(id), getYMin());
 	settings->setValue(QString("%1/y_max").arg(id), getYMax());
 	settings->setValue(QString("%1/update_ms").arg(id), getUpdateMs());
-        GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Display);
+	settings->setValue(QString("%1/hidden").arg(id), hidden);
+	settings->setValue(QString("%1/follow_real_time").arg(id), getFollowRealTime());
+	GnosticApp::getInstance().sendConfigUpdated(GnosticApp::Display);
 	return id;
 }
 
@@ -151,6 +155,8 @@ bool TimeGraphDisplay::loadSettings(const QString& section)
 	setYMin(settings->value(QString("%1/y_min").arg(section), TimeGraphDisplay::defaultYMin).toDouble());
 	setYMax(settings->value(QString("%1/y_max").arg(section), TimeGraphDisplay::defaultYMax).toDouble());
 	setUpdateMs(settings->value(QString("%1/update_ms").arg(section), TimeGraphDisplay::defaultUpdateMs).toInt());
+	hidden = settings->value(QString("%1/hidden").arg(section), "").toStringList();
+	setFollowRealTime(settings->value(QString("%1/follow_real_time").arg(section), false).toBool());
 
 	return true;
 }
@@ -223,7 +229,10 @@ void TimeGraphDisplay::takeDataItem(const double timestamp, const double value, 
 	}
 
 	// xValues should be sorted, so we set the maxX to the last value...
-	maxX = xValues->at(xValues->size()-1);
+	if (followRealTime)
+		maxX = QDateTime::currentMSecsSinceEpoch();
+	else
+		maxX = xValues->at(xValues->size()-1);
 
 	// remove values which are too old
 	while (xValues->at(0) < maxX - (history*1000))
@@ -297,6 +306,25 @@ void TimeGraphDisplay::setUpdateMs(int ms)
 int TimeGraphDisplay::getUpdateMs()
 {
 	return updateMs;
+}
+
+void TimeGraphDisplay::setFollowRealTime(bool b)
+{
+	followRealTime = b;
+}
+
+bool TimeGraphDisplay::getFollowRealTime()
+{
+	return followRealTime;
+}
+
+void TimeGraphDisplay::updateXMax()
+{
+	if (getFollowRealTime())
+	{
+		maxX = QDateTime::currentMSecsSinceEpoch();
+		setXScale();
+	}
 }
 
 void TimeGraphDisplay::setXScale()

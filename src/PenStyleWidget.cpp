@@ -16,7 +16,7 @@ PenStyleWidget::PenStyleWidget(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-        this->setWindowFlags(Qt::Tool);
+	this->setWindowFlags(Qt::Tool|Qt::WindowStaysOnTopHint);
 	ui->styleCombo->insertItem(Qt::SolidLine, "Solid");
 	ui->styleCombo->insertItem(Qt::DashLine, "Dash");
 	ui->styleCombo->insertItem(Qt::DotLine, "Dot");
@@ -36,7 +36,6 @@ void PenStyleWidget::setInitialPen(QPen p)
 	oldPen = p;
         updatePreview();
 }
-
 
 void PenStyleWidget::chooseColor()
 {
@@ -85,4 +84,5 @@ void PenStyleWidget::updatePreview()
         colPixmap.fill(workingPen.color());
         colorIcon = QIcon(QPixmap(colPixmap));
         ui->colorButton->setIcon(colorIcon);
+	ui->widthSpin->setValue(workingPen.width());
 }

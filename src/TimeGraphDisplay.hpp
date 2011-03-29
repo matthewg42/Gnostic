@@ -56,8 +56,11 @@ public slots:
 	double getYMax();
 	void setUpdateMs(int ms);
 	int getUpdateMs();
-
+	void setFollowRealTime(bool b);
+	bool getFollowRealTime();
+	void updateXMax();
 	void takeDataItem(const double timestamp, const double value, const QString label);
+
 
 protected slots:
 
@@ -92,6 +95,8 @@ private:
 	PenStyleWidget* penWidget;
 	QwtPlotCurve* selectedCurve;
 	QTimer* redrawTimer;
+	QStringList hidden;
+	bool followRealTime;
 
 };
 

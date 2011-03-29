@@ -7,11 +7,11 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{EBBD90E5-890F-4622-A0CA-4DF76C582ACE}
 AppName=Gnostic
-AppVerName=Gnostic 1.0.3
+AppVerName=Gnostic 1.0.4
 AppPublisher=Matthew Gates
 AppPublisherURL=http://porpoisehead.net/
-AppSupportURL=http://porpoisehead.net/mysw/index.php?pgid=gnostic
-AppUpdatesURL=http://porpoisehead.net/mysw/index.php?pgid=gnostic
+AppSupportURL=http://porpoisehead.net/mysw/gnostic
+AppUpdatesURL=http://porpoisehead.net/mysw/gnostic
 WizardSmallImageFile=E:\Projects\Gnostic\images\ouroboros64x64.bmp
 WizardImageFile=E:\Projects\Gnostic\images\wizard.bmp
 WizardImageStretch=no
@@ -48,7 +48,7 @@ Source: "E:\Projects\Gnostic\gnostic.ico"; DestDir: "{app}"; Flags: ignoreversio
 [Icons]
 Name: "{group}\Gnostic"; Filename: "{app}\Gnostic.exe"; IconFilename: "{app}\gnostic.ico"
 Name: "{group}\README.txt"; Filename: "{app}\README.txt"
-Name: "{group}\{cm:ProgramOnTheWeb,Gnostic}"; Filename: "http://porpoisehead.net/mysw/index.php?pgid=gnostic"
+Name: "{group}\{cm:ProgramOnTheWeb,Gnostic}"; Filename: "http://porpoisehead.net/mysw/gnostic"
 Name: "{commondesktop}\Gnostic"; Filename: "{app}\Gnostic.exe"; Tasks: desktopicon
 
 [Run]

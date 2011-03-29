@@ -116,6 +116,8 @@ TODO for 1st release
 - some sort of transport status indicator
 - reconnect on transport failure
 - chase down TODO tags in code
+- graph titles from headers
+- hide dataset from graph
 
 Known Bugs
 ==========

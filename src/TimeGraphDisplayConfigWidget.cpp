@@ -21,6 +21,8 @@ TimeGraphDisplayConfigWidget::TimeGraphDisplayConfigWidget(DataDisplay* d, QWidg
 	connect(ui->yMinSpin, SIGNAL(valueChanged(double)), this, SLOT(madeUpdate()));
 	connect(ui->yMaxSpin, SIGNAL(valueChanged(double)), td, SLOT(setYMax(double)));
 	connect(ui->yMaxSpin, SIGNAL(valueChanged(double)), this, SLOT(madeUpdate()));
+	connect(ui->followRealTimeCheck, SIGNAL(toggled(bool)), td, SLOT(setFollowRealTime(bool)));
+	connect(ui->followRealTimeCheck, SIGNAL(toggled(bool)), this, SLOT(madeUpdate()));
 
 	ui->descriptionEdit->setText(td->getDescription());
 	ui->historySpin->setValue(td->getHistory());
@@ -28,7 +30,7 @@ TimeGraphDisplayConfigWidget::TimeGraphDisplayConfigWidget(DataDisplay* d, QWidg
 	ui->manualYScaleGroup->setChecked(td->getYManualScale());
 	ui->yMinSpin->setValue(td->getYMin());
 	ui->yMaxSpin->setValue(td->getYMax());
-
+	ui->followRealTimeCheck->setChecked(td->getFollowRealTime());
 }
 
 TimeGraphDisplayConfigWidget::~TimeGraphDisplayConfigWidget()
