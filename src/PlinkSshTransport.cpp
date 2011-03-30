@@ -28,7 +28,7 @@ bool PlinkSshTransport::test()
 {
 	qDebug() << "PlinkSshTransport::test";
 	QMessageBox mb;
-	mb.setText("TODO");
+	mb.setText("PlinkSshTransport::test TODO");
 	return false;
 }
 
@@ -47,7 +47,7 @@ bool PlinkSshTransport::start(const QString& exec, const QStringList& args)
 
 	QStringList plinkArgs;
 
-	if (authType == PlinkSshTransport::Password)
+	if (authType == AbstractSshTransport::Password)
 	{
 		qDebug() << "PlinkSshTransport::establishConnection prompting for password, authType" << authType;
 		PasswordDialog d(QString("password for %1@%2").arg(user).arg(host));
@@ -148,7 +148,7 @@ void PlinkSshTransport::handleConnectionInput(const QString& in)
 	else if (input.contains("Access denied")) // e.g. wrong password
 	{
 		QMessageBox mb;
-		mb.setText(QString("Transport \"%1\" failed to connect - access denied (probably wrong password)").arg(getDescription()));
+		mb.setText(QString("Transport \"%1\" Access denied (probably wrong password)").arg(getDescription()));
 		mb.setIcon(QMessageBox::Warning);
 		mb.exec();
 		qWarning() << "PlinkSshTransport::test - access denied";

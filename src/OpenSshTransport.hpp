@@ -35,15 +35,13 @@ public slots:
 	//! Dump debugging info
 	virtual void dumpDebug();
 
+protected slots:
+	virtual void procReadIn();
+	virtual void procReadErr();
+
 private:
-	//! accepts a reference to a process object and with that process
-	//! launches plink with current host and authentication credentials.
-	//! This function blocks until a connection has successfully been
-	//! established, which means that any known hosts questions have
-	//! been answered, password has been entered if required and so on.
-	//! \returns the first non-authentication/non-error output (which might
-	//!          be all of it).  Returns QString() on connection error.
-	QString establishConnection(QProcess& proc, const QString& exe, const QStringList& args);
+	void handleConnectionInput(const QString& in);
+	void handleRegularInput(const QString& in);
 
 	//! get the path to the plink executable
 	QString getOpenExePath();
