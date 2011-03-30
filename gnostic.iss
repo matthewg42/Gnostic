@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{EBBD90E5-890F-4622-A0CA-4DF76C582ACE}
 AppName=Gnostic
-AppVerName=Gnostic 1.0.4
+AppVerName=Gnostic 1.0.5
 AppPublisher=Matthew Gates
 AppPublisherURL=http://porpoisehead.net/
 AppSupportURL=http://porpoisehead.net/mysw/gnostic

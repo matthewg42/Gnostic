@@ -81,10 +81,7 @@ An example is probably better than an explanation:
 
 GNOSTIC-DATA-PROTOCOL-VERSION=1.0
 HOST=the.fq.hostname
-INVOCATION-PATH=/whatever/the/program/was
-INVOCATION-ARGS="list" "of" "quoted arguments"
 MONITOR-NAME=Some monitor
-UPDATE-DELAY=1.0
 DELIMITER=:
 END-HEADER
 timstamp:value:label
@@ -109,10 +106,6 @@ Notes
 TODO for 1st release
 --------------------
 
-- better connection status notification
-  - robust notification of connection failures
-  - not locking up while connecting
-  - propagate connection failure to RemoteMonitor
 - some sort of transport status indicator
 - reconnect on transport failure
 - chase down TODO tags in code
