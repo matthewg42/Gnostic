@@ -66,8 +66,8 @@ bool AbstractSshTransport::loadSettings(const QString& section)
 
 	QSettings* settings = GnosticApp::getInstance().settings();
 	host = settings->value(QString("%1/host").arg(section)).toString();
-	user = settings->value(QString("%1/user").arg(section)).toString();
-	port = settings->value(QString("%1/port").arg(section)).toInt();
+	user = settings->value(QString("%1/user").arg(section), 22).toString();
+	port = settings->value(QString("%1/port").arg(section), false).toInt();
 	keyFilePath = GnosticApp::getInstance().settings()->value(QString("%1/key_file_path").arg(section)).toString();
 	if (settings->value(QString("%1/auth_type").arg(section), "password").toString() == "password")
 		authType=AbstractSshTransport::Password;

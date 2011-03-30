@@ -7,6 +7,9 @@
 #include <QDebug>
 #include <QSettings>
 #include <QScrollBar>
+#include <QContextMenuEvent>
+#include <QMenu>
+#include <QIcon>
 
 TailerDisplay::TailerDisplay(QWidget *parent) :
 		DataDisplay(parent),
@@ -130,5 +133,13 @@ void TailerDisplay::takeLine(QString line)
 	}
 	ui->textEdit->setCurrentCharFormat(fmt);
 	ui->textEdit->append(line);
+}
+
+void TailerDisplay::contextMenuEvent(QContextMenuEvent* event)
+{
+	QMenu menu(this);
+	menu.addAction(QIcon(":/icons/images/exit.png"), "Close display", this, SLOT(close()));
+	menu.exec(mapToGlobal(event->pos()));
+	return;
 }
 

@@ -58,6 +58,7 @@ protected:
 	int port;
 	SshAuthType authType;
 	QString keyFilePath;
+	QString savedPassword;
 
 protected slots:
 	virtual void procStatusUpdate(QProcess::ProcessState);

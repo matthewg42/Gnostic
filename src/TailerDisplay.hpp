@@ -39,6 +39,9 @@ public slots:
 
 	void takeLine(QString line);
 
+protected:
+	void contextMenuEvent(QContextMenuEvent* event);
+
 private:
 	Ui::TailerDisplay *ui;
 	static const int defaultHistoryLines = 100;

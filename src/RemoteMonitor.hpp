@@ -50,7 +50,6 @@ public:
 					 DataDisplay* display,
 					 QObject* parent=0);
 
-
 public slots:
 	virtual bool start();
 	virtual void stop();
