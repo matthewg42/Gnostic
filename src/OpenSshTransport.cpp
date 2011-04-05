@@ -150,7 +150,8 @@ void OpenSshTransport::handleRegularInput(const QString& in)
 	qDebug() << "OpenSshTransport::handleRegularInput:" << getConnectionStatus() << in;
 	foreach(QString line, in.split(QRegExp("[\\n\\r]+")))
 	{
-		emit(spewLine(line));
+                if (!line.isEmpty())
+                        emit(spewLine(line));
 	}
 }
 

@@ -185,7 +185,6 @@ int TimeGraphDisplay::getHistory()
 void TimeGraphDisplay::takeDataItem(const double timestamp, const double value, const QString label)
 {
 	// TODO - handle out-of-order timestamps...
-
 	QVector<double>* xValues;
 	QVector<double>* yValues;
 	QwtPlotCurve* curve;

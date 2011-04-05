@@ -138,10 +138,11 @@ void LocalTransport::procStatusUpdate(QProcess::ProcessState newState)
 void LocalTransport::procReadIn()
 {
 	////qDebug() << "LocalTransport::procReadIn";
-	QByteArray line;
+        QString line;
 	while (1)
 	{
-		line = proc.readLine();
+                line = QString(proc.readLine());
+                line.replace(QRegExp("[\\r\\n]+$"), "");
 		if (line.isEmpty())
 			break;
 
