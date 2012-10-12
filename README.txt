@@ -1,6 +1,6 @@
 
 GNOSTIC
-M N Gates, 2011
+M N Gates, 2012
 
 
 What it is
@@ -15,8 +15,8 @@ pretty graphs from the output of those remote programs.
 Build Dependencies
 ------------------
 
-- A recent Qt.  4.x should work, I used 4.7
-- Qwt.  I use Qwt-6.0.0-rc5 on win32, and SVN export on Ubuntu.
+- A recent Qt.  4.x should work.  4.8 is known to be good on Linux.
+- Qwt 6.x
 - gcc goodness.  On win32 this is bundled with Qt.
 
 
@@ -189,4 +189,6 @@ Get New Operating System. This Is Crap" (choose your target platform)
 Gnostic's not overly stupid, technically it's complicated
 Graphic Notifying Omni-Platform Software Tool Inspecting Clusters
 Gnostic Notifies On Servers Taking Inconvenient Craps
-Great, No One Saw That It Crashed
+Great! No One Saw That It Crashed!
+
+

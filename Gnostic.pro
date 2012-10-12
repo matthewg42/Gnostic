@@ -5,20 +5,21 @@
 #-------------------------------------------------
 
 # For Qwt... adjust according to where it is installed...
-unix:QWT_ROOT  = /opt/qwt
+unix:QWT_ROOT  = /usr
 win32:QWT_ROOT = C:/Qt/Qwt-6.0.0-rc5
-win32:DEFINES = QWT_API_VER_6
-INCLUDEPATH   += $${QWT_ROOT}/include
-LIBS          +=  -L$${QWT_ROOT}/lib
-
-qtAddLibrary(qwt)
+INCLUDEPATH   += $${QWT_ROOT}/include/qwt
+LIBS          += -L$${QWT_ROOT}/lib
 
 win32 {
     contains(QWT_CONFIG, QwtDll) {
 	DEFINES    += QT_DLL QWT_DLL
     }
+    qtAddLibrary(qwt)
 }
 
+unix {
+    qtAddLibrary(qwt)
+}
 
 QT       += core gui network
 CONFIG   += qwt
